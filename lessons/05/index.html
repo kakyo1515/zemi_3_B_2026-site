@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>第5回：単回帰分析 – 2026年度ゼミナールB（何研）</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../lessons/04/index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37294f0e61b532b0f7ebd5ccc0471b30.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c2e880a5cb14d7a116eba1e73095a7f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "一致なし",
+    "search-matching-documents-text": "一致した文書",
+    "search-copy-link-title": "検索へのリンクをコピー",
+    "search-hide-matches-text": "追加の検索結果を非表示",
+    "search-more-match-text": "追加の検索結果",
+    "search-more-matches-text": "追加の検索結果",
+    "search-clear-button-title": "消去",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "検索",
+    "search-label": "サーチ"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lessons/05/index.html">第5回：単回帰分析</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="サーチ" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">2026年度ゼミナールB（何研）</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="サーチ"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ガイダンス</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/01/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第1回：Rの基本操作 I</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/02/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第2回：Rの基本操作 II</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/03/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第3回：Rの基本操作 III</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/04/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第4回：Rの基本操作 IV</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/05/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">第5回：単回帰分析</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">目次</h2>
+   
+  <ul>
+  <li><a href="#到達目標" id="toc-到達目標" class="nav-link active" data-scroll-target="#到達目標">到達目標</a></li>
+  <li><a href="#chapter-1計量経済分析の流れ" id="toc-chapter-1計量経済分析の流れ" class="nav-link" data-scroll-target="#chapter-1計量経済分析の流れ">Chapter 1｜計量経済分析の流れ</a>
+  <ul class="collapse">
+  <li><a href="#理論的背景の確認仮説の設定" id="toc-理論的背景の確認仮説の設定" class="nav-link" data-scroll-target="#理論的背景の確認仮説の設定">1. 理論的背景の確認（仮説の設定）</a></li>
+  <li><a href="#計量経済分析の標準的な流れ" id="toc-計量経済分析の標準的な流れ" class="nav-link" data-scroll-target="#計量経済分析の標準的な流れ">2. 計量経済分析の標準的な流れ</a></li>
+  <li><a href="#今回の分析課題" id="toc-今回の分析課題" class="nav-link" data-scroll-target="#今回の分析課題">3. 今回の分析課題</a></li>
+  </ul></li>
+  <li><a href="#chapter-2単回帰分析の基礎" id="toc-chapter-2単回帰分析の基礎" class="nav-link" data-scroll-target="#chapter-2単回帰分析の基礎">Chapter 2｜単回帰分析の基礎</a>
+  <ul class="collapse">
+  <li><a href="#単回帰モデル" id="toc-単回帰モデル" class="nav-link" data-scroll-target="#単回帰モデル">1. 単回帰モデル</a></li>
+  <li><a href="#推定値予測値残差" id="toc-推定値予測値残差" class="nav-link" data-scroll-target="#推定値予測値残差">2. 推定値・予測値・残差</a></li>
+  <li><a href="#最小二乗法" id="toc-最小二乗法" class="nav-link" data-scroll-target="#最小二乗法">3. 最小二乗法</a></li>
+  <li><a href="#回帰係数の仮説検定" id="toc-回帰係数の仮説検定" class="nav-link" data-scroll-target="#回帰係数の仮説検定">4. 回帰係数の仮説検定</a></li>
+  <li><a href="#モデルの当てはまり" id="toc-モデルの当てはまり" class="nav-link" data-scroll-target="#モデルの当てはまり">5. モデルの当てはまり</a></li>
+  </ul></li>
+  <li><a href="#chapter-3rで一通り分析する" id="toc-chapter-3rで一通り分析する" class="nav-link" data-scroll-target="#chapter-3rで一通り分析する">Chapter 3｜Rで一通り分析する</a>
+  <ul class="collapse">
+  <li><a href="#作業の準備" id="toc-作業の準備" class="nav-link" data-scroll-target="#作業の準備">作業の準備</a></li>
+  <li><a href="#データの読み込みと確認" id="toc-データの読み込みと確認" class="nav-link" data-scroll-target="#データの読み込みと確認">1. データの読み込みと確認</a></li>
+  <li><a href="#予備的分析散布図と相関係数" id="toc-予備的分析散布図と相関係数" class="nav-link" data-scroll-target="#予備的分析散布図と相関係数">2. 予備的分析：散布図と相関係数</a></li>
+  <li><a href="#パラメータの推定" id="toc-パラメータの推定" class="nav-link" data-scroll-target="#パラメータの推定">3. パラメータの推定</a></li>
+  <li><a href="#仮説検定" id="toc-仮説検定" class="nav-link" data-scroll-target="#仮説検定">4. 仮説検定</a></li>
+  <li><a href="#モデルの当てはまり-1" id="toc-モデルの当てはまり-1" class="nav-link" data-scroll-target="#モデルの当てはまり-1">5. モデルの当てはまり</a></li>
+  <li><a href="#予測" id="toc-予測" class="nav-link" data-scroll-target="#予測">6. 予測</a></li>
+  <li><a href="#結果を解釈するときの注意" id="toc-結果を解釈するときの注意" class="nav-link" data-scroll-target="#結果を解釈するときの注意">結果を解釈するときの注意</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">第5回：単回帰分析</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="到達目標" class="level2">
+<h2 class="anchored" data-anchor-id="到達目標">到達目標</h2>
+<ul>
+<li>問いの設定から結果の解釈まで、計量経済分析の流れを理解する。</li>
+<li>単回帰分析の基本を理解し、Rで分析を行って結果を解釈できる。</li>
+</ul>
+<p>今回は、理論の要点を確認した後、教科書の消費関数の例に沿って、<strong>都市別の可処分所得と消費支出</strong>のデータを使って一通りの分析を行う。</p>
+</section>
+<section id="chapter-1計量経済分析の流れ" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-1計量経済分析の流れ">Chapter 1｜計量経済分析の流れ</h2>
+<section id="理論的背景の確認仮説の設定" class="level3">
+<h3 class="anchored" data-anchor-id="理論的背景の確認仮説の設定">1. 理論的背景の確認（仮説の設定）</h3>
+<p>計量経済学は、経済理論と現実経済の「架け橋」の役割を担う。理論や仮説、法則性・関係性などが現実経済にどの程度当てはまるかを、データから検証する。</p>
+<p>実証分析では、<strong>「理論・仮説ありき」</strong>というスタンスが重要となる。消費関数を例にとれば、所得と消費支出の関係に注目する。今回は次の仮説を立て、都市別のデータで確かめる。</p>
+<div class="chapter-summary">
+<p><strong>今回の仮説</strong></p>
+<p>可処分所得の高い都市ほど、消費支出も多い。</p>
+</div>
+<p>さらに、所得が1千円高い都市では、消費支出が平均的に何千円多いかを推定する。単にデータがあるから分析するのではなく、何を確かめたいかを先に考えよう。</p>
+</section>
+<section id="計量経済分析の標準的な流れ" class="level3">
+<h3 class="anchored" data-anchor-id="計量経済分析の標準的な流れ">2. 計量経済分析の標準的な流れ</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ステップ</th>
+<th>内容</th>
+<th>所得と消費の例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><strong>理論的背景の確認（仮説の設定）</strong></td>
+<td>「可処分所得の高い都市ほど、消費支出も多い」という仮説を考える</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><strong>実証モデルの設定</strong></td>
+<td>「消費 <span class="math inline">\(= a + b\,所得 + 誤差\)</span>」と定式化する</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><strong>データの選定</strong></td>
+<td>被説明変数と説明変数それぞれに当てはまるデータを選ぶ</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><strong>予備的分析</strong></td>
+<td>基本統計量と散布図から、データの特性を把握する</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><strong>パラメータの推定</strong></td>
+<td>最小二乗法で係数 <span class="math inline">\(a,b\)</span> をデータから推定する</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><strong>仮説検定</strong></td>
+<td>所得の係数が0かを両側検定し、有意水準5%で判断する</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td><strong>モデルの当てはまりの確認</strong></td>
+<td>決定係数 <span class="math inline">\(R^2\)</span> で、消費支出のばらつきをどの程度説明できるかを確認する</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td><strong>予測</strong></td>
+<td>推定結果を使って、消費の予測値を算出する</td>
+</tr>
+</tbody>
+</table>
+<p>今回はこの流れに沿って、Rで単回帰分析を行う。特に、散布図の確認、係数の推定と解釈、仮説検定、決定係数による当てはまりの確認、予測を行う。</p>
+</section>
+<section id="今回の分析課題" class="level3">
+<h3 class="anchored" data-anchor-id="今回の分析課題">3. 今回の分析課題</h3>
+<p>実習では、<strong>2024年の家計調査による52都市の可処分所得と消費支出</strong>を用いる。二人以上の世帯のうち勤労者世帯について、都市別の1世帯当たり1か月平均を比較する。観測単位は都市であり、金額の単位はともに千円／月である。</p>
+<div class="chapter-summary">
+<p><strong>今回の分析課題</strong></p>
+<ol type="1">
+<li>可処分所得が多い都市ほど、消費支出も多いだろうか。</li>
+<li>可処分所得が1万円多いと、消費支出は平均的に何円多いか。</li>
+<li>可処分所得が500千円／月の都市では、消費支出はいくらと予測されるか。</li>
+</ol>
+</div>
+</section>
+</section>
+<section id="chapter-2単回帰分析の基礎" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-2単回帰分析の基礎">Chapter 2｜単回帰分析の基礎</h2>
+<section id="単回帰モデル" class="level3">
+<h3 class="anchored" data-anchor-id="単回帰モデル">1. 単回帰モデル</h3>
+<p>データを用いて変数（事象）間の関係性を計測する手法の一つに、<strong>回帰分析</strong>がある。消費関数に関する回帰分析では、次のような定式化を行う。</p>
+<p><span class="math display">\[
+消費 = a + b\,所得 + 誤差
+\]</span></p>
+<p>左辺の消費を<strong>被説明変数（従属変数）</strong>、右辺の所得を<strong>説明変数（独立変数）</strong>と呼ぶ。説明変数が所得のみのように、一つの説明変数を用いる分析を<strong>単回帰分析</strong>という。</p>
+<p>一般的には、被説明変数を <span class="math inline">\(Y\)</span>、説明変数を <span class="math inline">\(X\)</span>、誤差項を <span class="math inline">\(u\)</span> として、<span class="math inline">\(Y = a + bX + u\)</span> と表す。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>記号</th>
+<th>意味</th>
+<th>所得と消費の例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(Y\)</span></td>
+<td>被説明変数</td>
+<td>消費支出（実習では千円／月）</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(X\)</span></td>
+<td>説明変数</td>
+<td>可処分所得（実習では千円／月）</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(a\)</span></td>
+<td>切片（定数項）</td>
+<td>所得がゼロのときの回帰直線上の消費</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(b\)</span></td>
+<td>傾き</td>
+<td>所得が1単位増加すると、回帰直線上の消費が何単位増加するか</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(u\)</span></td>
+<td>誤差項</td>
+<td>所得だけでは説明されない部分</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(a\)</span> と <span class="math inline">\(b\)</span> は<strong>パラメータ（係数）</strong>と呼ばれ、これらをデータから推定することが主たる目的となる。現実のデータには、所得によって説明できる部分だけでなく、その他の要因やノイズも含まれるため、誤差項を加えている。</p>
+<p>切片はモデル上の値であり、所得がゼロの世帯が観測されていなければ、実際の消費としてそのまま解釈しない。また、<strong>相関関係があることだけで、因果関係があるとはいえない</strong>。回帰式を書くだけで、所得が消費の原因であることが証明されるわけではない。</p>
+</section>
+<section id="推定値予測値残差" class="level3">
+<h3 class="anchored" data-anchor-id="推定値予測値残差">2. 推定値・予測値・残差</h3>
+<p>係数 <span class="math inline">\(a,b\)</span> の推定値に「ハット」を付けると、推定された<strong>回帰直線</strong>は次のように表される。</p>
+<p><span class="math display">\[
+\hat{Y}_i = \hat{a} + \hat{b}X_i
+\]</span></p>
+<p><span class="math inline">\(\hat{Y}_i\)</span> が<strong>予測値（当てはめ値）</strong>であり、実際の観測値との差が<strong>残差</strong>である。添字 <span class="math inline">\(i\)</span> は、それぞれの都市を表す。</p>
+<p><span class="math display">\[
+e_i = Y_i - \hat{Y}_i
+\]</span></p>
+<p>残差は、回帰直線から各観測点までの<strong>縦方向の距離</strong>に対応する。残差が正なら観測点は回帰直線より上、負なら下に位置する。モデルの誤差項 <span class="math inline">\(u_i\)</span> と、推定後に計算できる残差 <span class="math inline">\(e_i\)</span> は区別しよう。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-l05-residual-concept" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l05-residual-concept-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l05-residual-concept-1.png" class="img-fluid figure-img" width="1280">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l05-residual-concept-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;1: 残差は、同じXの位置で測った観測値と予測値の縦方向の差（説明用の仮想データ）
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>黒い点が観測値、白抜きの点が同じ <span class="math inline">\(X\)</span> における予測値である。赤い線の長さが残差の絶対値を表す。<strong>直線への最短距離ではなく、縦方向に測る</strong>ことに注意しよう。</p>
+</section>
+<section id="最小二乗法" class="level3">
+<h3 class="anchored" data-anchor-id="最小二乗法">3. 最小二乗法</h3>
+<p>散布図で考えると、パラメータの推定とは、<strong>プロットの中心付近に一本の直線を引くこと</strong>を意味する。回帰直線が縦軸と交わる切片が <span class="math inline">\(a\)</span>、傾きが <span class="math inline">\(b\)</span> になる。</p>
+<p><strong>最小二乗法（Ordinary Least Squares：OLS）</strong>では、各観測点と直線の縦方向のずれを二乗して足し、その合計が最も小さくなる切片と傾きを求める。</p>
+<p><span class="math display">\[
+\min_{a,b}\sum_{i=1}^{n}\{Y_i-(a+bX_i)\}^2
+\]</span></p>
+<p>残差をそのまま足すと正と負が打ち消し合うため、二乗してずれの大きさを評価する。Rの<code>lm()</code>がこの計算を行うので、今回は係数の手計算よりも、モデルの指定と結果の解釈を練習する。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-l05-ols-squares" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l05-ols-squares-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l05-ols-squares-1.png" class="img-fluid figure-img" width="1440">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l05-ols-squares-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;2: 縦方向のずれを一辺とする正方形の面積が、ずれの二乗を表す。OLSは面積の合計を最小にする（説明用の仮想データ）。
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>同じ点でも、直線を変えると縦方向のずれと正方形の面積が変わる。右の直線では面積の合計が小さい。重なった部分も、それぞれの正方形の面積として足し合わせる。OLSは、この2本だけを比較するのではなく、<strong>切片と傾きを変えて得られるすべての直線の中から、ずれの二乗和が最小になる直線</strong>を選ぶ。</p>
+</section>
+<section id="回帰係数の仮説検定" class="level3">
+<h3 class="anchored" data-anchor-id="回帰係数の仮説検定">4. 回帰係数の仮説検定</h3>
+<p>推定された傾きが正でも、それだけで母集団でも傾きが正だと断定することはできない。標本によって推定値は変動するため、<strong>推定値の大きさと、その不確かさを合わせて判断する</strong>。</p>
+<p>今回は、所得の係数 <span class="math inline">\(b\)</span> について次の<strong>両側検定</strong>を行う。</p>
+<p><span class="math display">\[
+H_0: b = 0 \qquad H_1: b \ne 0
+\]</span></p>
+<ul>
+<li><strong>帰無仮説 <span class="math inline">\(H_0\)</span></strong>：モデル上、所得と消費支出の線形の関係を表す傾きは0である。</li>
+<li><strong>対立仮説 <span class="math inline">\(H_1\)</span></strong>：傾きは0ではない。</li>
+</ul>
+<p>最初の予想は「正の関係」だが、Rの標準出力に合わせ、ここではまず傾きが0かどうかを両側検定で確認し、推定値の符号も読む。</p>
+<p>検定統計量は、推定値が0から標準誤差の何倍離れているかを表す。</p>
+<p><span class="math display">\[
+t = \frac{\hat{b} - 0}{\mathrm{SE}(\hat{b})}
+\]</span></p>
+<p><strong>標準誤差 <span class="math inline">\(\mathrm{SE}(\hat{b})\)</span></strong>は、標本による係数推定値のばらつきの大きさを表す推定値である。通常の単回帰のt検定では、帰無仮説と以下の前提の下で、この統計量は自由度 <span class="math inline">\(n-2\)</span> のt分布に従う。</p>
+<p><strong>p値</strong>は、帰無仮説と検定の前提の下で、観測された値以上に絶対値の大きいt統計量が得られる確率である。有意水準を分析前に5%と決めた場合、次のように判断する。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>判定</th>
+<th>結論</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(p &lt; 0.05\)</span></td>
+<td>帰無仮説を棄却する。係数は5%水準で統計的に有意である</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(p \geq 0.05\)</span></td>
+<td>帰無仮説を棄却できない。係数が0だと証明されたわけではない</td>
+</tr>
+</tbody>
+</table>
+<p>p値は「帰無仮説が正しい確率」ではない。また、統計的有意性と、経済的な効果の大きさや因果関係は区別する。</p>
+<p>ここで扱う通常のt検定は、説明変数を与えたとき、誤差項が平均0・共通の分散を持つ正規分布に従い、観測間で独立であるという前提に基づく。都市別平均のデータでこれらが自動的に満たされるわけではないため、検定結果はこのモデルと前提に依存するものとして読む。（参考：<a href="https://www.itl.nist.gov/div898/handbook/pmd/section6/pmd623.htm">NIST：回帰モデルの前提と点検</a>）</p>
+</section>
+<section id="モデルの当てはまり" class="level3">
+<h3 class="anchored" data-anchor-id="モデルの当てはまり">5. モデルの当てはまり</h3>
+<p><strong>決定係数 <span class="math inline">\(R^2\)</span></strong>は、被説明変数の全体のばらつきのうち、回帰直線で説明できる割合を表す。切片を含むOLSでは、次のように書ける。</p>
+<p><span class="math display">\[
+R^2 = \frac{\text{回帰直線で説明されるばらつき}}{\text{被説明変数の全体のばらつき}}
+= \frac{\displaystyle\sum_{i=1}^{n}(\hat{Y}_i-\bar{Y})^2}
+{\displaystyle\sum_{i=1}^{n}(Y_i-\bar{Y})^2}
+\]</span></p>
+<p><span class="math inline">\(\bar{Y}\)</span> は観測値の平均、<span class="math inline">\(\hat{Y}_i\)</span> は回帰直線上の予測値である。</p>
+<ul>
+<li><strong>分子</strong>：予測値が平均からどれだけ離れているかの二乗和（説明平方和）。</li>
+<li><strong>分母</strong>：観測値が平均からどれだけ離れているかの二乗和（全平方和）。</li>
+</ul>
+<p>被説明変数にばらつきがある場合、<span class="math inline">\(R^2\)</span>は0から1の間になり、1に近いほど標本内の当てはまりがよい。たとえば<span class="math inline">\(R^2=0.60\)</span>なら、「被説明変数のばらつきの60%を回帰直線が説明している」と読む。</p>
+</section>
+</section>
+<section id="chapter-3rで一通り分析する" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-3rで一通り分析する">Chapter 3｜Rで一通り分析する</h2>
+<section id="作業の準備" class="level3">
+<h3 class="anchored" data-anchor-id="作業の準備">作業の準備</h3>
+<ol type="1">
+<li><code>zemi.Rproj</code>を開く。</li>
+<li><strong>File → New File → R Script</strong>から新規スクリプトを作成し、<code>script/lesson05.R</code>として保存する。</li>
+<li><a href="../../data/data_lesson05.csv" download="data_lesson05.csv">data_lesson05.csv をダウンロード</a>し、Project内の<code>data</code>フォルダに保存する。</li>
+</ol>
+<p>今回はRの標準機能だけを使う。以下のコードを、スクリプトに上から順に記述して実行する。</p>
+<pre class="text"><code>zemi/
+├── zemi.Rproj
+├── data/
+│   └── data_lesson05.csv
+├── script/
+│   └── lesson05.R
+└── output/</code></pre>
+<p>今回は、<strong>2024年の家計調査に基づく52都市の所得と消費支出</strong>を用いる。対象は二人以上の世帯のうち勤労者世帯で、金額は<strong>1世帯当たり1か月間の都市別平均（千円）</strong>である。教科書の消費関数の例にならい、「所得が高い都市ほど消費支出も多い」という予想をデータで確かめる。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>列名</th>
+<th>内容・単位</th>
+<th>分析での役割</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>city_code</code></td>
+<td>都市コード</td>
+<td>都市の識別</td>
+</tr>
+<tr class="even">
+<td><code>city</code></td>
+<td>都市名</td>
+<td>都市の識別</td>
+</tr>
+<tr class="odd">
+<td><code>income</code></td>
+<td>可処分所得（千円／月）</td>
+<td>説明変数 <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="even">
+<td><code>consumption</code></td>
+<td>消費支出（千円／月）</td>
+<td>被説明変数 <span class="math inline">\(y\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>food</code></td>
+<td>食料支出（千円／月）</td>
+<td>今回は使用しない</td>
+</tr>
+</tbody>
+</table>
+<p>出典：総務省統計局「家計調査」2024年、二人以上の世帯のうち勤労者世帯の都市別集計。授業では可処分所得を所得として扱う。<a href="https://www.e-stat.go.jp/stat-search/files?stat_infid=000040247064">e-Stat：家計調査</a></p>
+<p>今回は1行が1都市を表す横断面データである。個々の世帯の記録ではなく、都市ごとに集計された平均値である点に注意しよう。</p>
+</section>
+<section id="データの読み込みと確認" class="level3">
+<h3 class="anchored" data-anchor-id="データの読み込みと確認">1. データの読み込みと確認</h3>
+<p>分析に使うデータを読み込み、観測数・欠損値・所得と消費支出の値の範囲を確認して、データの構成を把握する。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>kakei <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/data_lesson05.csv"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fileEncoding =</span> <span class="st">"UTF-8"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">colClasses =</span> <span class="fu">c</span>(<span class="at">city_code =</span> <span class="st">"character"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(kakei)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  city_code   city income consumption food
+1     01100 札幌市  489.7       309.5 83.0
+2     02201 青森市  476.3       288.9 81.7
+3     03201 盛岡市  521.7       334.5 84.8
+4     04100 仙台市  547.1       342.5 86.9
+5     05201 秋田市  433.6       297.9 83.0
+6     06201 山形市  566.5       337.1 95.6</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(kakei)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 52</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(kakei[<span class="fu">c</span>(<span class="st">"income"</span>, <span class="st">"consumption"</span>)]))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     income consumption 
+          0           0 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(kakei<span class="sc">$</span>income)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 420.7 638.0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(kakei[<span class="fu">c</span>(<span class="st">"income"</span>, <span class="st">"consumption"</span>)])</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     income       consumption   
+ Min.   :420.7   Min.   :257.9  
+ 1st Qu.:489.2   1st Qu.:312.2  
+ Median :522.5   Median :328.4  
+ Mean   :522.3   Mean   :327.9  
+ 3rd Qu.:559.3   3rd Qu.:343.1  
+ Max.   :638.0   Max.   :386.5  </code></pre>
+</div>
+</div>
+<p>観測数は52都市で、所得と消費支出に欠損値はない。所得の観測範囲は420.7〜638.0千円である。<code>city_code</code>は文字列として読み込み、計算に使う所得と消費支出について最小値・平均値・最大値などの基本統計量を確認する。第4回で使った学生データとは別のファイルであることを確認しよう。</p>
+</section>
+<section id="予備的分析散布図と相関係数" class="level3">
+<h3 class="anchored" data-anchor-id="予備的分析散布図と相関係数">2. 予備的分析：散布図と相関係数</h3>
+<p>回帰モデルを推定する前に、散布図で所得と消費支出の関係の形状や他から大きく離れた点がないかを確認し、相関係数で線形の関係の方向と強さを数値で捉える。</p>
+<p>横軸に説明変数の所得、縦軸に被説明変数の消費支出を置く。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> kakei<span class="sc">$</span>income,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> kakei<span class="sc">$</span>consumption,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Monthly disposable income (1,000 yen)"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Monthly consumption expenditure (1,000 yen)"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"#007c73"</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-l05-scatter" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l05-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l05-scatter-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1120">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l05-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;3: 所得と消費支出：52都市の平均値
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>散布図でプロットが右上がりに描かれている場合、横軸の値が大きいと縦軸の値も大きいことを示す。今回の図では、所得と消費支出には正の相関が見られる。ただし、同程度の所得でも消費支出にはばらつきがある。</p>
+<p>続いて、<code>cor()</code>で所得と消費支出の<strong>相関係数（ピアソンの積率相関係数）</strong>を求める。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(kakei<span class="sc">$</span>income, kakei<span class="sc">$</span>consumption)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7886642</code></pre>
+</div>
+</div>
+<p>相関係数は<span class="math inline">\(-1\)</span>から<span class="math inline">\(1\)</span>の値を取り、正なら右上がり、負なら右下がりの線形の関係を表す。絶対値が1に近いほど線形の関係が強く、0に近いほど弱い。ただし、相関係数が0に近くても、曲線的な関係がある場合はある。</p>
+<p>今回は約<strong>0.789</strong>であり、所得の高い都市ほど消費支出も多いという、散布図で見た正の関係と整合的である。この値は関係の方向と強さを表すもので、「所得が1千円違うと消費支出が何千円違うか」を表す回帰直線の傾きとは異なる。</p>
+</section>
+<section id="パラメータの推定" class="level3">
+<h3 class="anchored" data-anchor-id="パラメータの推定">3. パラメータの推定</h3>
+<p>所得の違いと消費支出の違いの関係を数値で捉えるため、最小二乗法で回帰直線の切片と傾きを推定する。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(consumption <span class="sc">~</span> income, <span class="at">data =</span> kakei)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)      income 
+124.8298680   0.3887462 </code></pre>
+</div>
+</div>
+<p><code>被説明変数 ~ 説明変数</code>の順にモデルを指定する。<code>data = kakei</code>は使用するデータ、<code>coef()</code>は推定した係数を取り出す関数である。切片は通常、自動的に含まれる。</p>
+<p>推定した回帰式は、係数を丸めて書くと次のようになる。</p>
+<p><span class="math display">\[
+\widehat{\text{消費支出}} = 124.830 + 0.389 \times \text{所得}
+\]</span></p>
+<ul>
+<li><strong>傾き約0.389</strong>：所得の都市平均が1千円高いと、回帰直線上の消費支出は約0.389千円多い。</li>
+<li><strong>切片約124.830</strong>：所得0千円まで直線を延長した場合の値である。0千円は観測範囲外なので、実際の無所得世帯の消費支出と断定しない。</li>
+</ul>
+<p>この係数は都市平均どうしの関係を表し、同じ世帯の所得が増えたときの変化を直接表すものではない。</p>
+<p>続いて、散布図に回帰直線を重ねる。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> kakei<span class="sc">$</span>income,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> kakei<span class="sc">$</span>consumption,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Monthly disposable income (1,000 yen)"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Monthly consumption expenditure (1,000 yen)"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"#007c73"</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model, <span class="at">col =</span> <span class="st">"#b24c3d"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-l05-regression" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l05-regression-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l05-regression-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1120">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l05-regression-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;4: 所得と消費支出の散布図と最小二乗回帰直線
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>直線が関係の大まかな方向を表していても、個々の観測値とはずれがあることを確認する。</p>
+</section>
+<section id="仮説検定" class="level3">
+<h3 class="anchored" data-anchor-id="仮説検定">4. 仮説検定</h3>
+<p>推定された正の傾きが、標本による推定値のばらつきを考慮しても0と区別できるかを、仮説検定で確認する。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = consumption ~ income, data = kakei)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-30.475 -10.050   1.923   8.448  36.307 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 124.82987   22.49130    5.55 1.09e-06 ***
+income        0.38875    0.04286    9.07 3.85e-12 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 15.82 on 50 degrees of freedom
+Multiple R-squared:  0.622, Adjusted R-squared:  0.6144 
+F-statistic: 82.27 on 1 and 50 DF,  p-value: 3.855e-12</code></pre>
+</div>
+</div>
+<p>理論で確認した <span class="math inline">\(H_0: b=0\)</span>、<span class="math inline">\(H_1: b\ne0\)</span> の両側検定を行う。有意水準は5%とする。<code>summary(model)</code>の<code>Coefficients</code>表で、<strong><code>income</code>の行</strong>を読む。<code>(Intercept)</code>の行は切片の検定である。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Rの出力</th>
+<th>意味</th>
+<th>今回の値（概数）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Estimate</code></td>
+<td>所得の係数の推定値 <span class="math inline">\(\hat{b}\)</span></td>
+<td>0.38875</td>
+</tr>
+<tr class="even">
+<td><code>Std. Error</code></td>
+<td>係数の標準誤差 <span class="math inline">\(\mathrm{SE}(\hat{b})\)</span></td>
+<td>0.04286</td>
+</tr>
+<tr class="odd">
+<td><code>t value</code></td>
+<td><span class="math inline">\(\hat{b}/\mathrm{SE}(\hat{b})\)</span></td>
+<td>9.070</td>
+</tr>
+<tr class="even">
+<td><code>Pr(&gt;\|t\|)</code></td>
+<td><span class="math inline">\(H_0:b=0\)</span> に対する両側検定のp値</td>
+<td><span class="math inline">\(3.85\times10^{-12}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/summary.lm.html">Rの公式ドキュメント（<code>summary.lm</code>）</a>でも、この4列は係数の推定値、標準誤差、t値、両側p値に対応している。</p>
+<p>52都市から切片と傾きの2つを推定しているので、自由度は <span class="math inline">\(52-2=50\)</span> となる。p値の<code>e-12</code>は <span class="math inline">\(10^{-12}\)</span> を表し、p値は0ではなく、非常に小さい正の値である。</p>
+<p><strong>判定：</strong> <span class="math inline">\(p\approx3.85\times10^{-12}&lt;0.05\)</span> なので、帰無仮説「所得の係数は0」を棄却する。係数の推定値は正であり、このモデルと検定の前提の下では、所得と消費支出の間に統計的に有意な正の線形の関連が認められる。</p>
+<p>この結論は、所得を増やしたときの因果効果を証明するものではない。また、5%水準で有意であることは「帰無仮説が正しい確率が5%未満」という意味ではない。</p>
+</section>
+<section id="モデルの当てはまり-1" class="level3">
+<h3 class="anchored" data-anchor-id="モデルの当てはまり-1">5. モデルの当てはまり</h3>
+<p>回帰直線が消費支出のばらつきをどの程度説明しているかを、<strong>決定係数 <span class="math inline">\(R^2\)</span></strong>で確認する。</p>
+<p><code>summary(model)</code>の出力では、<code>Multiple R-squared</code>が <span class="math inline">\(R^2\)</span> に当たる。値だけを取り出すには、次のように書く。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)<span class="sc">$</span>r.squared</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6219913</code></pre>
+</div>
+</div>
+<p>今回の <span class="math inline">\(R^2\)</span> は約0.622である。これは、<strong>52都市の消費支出のばらつきの約62.2%を、この回帰直線が説明している</strong>ことを表す。</p>
+<p>「62.2%の都市について正しく予測できた」という意味ではない。また、当てはまりがよくても、因果関係が示されたわけではない。</p>
+</section>
+<section id="予測" class="level3">
+<h3 class="anchored" data-anchor-id="予測">6. 予測</h3>
+<p>推定した回帰式を使い、可処分所得が500千円／月の都市の消費支出を予測する。</p>
+<p><code>predict()</code>に予測したい所得の値を渡して、回帰直線上の消費支出を求める。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(model, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">income =</span> <span class="dv">500</span>))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      1 
+319.203 </code></pre>
+</div>
+</div>
+<p>予測値は約319.20千円（約31万9,203円）である。<code>newdata</code>には、モデルで使った説明変数と<strong>同じ列名</strong>のデータフレームを渡す。<code>predict()</code>は丸める前の係数で計算する。</p>
+<p>これは都市平均どうしの関係を表す回帰直線上の値であり、所得500千円の個々の世帯が同額を支出するという意味ではない。観測された説明変数の範囲内での予測を<strong>内挿</strong>、範囲外への予測を<strong>外挿</strong>といい、外挿では特に注意が必要である。</p>
+<p>最後に<code>script/lesson05.R</code>を保存する。</p>
+</section>
+<section id="結果を解釈するときの注意" class="level3">
+<h3 class="anchored" data-anchor-id="結果を解釈するときの注意">結果を解釈するときの注意</h3>
+<p>教科書が強調するように、データだけで関係性を探るのではなく、理論的な背景を踏まえて結果を読むことが重要である。</p>
+<ul>
+<li><strong>相関関係と因果関係を区別する。</strong> 世帯の人数・年齢構成や地域の物価など、所得と消費の両方に関係する要因を考える必要がある。</li>
+<li><strong>どのデータの結果かを示す。</strong> 今回の値は勤労者世帯の都市別平均であり、日本のすべての世帯や、個別の世帯の関係をそのまま表すものではない。</li>
+<li><strong>観測範囲を確認する。</strong> 可処分所得が420.7〜638.0千円の範囲を大きく外れた予測では、同じ直線関係が続くとは限らない。</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "コピーしました");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "コピーしました");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../lessons/04/index.html" class="pagination-link" aria-label="第4回：Rの基本操作 IV">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">第4回：Rの基本操作 IV</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
