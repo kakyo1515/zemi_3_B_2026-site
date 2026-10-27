@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>第6回：重回帰分析とダミー変数 – 2026年度ゼミナールB（何研）</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../lessons/05/index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37294f0e61b532b0f7ebd5ccc0471b30.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c2e880a5cb14d7a116eba1e73095a7f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "一致なし",
+    "search-matching-documents-text": "一致した文書",
+    "search-copy-link-title": "検索へのリンクをコピー",
+    "search-hide-matches-text": "追加の検索結果を非表示",
+    "search-more-match-text": "追加の検索結果",
+    "search-more-matches-text": "追加の検索結果",
+    "search-clear-button-title": "消去",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "検索",
+    "search-label": "サーチ"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lessons/06/index.html">第6回：重回帰分析とダミー変数</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="サーチ" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">2026年度ゼミナールB（何研）</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="サーチ"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ガイダンス</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/01/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第1回：Rの基本操作 I</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/02/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第2回：Rの基本操作 II</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/03/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第3回：Rの基本操作 III</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/04/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第4回：Rの基本操作 IV</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/05/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第5回：単回帰分析</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/06/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">第6回：重回帰分析とダミー変数</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">目次</h2>
+   
+  <ul>
+  <li><a href="#到達目標" id="toc-到達目標" class="nav-link active" data-scroll-target="#到達目標">到達目標</a></li>
+  <li><a href="#chapter-1分析課題の設定" id="toc-chapter-1分析課題の設定" class="nav-link" data-scroll-target="#chapter-1分析課題の設定">Chapter 1｜分析課題の設定</a>
+  <ul class="collapse">
+  <li><a href="#理論的背景" id="toc-理論的背景" class="nav-link" data-scroll-target="#理論的背景">理論的背景</a></li>
+  </ul></li>
+  <li><a href="#chapter-2重回帰分析とダミー変数の基礎" id="toc-chapter-2重回帰分析とダミー変数の基礎" class="nav-link" data-scroll-target="#chapter-2重回帰分析とダミー変数の基礎">Chapter 2｜重回帰分析とダミー変数の基礎</a>
+  <ul class="collapse">
+  <li><a href="#使用するデータ" id="toc-使用するデータ" class="nav-link" data-scroll-target="#使用するデータ">使用するデータ</a></li>
+  <li><a href="#重回帰モデル" id="toc-重回帰モデル" class="nav-link" data-scroll-target="#重回帰モデル">1. 重回帰モデル</a></li>
+  <li><a href="#他の要因をコントロールする" id="toc-他の要因をコントロールする" class="nav-link" data-scroll-target="#他の要因をコントロールする">2. 他の要因をコントロールする</a></li>
+  <li><a href="#切片ダミー変数" id="toc-切片ダミー変数" class="nav-link" data-scroll-target="#切片ダミー変数">3. 切片ダミー変数</a></li>
+  <li><a href="#仮説検定" id="toc-仮説検定" class="nav-link" data-scroll-target="#仮説検定">4. 仮説検定</a></li>
+  <li><a href="#モデルの当てはまり" id="toc-モデルの当てはまり" class="nav-link" data-scroll-target="#モデルの当てはまり">5. モデルの当てはまり</a></li>
+  <li><a href="#補足モデルの工夫" id="toc-補足モデルの工夫" class="nav-link" data-scroll-target="#補足モデルの工夫">6. 補足：モデルの工夫</a></li>
+  </ul></li>
+  <li><a href="#chapter-3rで一通り分析する" id="toc-chapter-3rで一通り分析する" class="nav-link" data-scroll-target="#chapter-3rで一通り分析する">Chapter 3｜Rで一通り分析する</a>
+  <ul class="collapse">
+  <li><a href="#作業の準備" id="toc-作業の準備" class="nav-link" data-scroll-target="#作業の準備">作業の準備</a></li>
+  <li><a href="#データの読み込みと確認" id="toc-データの読み込みと確認" class="nav-link" data-scroll-target="#データの読み込みと確認">1. データの読み込みと確認</a></li>
+  <li><a href="#予備的分析散布図と相関係数" id="toc-予備的分析散布図と相関係数" class="nav-link" data-scroll-target="#予備的分析散布図と相関係数">2. 予備的分析：散布図と相関係数</a></li>
+  <li><a href="#パラメータの推定" id="toc-パラメータの推定" class="nav-link" data-scroll-target="#パラメータの推定">3. パラメータの推定</a></li>
+  <li><a href="#仮説検定-1" id="toc-仮説検定-1" class="nav-link" data-scroll-target="#仮説検定-1">4. 仮説検定</a></li>
+  <li><a href="#モデルの当てはまり-1" id="toc-モデルの当てはまり-1" class="nav-link" data-scroll-target="#モデルの当てはまり-1">5. モデルの当てはまり</a></li>
+  <li><a href="#予測" id="toc-予測" class="nav-link" data-scroll-target="#予測">6. 予測</a></li>
+  <li><a href="#結果を説明するときのポイント" id="toc-結果を説明するときのポイント" class="nav-link" data-scroll-target="#結果を説明するときのポイント">結果を説明するときのポイント</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">第6回：重回帰分析とダミー変数</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="到達目標" class="level2">
+<h2 class="anchored" data-anchor-id="到達目標">到達目標</h2>
+<ul>
+<li>重回帰分析とダミー変数の基本を理解する。</li>
+<li>t検定とF検定を使い分け、個々の係数と説明変数全体の有意性を検定できる。</li>
+<li>Rで分析を行い、結果を解釈できる。</li>
+</ul>
+<p>今回は、教科書第3章の賃金関数の例に沿って、<strong>教育年数・就業経験・性別と時給</strong>の関係を分析する。</p>
+</section>
+<section id="chapter-1分析課題の設定" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-1分析課題の設定">Chapter 1｜分析課題の設定</h2>
+<section id="理論的背景" class="level3">
+<h3 class="anchored" data-anchor-id="理論的背景">理論的背景</h3>
+<p>教科書第3章では、教育年数と年収・時給の関係を例に、重回帰分析の意味を説明している。労働経済学や教育経済学では、教育年数が長い人ほど賃金が高いという<strong>教育プレミアム</strong>に注目する。</p>
+<p>学校教育や就業経験を通じて知識・技能が蓄積され、生産性が高まるなら、賃金も高くなると考えられる。このため、教育年数だけでなく、就業経験も賃金に関係する要因として考える。</p>
+<p>ただし、教育年数の長い人と短い人では、経験年数などの条件も異なる。教育年数だけの単回帰では、こうした違いによる影響も含まれる可能性がある。そこで、経験年数も説明変数に加え、<strong>他の条件を一定としたときの教育年数と時給の関係</strong>を調べる。</p>
+<p>さらに、教育年数と経験年数が同じでも、職種や勤務先などの違いにより、属性別の賃金差が残る可能性がある。今回は性別のダミー変数も加え、条件をそろえた男女の時給差を調べる。</p>
+<div class="chapter-summary">
+<p><strong>今回の仮説</strong></p>
+<ol type="1">
+<li>経験年数を一定としたとき、教育年数が長い人ほど時給は高い。</li>
+<li>教育年数と経験年数を一定としたとき、男女の時給には差がある。</li>
+</ol>
+</div>
+</section>
+</section>
+<section id="chapter-2重回帰分析とダミー変数の基礎" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-2重回帰分析とダミー変数の基礎">Chapter 2｜重回帰分析とダミー変数の基礎</h2>
+<section id="使用するデータ" class="level3">
+<h3 class="anchored" data-anchor-id="使用するデータ">使用するデータ</h3>
+<p>今回は、Wooldridgeの計量経済学教材に収録された<strong><code>wage1</code>データ</strong>を使う。1976年の米国Current Population Surveyに基づく526人のデータであり、時給と教育年数・就業経験などの関係を調べるために用いる。このデータで、教科書第3章と同じ賃金関数の分析を行う。</p>
+<p><strong>1行が1人、1列が一つの変数</strong>を表す横断面データである。第5回の都市別平均と異なり、今回の観測単位は個人である。授業用CSVには、次の4列を収録している。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>列名</th>
+<th>内容・単位</th>
+<th>分析での役割</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>wage</code></td>
+<td>平均時給（名目額,米ドル／時間）</td>
+<td>被説明変数 <span class="math inline">\(Y\)</span></td>
+</tr>
+<tr class="even">
+<td><code>educ</code></td>
+<td>教育年数（年）</td>
+<td>説明変数 <span class="math inline">\(E\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>exper</code></td>
+<td>（潜在的な）就業経験年数（年）</td>
+<td>説明変数 <span class="math inline">\(X\)</span></td>
+</tr>
+<tr class="even">
+<td><code>female</code></td>
+<td>原データの性別区分：女性1、男性0</td>
+<td>ダミー変数 <span class="math inline">\(D\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>（潜在的な）就業経験年数（年）とは、学校を卒業した後、働き続けたと仮定した場合に積み重ねられる年数という意味である。一般に、6歳で入学すると仮定して、<strong>「年齢 − 教育年数 − 6」</strong>で計算する。例えば、30歳で教育年数が16年なら、潜在的な就業経験年数は<code>30 − 16 − 6 = 8</code>年となる。</p>
+<p>この指標は、失業や育児などで働いていなかった期間を差し引かないため、実際に働いた年数とは一致しないことがある。また、現在の勤務先での勤続年数とも異なる。以降では略して「経験年数」と呼ぶ。</p>
+</section>
+<section id="重回帰モデル" class="level3">
+<h3 class="anchored" data-anchor-id="重回帰モデル">1. 重回帰モデル</h3>
+<p>被説明変数に影響を与える要因は、一つとは限らない。賃金関数では、教育年数だけでなく、就業経験なども説明変数として用いる。このように、<strong>複数の説明変数を用いる分析を重回帰分析</strong>という。</p>
+<p>まず、時給を教育年数と経験年数で説明するモデルを考える。</p>
+<p><span class="math display">\[
+Y_i = a + b_1 E_i + b_2 X_i + u_i
+\]</span></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>記号</th>
+<th>データの列</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(Y_i\)</span></td>
+<td><code>wage</code></td>
+<td>時給（1976年の米ドル／時間）</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(E_i\)</span></td>
+<td><code>educ</code></td>
+<td>教育年数</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(X_i\)</span></td>
+<td><code>exper</code></td>
+<td>経験年数</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(u_i\)</span></td>
+<td>—</td>
+<td>モデルに含まれる変数だけでは説明できない部分</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="他の要因をコントロールする" class="level3">
+<h3 class="anchored" data-anchor-id="他の要因をコントロールする">2. 他の要因をコントロールする</h3>
+<p>重回帰分析では、<strong>他の要因をコントロールする</strong>ことで、注目する説明変数と被説明変数の関係を調べる。</p>
+<ul>
+<li><strong><span class="math inline">\(b_1\)</span></strong>：経験年数を一定としたとき、教育年数が1年長い人の、モデル上の時給の差（ドル）。</li>
+<li><strong><span class="math inline">\(b_2\)</span></strong>：教育年数を一定としたとき、経験年数が1年長い人の、モデル上の時給の差（ドル）。</li>
+</ul>
+<p>下の図で、「経験年数を一定とする」比較を確認しよう。横軸は教育年数、縦軸は時給であり、緑の実線は経験年数を5年、茶色の破線は15年に固定した場合を表す。<strong>同じ線に沿って比較すれば、経験年数をそろえたまま教育年数の違いを見られる。</strong> 緑の線上では、教育年数が10年から14年になると時給が7.5ドルから9.5ドルになる。教育年数4年の差に対して時給は2ドルの差なので、1年当たりの差は <span class="math inline">\(b_1=0.5\)</span> ドルである。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-l06-hold-constant" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l06-hold-constant-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l06-hold-constant-1.png" class="img-fluid figure-img" width="1280">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l06-hold-constant-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;1: 経験年数を同じ値に固定した線に沿って、教育年数の違いを比較する（時給＝2＋0.5×教育年数＋0.1×経験年数）。
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>単回帰で教育年数だけを用いると、教育年数と関係する他の条件の違いが、その係数に混ざることがある。重回帰では経験年数も説明変数に加えることで、経験年数をそろえた比較ができる。</p>
+<p>また、説明変数同士の相関が非常に強いと、それぞれの関係を分けて捉えにくくなり、係数の推定が不安定になることがある。これを<strong>多重共線性</strong>という。変数は数を増やすだけでなく、理論的な背景とデータの特性を踏まえて選ぼう。</p>
+</section>
+<section id="切片ダミー変数" class="level3">
+<h3 class="anchored" data-anchor-id="切片ダミー変数">3. 切片ダミー変数</h3>
+<p>男女や雇用形態などの属性情報は、<strong>1あるいは0の値をとるダミー変数</strong>として数値化できる。今回は、元データの符号に合わせ、女性ダミー <span class="math inline">\(D_i\)</span> を用いる。</p>
+<p><span class="math display">\[
+D_i=\begin{cases}
+1 &amp; \text{女性}\\
+0 &amp; \text{男性（ベース）}
+\end{cases}
+\]</span></p>
+<p>これを説明変数に加える。</p>
+<p><span class="math display">\[
+Y_i=a+b_1E_i+b_2X_i+\delta D_i+u_i
+\]</span></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>区分</th>
+<th style="text-align: right;"><span class="math inline">\(D_i\)</span></th>
+<th>回帰式の予測部分</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>男性（ベース）</td>
+<td style="text-align: right;">0</td>
+<td><span class="math inline">\(a+b_1E_i+b_2X_i\)</span></td>
+</tr>
+<tr class="even">
+<td>女性</td>
+<td style="text-align: right;">1</td>
+<td><span class="math inline">\((a+\delta)+b_1E_i+b_2X_i\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>男女で切片の大きさが <span class="math inline">\(\delta\)</span> だけ異なるため、これを<strong>切片ダミー</strong>という。このモデルでは教育年数・経験年数の傾きは男女で共通である。<span class="math inline">\(\delta\)</span> は、<strong>教育年数と経験年数を一定としたときの「女性 − 男性」の予測時給の差</strong>を表す。</p>
+<p>下の図は、経験年数を10年に固定し、男女の予測時給を教育年数ごとに描いたものである。灰色の線が男性、緑の線が女性を表す。<strong>同じ教育年数での2本の線の縦の差が、女性ダミーの係数 <span class="math inline">\(\delta\)</span> に対応する。</strong> 例えば教育年数が12年なら、男性は9ドル、女性は7ドルなので、<span class="math inline">\(\delta=7-9=-2\)</span> ドルとなる。2本の線が平行なのは、教育年数の傾きを男女で共通としているためである。実習ではデータから <span class="math inline">\(\delta\)</span> を推定する。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-l06-dummy-shift" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l06-dummy-shift-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l06-dummy-shift-1.png" class="img-fluid figure-img" width="1280">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l06-dummy-shift-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;2: 女性ダミーの係数が負なら、同じ教育年数・経験年数で女性の線が下に位置する（δ＝−2、経験年数を10年に固定）。
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>ダミー変数にはベース（基準）が必要</strong>である。切片を含む式に男性・女性両方のダミーを入れると、合計が必ず1となり、切片と重複する。これをダミー変数の罠という。分類が <span class="math inline">\(K\)</span> 個の場合も、一つをベースとして除き、通常は <span class="math inline">\(K-1\)</span> 個のダミーを用いる。係数は、ベースと比べた差として読む。</p>
+<p>重回帰でも、第5回と同じく<strong>残差の二乗和を最小にする最小二乗法</strong>を用いる。Rでは説明変数を <code>+</code> で並べる。</p>
+<p><code>lm(wage ~ educ + exper + female, data = wages)</code></p>
+</section>
+<section id="仮説検定" class="level3">
+<h3 class="anchored" data-anchor-id="仮説検定">4. 仮説検定</h3>
+<p>個々の係数はt検定、説明変数全体の有意性はF検定で調べる。</p>
+<section id="t検定" class="level4">
+<h4 class="anchored" data-anchor-id="t検定">t検定</h4>
+<p>個々の係数は、第5回と同じく<strong>t検定</strong>で調べる。例えば、<span class="math inline">\(H_0:\delta=0\)</span> は「教育年数と経験年数を一定としたとき、男女の予測時給に差がない」という仮説である。有意水準を5%とすると、<span class="math inline">\(p&lt;0.05\)</span> なら棄却する。<span class="math inline">\(p\geq0.05\)</span> なら、帰無仮説を棄却しない。</p>
+</section>
+<section id="f検定" class="level4">
+<h4 class="anchored" data-anchor-id="f検定">F検定</h4>
+<p><strong>F検定</strong>では、説明変数全体の有意性を調べる。次の帰無仮説と対立仮説を立てる。</p>
+<p><span class="math display">\[
+H_0:b_1=b_2=\delta=0
+\qquad
+H_1:b_1,b_2,\delta\text{のうち少なくとも一つが0ではない}
+\]</span></p>
+<p>帰無仮説は「教育年数・経験年数・性別の係数がすべて0」という意味である。これを棄却したら、<strong>説明変数のうち少なくとも一つが時給と関係している</strong>と読む。どの係数が有意かは、それぞれのt検定で確認する。</p>
+<p>切片を含むモデルで、説明変数の数を <span class="math inline">\(k\)</span>、観測数を <span class="math inline">\(n\)</span> とすると、このF統計量は次のように計算できる。<span class="math inline">\(k\)</span> には切片を数えない。</p>
+<p><span class="math display">\[
+F=\frac{R^2/k}{(1-R^2)/(n-k-1)}
+\]</span></p>
+<p>説明変数によって説明されるばらつきと、残差に残るばらつきを、それぞれの自由度で割って比較している。帰無仮説の下では自由度 <span class="math inline">\((k,n-k-1)\)</span> のF分布を用い、<strong>F値が大きいほど帰無仮説を棄却する方向</strong>になる。今回は <span class="math inline">\(n=526\)</span>、<span class="math inline">\(k=3\)</span> なので、自由度は <span class="math inline">\((3,522)\)</span> である。Rの <code>summary()</code> の末尾にある <code>F-statistic</code> と、その右側の <code>p-value</code> を読む。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>検定</th>
+<th>調べる仮説</th>
+<th>Rで読む場所</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>個々の係数のt検定</td>
+<td>例えば <span class="math inline">\(\delta=0\)</span></td>
+<td><code>summary()</code> の <code>Coefficients</code> 表</td>
+</tr>
+<tr class="even">
+<td>説明変数全体のF検定</td>
+<td><span class="math inline">\(b_1=b_2=\delta=0\)</span></td>
+<td><code>summary()</code> 末尾の <code>F-statistic</code></td>
+</tr>
+</tbody>
+</table>
+<p>ここでは第5回と同じ通常の標準誤差を用いる。検定結果は、誤差の条件付き平均が0であること、観測の独立性・等分散性などの前提に依存する。</p>
+</section>
+</section>
+<section id="モデルの当てはまり" class="level3">
+<h3 class="anchored" data-anchor-id="モデルの当てはまり">5. モデルの当てはまり</h3>
+<section id="決定係数の復習" class="level4">
+<h4 class="anchored" data-anchor-id="決定係数の復習">決定係数の復習</h4>
+<p>第5回で学んだ<strong>決定係数 <span class="math inline">\(R^2\)</span></strong> は、被説明変数の全体のばらつきのうち、回帰モデルで説明できる割合を表す。重回帰でも、切片を含むOLSでは、同じように書ける。</p>
+<p><span class="math display">\[
+R^2 = \frac{\text{回帰モデルで説明されるばらつき}}{\text{被説明変数の全体のばらつき}}
+= \frac{\displaystyle\sum_{i=1}^{n}(\hat{Y}_i-\bar{Y})^2}
+{\displaystyle\sum_{i=1}^{n}(Y_i-\bar{Y})^2}
+\]</span></p>
+<p><span class="math inline">\(\bar{Y}\)</span> は観測値の平均、<span class="math inline">\(\hat{Y}_i\)</span> は回帰モデルによる予測値である。分子は<strong>説明平方和</strong>、分母は<strong>全平方和</strong>を表す。<span class="math inline">\(R^2\)</span> が1に近いほど、標本内の当てはまりがよい。</p>
+</section>
+<section id="自由度調整済み決定係数" class="level4">
+<h4 class="anchored" data-anchor-id="自由度調整済み決定係数">自由度調整済み決定係数</h4>
+<p>同じ観測と被説明変数を使うOLSでは、<strong>説明変数を増やすと、通常の決定係数 <span class="math inline">\(R^2\)</span> は上がるか、同じ値にとどまる。</strong> そのため、<span class="math inline">\(R^2\)</span> だけで比べると、説明変数の多いモデルが有利になる。そこで、説明変数の数が異なるモデルを比較するために、変数の数を考慮した<strong>自由度調整済み決定係数（Adjusted <span class="math inline">\(R^2\)</span>）</strong>を用いる。切片を含むモデルでは、次の式で計算する。</p>
+<p><span class="math display">\[
+\bar{R}^2=1-(1-R^2)\frac{n-1}{n-k-1}
+\]</span></p>
+<p><span class="math inline">\(n\)</span> は観測数、<span class="math inline">\(k\)</span> は切片を除く説明変数の数である。<span class="math inline">\(n-1\)</span> は全平方和の自由度、<span class="math inline">\(n-k-1\)</span> は残差の自由度を表す。</p>
+<p>説明変数を追加しても当てはまりの改善が小さければ、調整済み決定係数は下がる。同じ観測と被説明変数を使ったモデルの比較では、この値が高いほど、説明変数の数を考慮した当てはまりがよいと読む。</p>
+<p>今回のモデルは <span class="math inline">\(n=526\)</span>、<span class="math inline">\(k=3\)</span> で、通常の <span class="math inline">\(R^2\)</span> は約0.309、調整済み決定係数は約0.305となる。Rでは <code>summary()</code> の <code>Adjusted R-squared</code> で確認できる。</p>
+</section>
+</section>
+<section id="補足モデルの工夫" class="level3">
+<h3 class="anchored" data-anchor-id="補足モデルの工夫">6. 補足：モデルの工夫</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>交差項・2乗項・自然対数
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>傾きダミーと交差項</strong><br>
+教育年数と時給の関係が男女で異なる可能性は、<span class="math inline">\(E_iD_i\)</span> という<strong>交差項</strong>を加えて表せる。</p>
+<p><span class="math display">\[
+Y_i=a+b_1E_i+b_2X_i+\delta D_i+\gamma E_iD_i+u_i
+\]</span></p>
+<p>男性の教育年数の傾きは <span class="math inline">\(b_1\)</span>、女性では <span class="math inline">\(b_1+\gamma\)</span> となる。<span class="math inline">\(b_1\)</span> を男女の平均的な傾きと読まないようにしよう。Rでは <code>wage ~ educ * female + exper</code> と書く。<code>*</code> は主効果と交差項をまとめて含める指定である。</p>
+<p><strong>2乗項</strong><br>
+経験年数と時給の関係が直線とは限らない場合、<span class="math inline">\(X_i^2\)</span> を加える。Rでは <code>wage ~ educ + exper + I(exper^2) + female</code> と指定する。経験年数の傾きは、経験年数とともに変化する。</p>
+<p><strong>自然対数</strong><br>
+被説明変数を <span class="math inline">\(\ln Y_i\)</span> にすると、教育年数の係数 <span class="math inline">\(b_1\)</span> は、教育年数が1年長いときの時給の差を<strong>およそ <span class="math inline">\(100b_1\)</span> %</strong>として読める。Rでは <code>log(wage) ~ educ + exper + female</code> と指定する。自然対数は、値が正の変数に対して用いる。</p>
+<p>交差項や2乗項を含む式も、<strong>係数に対して線形</strong>であれば、同じ <code>lm()</code> で推定できる。「線形」とは、説明変数が必ず直線の形で入るという意味ではない。今回は基本モデルを中心に扱い、これらの式は発展として確認する。</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="chapter-3rで一通り分析する" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-3rで一通り分析する">Chapter 3｜Rで一通り分析する</h2>
+<section id="作業の準備" class="level3">
+<h3 class="anchored" data-anchor-id="作業の準備">作業の準備</h3>
+<ol type="1">
+<li><code>zemi.Rproj</code>を開く。</li>
+<li><strong>File → New File → R Script</strong>から<code>script/lesson06.R</code>を新規作成する。</li>
+<li><a href="../../data/data_lesson06.csv" download="data_lesson06.csv">data_lesson06.csv をダウンロード</a>し、Project内の<code>data</code>フォルダに保存する。</li>
+</ol>
+<pre class="text"><code>zemi/
+├── zemi.Rproj
+├── data/
+│   └── data_lesson06.csv
+└── script/
+    └── lesson06.R</code></pre>
+<p>今回はRの標準機能だけを使う。以下のコードを、スクリプトに上から順に記述して実行する。</p>
+</section>
+<section id="データの読み込みと確認" class="level3">
+<h3 class="anchored" data-anchor-id="データの読み込みと確認">1. データの読み込みと確認</h3>
+<p>最初に観測数、欠損値、変数の単位と範囲を確認する。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wages <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_lesson06.csv"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wages)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  wage educ exper female
+1 3.10   11     2      1
+2 3.24   12    22      1
+3 3.00   11     2      0
+4 6.00    8    44      0
+5 5.30   12     7      0
+6 8.75   16     9      0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(wages)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 526</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(wages))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  wage   educ  exper female 
+     0      0      0      0 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wages[<span class="fu">c</span>(<span class="st">"wage"</span>, <span class="st">"educ"</span>, <span class="st">"exper"</span>)])</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      wage             educ           exper      
+ Min.   : 0.530   Min.   : 0.00   Min.   : 1.00  
+ 1st Qu.: 3.330   1st Qu.:12.00   1st Qu.: 5.00  
+ Median : 4.650   Median :12.00   Median :13.50  
+ Mean   : 5.896   Mean   :12.56   Mean   :17.02  
+ 3rd Qu.: 6.880   3rd Qu.:14.00   3rd Qu.:26.00  
+ Max.   :24.980   Max.   :18.00   Max.   :51.00  </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(wages<span class="sc">$</span>female)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  0   1 
+274 252 </code></pre>
+</div>
+</div>
+<p>526人で、使用する変数に欠損値はない。原データの区分では男性274人、女性252人である。<code>female</code>はすでに0・1のダミー変数なので、そのままモデルに入れられる。</p>
+</section>
+<section id="予備的分析散布図と相関係数" class="level3">
+<h3 class="anchored" data-anchor-id="予備的分析散布図と相関係数">2. 予備的分析：散布図と相関係数</h3>
+<p>時給と教育年数・経験年数の関係を、男女に分けて確認する。<strong>点一つが1人</strong>を表す。男女で分布を比較しやすいように、同じ変数の図は横軸と縦軸の範囲をそろえる。</p>
+<p>条件抽出で、男女のデータを分ける。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>wages_male <span class="ot">&lt;-</span> wages[wages<span class="sc">$</span>female <span class="sc">==</span> <span class="dv">0</span>, ]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>wages_female <span class="ot">&lt;-</span> wages[wages<span class="sc">$</span>female <span class="sc">==</span> <span class="dv">1</span>, ]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>wage_limits <span class="ot">&lt;-</span> <span class="fu">range</span>(wages<span class="sc">$</span>wage)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>educ_limits <span class="ot">&lt;-</span> <span class="fu">range</span>(wages<span class="sc">$</span>educ)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>exper_limits <span class="ot">&lt;-</span> <span class="fu">range</span>(wages<span class="sc">$</span>exper)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="教育年数と時給" class="level4">
+<h4 class="anchored" data-anchor-id="教育年数と時給">教育年数と時給</h4>
+<p><strong>男性の教育年数と時給</strong>を描く。横軸は教育年数、縦軸は時給である。教育年数が12年のところに点が集中しており、全体としては<strong>教育年数が長い人ほど時給が高い傾向</strong>が見られる。一方、教育年数が同じ12年でも、時給は約2.5〜22.2ドルと広く分布している。教育年数が同じ人の間にも、時給の違いがあることが分かる。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> wages_male<span class="sc">$</span>educ,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> wages_male<span class="sc">$</span>wage,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Education (years)"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Hourly wage (USD)"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Male: female = 0"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> educ_limits,  <span class="co"># xlim は横軸の範囲を指定する。</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> wage_limits,  <span class="co"># ylim は縦軸の範囲を指定する。</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"#007c73"</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-l06-scatter-educ-male" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l06-scatter-educ-male-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l06-scatter-educ-male-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1120">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l06-scatter-educ-male-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;3: 男性の教育年数と時給（米国、1976年）
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>女性の教育年数と時給</strong>を描く。女性も教育年数12年に点が集中し、<strong>教育年数が長い人ほど時給が高い傾向</strong>が見られる。男性の図と同じ軸で比べると、女性は低い時給のところに点が多い。例えば、教育年数12年では3〜5ドル付近に点が集中し、高い時給の点は男性より少ない。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> wages_female<span class="sc">$</span>educ,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> wages_female<span class="sc">$</span>wage,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Education (years)"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Hourly wage (USD)"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Female: female = 1"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> educ_limits,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> wage_limits,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"#b24c3d"</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-l06-scatter-educ-female" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l06-scatter-educ-female-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l06-scatter-educ-female-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1120">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l06-scatter-educ-female-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;4: 女性の教育年数と時給（米国、1976年）
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="経験年数と時給" class="level4">
+<h4 class="anchored" data-anchor-id="経験年数と時給">経験年数と時給</h4>
+<p><strong>男性の経験年数と時給</strong>を描く。横軸は経験年数、縦軸は時給である。経験年数が短い層では低い時給に点が集まり、10〜30年程度では高い時給の点も多く見られる。40年以上では低めの時給の点が多く、<strong>中ほどの経験年数で高い時給が見られる、山形の関係</strong>がうかがえる。また、同じ程度の経験年数でも、時給には大きなばらつきがある。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> wages_male<span class="sc">$</span>exper,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> wages_male<span class="sc">$</span>wage,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Experience (years)"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Hourly wage (USD)"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Male: female = 0"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> exper_limits,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> wage_limits,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"#007c73"</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-l06-scatter-exper-male" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l06-scatter-exper-male-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l06-scatter-exper-male-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1120">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l06-scatter-exper-male-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;5: 男性の経験年数と時給（米国、1976年）
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>女性の経験年数と時給</strong>を描く。幅広い経験年数で時給3〜5ドル付近に点が多く、<strong>経験年数に沿った時給の上昇傾向は弱い。</strong> 経験年数が短い人の中にも高い時給の人がおり、長い人の中にも低い時給の人が多い。男性の図と比べると、同じ程度の経験年数でも、点は低い時給のところに集まっている。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> wages_female<span class="sc">$</span>exper,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> wages_female<span class="sc">$</span>wage,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Experience (years)"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Hourly wage (USD)"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Female: female = 1"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> exper_limits,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> wage_limits,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"#b24c3d"</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-l06-scatter-exper-female" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l06-scatter-exper-female-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l06-scatter-exper-female-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1120">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l06-scatter-exper-female-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;6: 女性の経験年数と時給（米国、1976年）
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="相関係数" class="level4">
+<h4 class="anchored" data-anchor-id="相関係数">相関係数</h4>
+<p>続いて、男女を合わせた526人全体のデータで、時給・教育年数・経験年数の相関係数を求める。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cor() に複数の数値列を渡すと、各組合せの相関行列を求める。</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(wages[<span class="fu">c</span>(<span class="st">"wage"</span>, <span class="st">"educ"</span>, <span class="st">"exper"</span>)])</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           wage       educ      exper
+wage  1.0000000  0.4059033  0.1129034
+educ  0.4059033  1.0000000 -0.2995418
+exper 0.1129034 -0.2995418  1.0000000</code></pre>
+</div>
+</div>
+<p>教育年数と時給の相関は約0.406であり、散布図で見た右上がりの傾向に対応する。一方、教育年数と経験年数には約−0.300の相関がある。散布図では男女による時給の分布の違いも見られた。そこで、次に教育年数・経験年数・性別を同じモデルに含め、他の条件をそろえたときの関係を重回帰で調べる。</p>
+</section>
+</section>
+<section id="パラメータの推定" class="level3">
+<h3 class="anchored" data-anchor-id="パラメータの推定">3. パラメータの推定</h3>
+<p>まず、教育年数だけの単回帰と、経験年数を加えた重回帰を推定する。<code>lm()</code>では、説明変数を<code>+</code>で並べる。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>model_simple <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> educ, <span class="at">data =</span> wages)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 回帰式の右辺では、+ で説明変数を追加する。</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>model_multiple <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> educ <span class="sc">+</span> exper, <span class="at">data =</span> wages)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model_simple)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)        educ 
+ -0.9048516   0.5413593 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model_multiple)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)        educ       exper 
+ -3.3905395   0.6442721   0.0700954 </code></pre>
+</div>
+</div>
+<p>教育年数の係数は、単回帰では約0.541、経験年数を加えると約0.644になる。後者は、<strong>経験年数を一定としたとき、教育が1年長い人のモデル上の時給が約0.644ドル高い</strong>と読む。</p>
+<p>続いて、性別のダミー変数を加える。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model_dummy <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> female, <span class="at">data =</span> wages)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model_dummy)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)        educ       exper      female 
+-1.73448100  0.60258016  0.06424172 -2.15551716 </code></pre>
+</div>
+</div>
+<p>推定した回帰式は、係数を丸めると次のようになる。</p>
+<p><span class="math display">\[
+\widehat{\text{時給}}
+= -1.734 + 0.603\,\text{教育年数}
++ 0.064\,\text{経験年数}
+- 2.156\,\text{女性ダミー}
+\]</span></p>
+<ul>
+<li><strong>教育年数の係数 約0.603</strong>：経験年数と性別区分を一定とすると、教育が1年長い人の予測時給は約0.603ドル高い。</li>
+<li><strong>経験年数の係数 約0.064</strong>：教育年数と性別区分を一定とすると、経験が1年長い人の予測時給は約0.064ドル高い。</li>
+<li><strong>女性ダミーの係数 約−2.156</strong>：教育年数と経験年数を一定とすると、女性の予測時給は男性より約2.156ドル低い。<strong>「女性 − 男性」</strong>の差である。</li>
+</ul>
+<p>切片は教育0年・経験0年・男性という組合せでのモデル上の値である。</p>
+</section>
+<section id="仮説検定-1" class="level3">
+<h3 class="anchored" data-anchor-id="仮説検定-1">4. 仮説検定</h3>
+<p>個々の係数はt検定、説明変数全体の有意性はF検定で調べる。いずれも有意水準を5%とする。</p>
+<section id="t検定-1" class="level4">
+<h4 class="anchored" data-anchor-id="t検定-1">t検定</h4>
+<p>他の説明変数を含めた上で、各係数が0と区別できるかを調べる。第5回と同じく両側検定を行う。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_dummy)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = wage ~ educ + exper + female, data = wages)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.3856 -1.9652 -0.4931  1.1199 14.8217 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -1.73448    0.75362  -2.302   0.0218 *  
+educ         0.60258    0.05112  11.788  &lt; 2e-16 ***
+exper        0.06424    0.01040   6.177 1.32e-09 ***
+female      -2.15552    0.27031  -7.974 9.74e-15 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.078 on 522 degrees of freedom
+Multiple R-squared:  0.3093,    Adjusted R-squared:  0.3053 
+F-statistic: 77.92 on 3 and 522 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p><code>Coefficients</code>表の各行の<code>Pr(&gt;|t|)</code>を読む。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>係数</th>
+<th style="text-align: right;">推定値（概数）</th>
+<th style="text-align: right;">p値（概数）</th>
+<th>5%水準での判定</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>educ</code></td>
+<td style="text-align: right;">0.603</td>
+<td style="text-align: right;"><span class="math inline">\(&lt;2\times10^{-16}\)</span></td>
+<td>帰無仮説を棄却</td>
+</tr>
+<tr class="even">
+<td><code>exper</code></td>
+<td style="text-align: right;">0.064</td>
+<td style="text-align: right;"><span class="math inline">\(1.32\times10^{-9}\)</span></td>
+<td>帰無仮説を棄却</td>
+</tr>
+<tr class="odd">
+<td><code>female</code></td>
+<td style="text-align: right;">−2.156</td>
+<td style="text-align: right;"><span class="math inline">\(9.74\times10^{-15}\)</span></td>
+<td>帰無仮説を棄却</td>
+</tr>
+</tbody>
+</table>
+<p>教育年数の係数は有意に正である。また、教育年数と経験年数を含めた後も、性別区分による時給差が認められる。</p>
+</section>
+<section id="f検定-1" class="level4">
+<h4 class="anchored" data-anchor-id="f検定-1">F検定</h4>
+<p>同じ <code>summary(model_dummy)</code> の末尾に、次の結果が表示される。</p>
+<pre class="text"><code>F-statistic: 77.92 on 3 and 522 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>これは、<strong><span class="math inline">\(H_0:b_1=b_2=\delta=0\)</span></strong> を検定した結果である。F値は約77.92、分子の自由度は説明変数の数である3、分母の自由度は <span class="math inline">\(526-3-1=522\)</span> となる。p値は0.05より小さいため帰無仮説を棄却し、教育年数・経験年数・性別のうち少なくとも一つが時給と関係していると判断する。</p>
+</section>
+</section>
+<section id="モデルの当てはまり-1" class="level3">
+<h3 class="anchored" data-anchor-id="モデルの当てはまり-1">5. モデルの当てはまり</h3>
+<p>先ほどの <code>summary(model_dummy)</code> の出力から、<code>Multiple R-squared</code> と <code>Adjusted R-squared</code> を確認する。</p>
+<pre class="text"><code>Multiple R-squared:  0.3093,  Adjusted R-squared:  0.3053</code></pre>
+<ul>
+<li><strong><code>Multiple R-squared</code></strong>：通常の決定係数で、約0.309である。時給のばらつきの約30.9%を、この回帰モデルが説明している。</li>
+<li><strong><code>Adjusted R-squared</code></strong>：自由度調整済み決定係数で、約0.305である。説明変数の数を考慮した当てはまりを表す。</li>
+</ul>
+</section>
+<section id="予測" class="level3">
+<h3 class="anchored" data-anchor-id="予測">6. 予測</h3>
+<p>教育年数と経験年数をそろえ、ダミー変数だけを変えたときの予測時給を比べる。教育16年・経験10年について、男性（<code>female = 0</code>）と女性（<code>female = 1</code>）の2行を用意する。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>new_workers <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">educ =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">16</span>),</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">exper =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">female =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>predicted_wage <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_dummy, <span class="at">newdata =</span> new_workers)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>predicted_wage</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2 
+8.549219 6.393702 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>predicted_wage[<span class="dv">2</span>] <span class="sc">-</span> predicted_wage[<span class="dv">1</span>]</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        2 
+-2.155517 </code></pre>
+</div>
+</div>
+<p>男性の予測時給は約8.55ドル、女性は約6.39ドルである。「女性 − 男性」の差は約−2.156ドルとなり、ダミー変数の係数と一致する。このモデルは両群の教育・経験の係数を共通とし、切片だけが異なると仮定している。</p>
+<p>最後に<code>script/lesson06.R</code>を保存する。</p>
+</section>
+<section id="結果を説明するときのポイント" class="level3">
+<h3 class="anchored" data-anchor-id="結果を説明するときのポイント">結果を説明するときのポイント</h3>
+<ul>
+<li><strong>一定にした条件を明示する。</strong> 「経験年数と性別区分を一定としたとき」のように比較条件を添える。</li>
+<li><strong>基準カテゴリーを確認する。</strong> 今回のダミー係数は「女性 − 男性」である。符号だけでなく、どちらを基準とした差かを確認する。</li>
+<li><strong>検定する仮説を明示する。</strong> 個々の係数はt検定、説明変数全体の有意性はF検定で調べる。</li>
+<li><strong>データの時代と範囲を確認する。</strong> 1976年の米国の個人データを用い、時給の単位は当時の米ドルである。</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "コピーしました");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "コピーしました");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../lessons/05/index.html" class="pagination-link" aria-label="第5回：単回帰分析">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">第5回：単回帰分析</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

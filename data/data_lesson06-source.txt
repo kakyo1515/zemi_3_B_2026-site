@@ -1,0 +1,26 @@
+Lesson 06 classroom dataset: wage1
+
+Source: Wooldridge wage1, 1976 US Current Population Survey (CPS).
+Henry Farber supplied the source data to Jeffrey M. Wooldridge.
+Documentation: https://justinmshea.github.io/wooldridge/reference/wage1.html
+R package: https://CRAN.R-project.org/package=wooldridge
+Package version used by the local source archive: 1.4-7.
+
+The classroom CSV retains all 526 observations and selects four columns only:
+wage: average hourly earnings, 1976 US dollars per hour.
+educ: years of education.
+exper: years of potential work experience; not actual measured tenure.
+female: original dataset coding, 1=female, 0=male.
+No observations were removed, simulated, or rounded.
+
+This differs from the Japanese 2012 survey discussed in the course textbook.
+Historical sample wage differences are associations, not identified causal
+returns to education or direct measures of discrimination.
+
+Attribution: Jeffrey M. Wooldridge, Introductory Econometrics: A Modern Approach;
+Justin M. Shea, wooldridge R data package.
+The wooldridge package is distributed under GNU GPL version 3.
+See wage1-LICENSE.txt for the accompanying license.
+The project's reference_2/lesson06-data/wage1 directory retains the original
+RData, full CSV, and source notes. The teacher preparation script selects the
+four columns from this full source without requiring students to install R packages.
