@@ -454,7 +454,7 @@ e_i = Y_i - \hat{Y}_i
 <p><span class="math display">\[
 \min_{a,b}\sum_{i=1}^{n}\{Y_i-(a+bX_i)\}^2
 \]</span></p>
-<p>残差をそのまま足すと正と負が打ち消し合うため、二乗してずれの大きさを評価する。Rの<code>lm()</code>がこの計算を行うので、今回は係数の手計算よりも、モデルの指定と結果の解釈を練習する。</p>
+<p>残差をそのまま足すと正と負が打ち消し合うため、二乗してずれの大きさを評価する。Rの<code>lm()</code>がこの計算を行うので、ここではモデルの指定と結果の解釈を確認する。</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-l05-ols-squares" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -594,7 +594,7 @@ R^2 = \frac{\text{回帰直線で説明されるばらつき}}{\text{被説明�
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>kakei <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/data_lesson05.csv"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fileEncoding =</span> <span class="st">"UTF-8"</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">colClasses =</span> <span class="fu">c</span>(<span class="at">city_code =</span> <span class="st">"character"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">colClasses =</span> <span class="fu">c</span>(<span class="at">city_code =</span> <span class="st">"character"</span>)  <span class="co"># colClasses は指定した列の型を固定する。ここでは都市コードを文字列にする。</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell" data-layout-align="center">
@@ -617,11 +617,12 @@ R^2 = \frac{\text{回帰直線で説明されるばらつき}}{\text{被説明�
 <pre><code>     income consumption 
           0           0 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(kakei<span class="sc">$</span>income)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(kakei<span class="sc">$</span>income)  <span class="co"># range() は最小値と最大値をまとめて返す。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 420.7 638.0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(kakei[<span class="fu">c</span>(<span class="st">"income"</span>, <span class="st">"consumption"</span>)])</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary() は各列の最小値・中央値・平均などの要約を表示する。</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(kakei[<span class="fu">c</span>(<span class="st">"income"</span>, <span class="st">"consumption"</span>)])</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     income       consumption   
  Min.   :420.7   Min.   :257.9  
@@ -663,7 +664,7 @@ R^2 = \frac{\text{回帰直線で説明されるばらつき}}{\text{被説明�
 <p>散布図でプロットが右上がりに描かれている場合、横軸の値が大きいと縦軸の値も大きいことを示す。今回の図では、所得と消費支出には正の相関が見られる。ただし、同程度の所得でも消費支出にはばらつきがある。</p>
 <p>続いて、<code>cor()</code>で所得と消費支出の<strong>相関係数（ピアソンの積率相関係数）</strong>を求める。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(kakei<span class="sc">$</span>income, kakei<span class="sc">$</span>consumption)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(kakei<span class="sc">$</span>income, kakei<span class="sc">$</span>consumption)  <span class="co"># cor() は2変数の相関係数を求める。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7886642</code></pre>
 </div>
@@ -675,8 +676,9 @@ R^2 = \frac{\text{回帰直線で説明されるばらつき}}{\text{被説明�
 <h3 class="anchored" data-anchor-id="パラメータの推定">3. パラメータの推定</h3>
 <p>所得の違いと消費支出の違いの関係を数値で捉えるため、最小二乗法で回帰直線の切片と傾きを推定する。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(consumption <span class="sc">~</span> income, <span class="at">data =</span> kakei)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lm() は回帰モデルを最小二乗法で推定する。式は「被説明変数 ~ 説明変数」。</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(consumption <span class="sc">~</span> income, <span class="at">data =</span> kakei)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)  <span class="co"># coef() は推定した回帰係数を取り出す。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)      income 
 124.8298680   0.3887462 </code></pre>
@@ -702,7 +704,8 @@ R^2 = \frac{\text{回帰直線で説明されるばらつき}}{\text{被説明�
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"#007c73"</span></span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model, <span class="at">col =</span> <span class="st">"#b24c3d"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># abline() にモデルを渡すと回帰直線を追加する。lwd は線の太さ。</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model, <span class="at">col =</span> <span class="st">"#b24c3d"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-l05-regression" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -722,7 +725,8 @@ R^2 = \frac{\text{回帰直線で説明されるばらつき}}{\text{被説明�
 <h3 class="anchored" data-anchor-id="仮説検定">4. 仮説検定</h3>
 <p>推定された正の傾きが、標本による推定値のばらつきを考慮しても0と区別できるかを、仮説検定で確認する。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 回帰モデルのsummary() は係数・標準誤差・t値・p値などを表示する。</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -791,7 +795,7 @@ F-statistic: 82.27 on 1 and 50 DF,  p-value: 3.855e-12</code></pre>
 <p>回帰直線が消費支出のばらつきをどの程度説明しているかを、<strong>決定係数 <span class="math inline">\(R^2\)</span></strong>で確認する。</p>
 <p><code>summary(model)</code>の出力では、<code>Multiple R-squared</code>が <span class="math inline">\(R^2\)</span> に当たる。値だけを取り出すには、次のように書く。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)<span class="sc">$</span>r.squared</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)<span class="sc">$</span>r.squared  <span class="co"># $r.squared で決定係数を取り出す。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6219913</code></pre>
 </div>
@@ -804,7 +808,8 @@ F-statistic: 82.27 on 1 and 50 DF,  p-value: 3.855e-12</code></pre>
 <p>推定した回帰式を使い、可処分所得が500千円／月の都市の消費支出を予測する。</p>
 <p><code>predict()</code>に予測したい所得の値を渡して、回帰直線上の消費支出を求める。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(model, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">income =</span> <span class="dv">500</span>))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># predict() は予測値を求める。newdata に予測したい条件のデータを渡す。</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(model, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">income =</span> <span class="dv">500</span>))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      1 
 319.203 </code></pre>

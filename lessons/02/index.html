@@ -311,8 +311,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>画面右上のProject名が<code>zemi</code>になっていることを確認する。</li>
 </ol>
 <p>同名のProjectが既にある場合は、その<code>.Rproj</code>ファイルから開く。</p>
-<p><strong>練習1：</strong> Projectとフォルダの準備</p>
-<p>全員、次の作業を行い、授業で使用するProjectとデータを準備しなさい。</p>
+<p><strong>Projectとフォルダの準備</strong></p>
+<p>次の手順で、授業で使用するProjectとデータを準備する。</p>
 <ol type="1">
 <li>上の手順に従って、<code>zemi</code>という名前のProjectを作成する。既に作成した場合は、そのProjectを開く。</li>
 <li>Projectフォルダ直下に、データを保存する<code>data</code>フォルダと、Rスクリプトを保存する<code>script</code>フォルダを作成する。RStudioの<strong>Files</strong>ペインでProjectフォルダを表示し、<strong>New Folder</strong>からそれぞれ作成する。</li>
@@ -332,7 +332,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>#</code>から行末までは<strong>コメント</strong>であり、計算として実行されない。Rスクリプトに次のコードを記述する。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 基本的な計算</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span>  <span class="co"># + は足し算。計算結果をConsoleに表示する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
@@ -346,9 +346,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="consoleへの直接入力">4. Consoleへの直接入力</h3>
 <p>Consoleにはコードを直接入力することもできる。<code>&gt;</code>は入力を受け付ける状態を示す記号であり、コードの一部として入力しない。</p>
 <p>Consoleで半角の<code>10 / 4</code>を入力し、Enterで実行する。結果は次のようになる。</p>
-<pre class="text"><code>&gt; 10 / 4
+<pre class="text"><code>&gt; 10 / 4  # / は割り算。
 [1] 2.5</code></pre>
-<p>直接入力は短い確認に便利だが、残す必要のある処理はRスクリプトに記述する。以降の例と練習は<code>lesson02.R</code>に追加して実行する。</p>
+<p>直接入力は短い確認に便利だが、残す必要のある処理はRスクリプトに記述する。以降のコード例は<code>lesson02.R</code>に追加して実行する。</p>
 <details>
 <summary>
 入力・実行時の確認事項
@@ -358,13 +358,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>数値や演算記号には半角文字を使う。</li>
 <li>Rスクリプトにコードを記述しても結果が出ない場合は、Runまたは実行用ショートカットで実行したか確認する。</li>
 </ul>
-</details>
-<p><strong>練習2：</strong> <code>lesson02.R</code>に<code>(8 + 4) / 2</code>を追加し、実行してから保存しなさい。</p>
-<details>
-<summary>
-解答例
-</summary>
-<p>計算結果は<code>6</code>である。Rスクリプトに行を追加し、実行後に保存する。</p>
 </details>
 </section>
 </section>
@@ -400,19 +393,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">-</span> <span class="dv">4</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">-</span> <span class="dv">4</span>  <span class="co"># - は引き算。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">*</span> <span class="dv">5</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">*</span> <span class="dv">5</span>  <span class="co"># * は掛け算。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 15</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span><span class="dv">3</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span><span class="dv">3</span>  <span class="co"># ^ は累乗。2の3乗を求める。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span>) <span class="sc">*</span> <span class="dv">4</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span>) <span class="sc">*</span> <span class="dv">4</span>  <span class="co"># ( ) 内を先に計算する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 20</code></pre>
 </div>
@@ -424,11 +417,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </summary>
 <p><code>%%</code>は除算の余り、<code>%/%</code>は整数除算の結果を返す。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">%%</span> <span class="dv">3</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">%%</span> <span class="dv">3</span>  <span class="co"># %% は割り算の余りを求める。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">%/%</span> <span class="dv">3</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">%/%</span> <span class="dv">3</span>  <span class="co"># %/% は整数除算。商を切り下げた値を求める。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
@@ -440,8 +433,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="値の代入とオブジェクトの命名">2. 値の代入とオブジェクトの命名</h3>
 <p>データや計算結果を保存し、名前を使って再利用するには、<strong>代入演算子</strong><code>&lt;-</code>を用いる。Rで扱う値やデータなどを<strong>オブジェクト</strong>という。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="dv">82</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>score</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="dv">82</span>  <span class="co"># &lt;- は右の値を左の名前に代入する。</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>score  <span class="co"># 名前だけを書くと、保存されている値を表示する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 82</code></pre>
 </div>
@@ -459,41 +452,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>最初の結果は<code>87</code>だが、<code>score</code>自体は<code>82</code>のままである。値を変更するには、計算結果を再び代入する。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> score <span class="sc">+</span> <span class="dv">5</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(score)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> score <span class="sc">+</span> <span class="dv">5</span>  <span class="co"># 右辺を計算してから同じ名前に代入し、値を更新する。</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(score)  <span class="co"># print() は値を明示的に表示する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 87</code></pre>
 </div>
 </div>
 <p>ここでは<code>score</code>が<code>87</code>に更新される。<code>print()</code>は値を表示する関数であり、オブジェクト名を直接実行する代わりに使用できる。</p>
 <p>名前には<code>score</code>や<code>average_score</code>のように内容を表す英字名を使うと読みやすい。大文字と小文字は区別されるため、<code>score</code>と<code>Score</code>は別の名前である。空白や、<code>TRUE</code>、<code>FALSE</code>、<code>function</code>などの予約語は使わない。</p>
-<p><strong>練習3：</strong> <code>study_hours</code>に<code>6</code>を代入し、<code>2</code>を加えた結果を表示しなさい。その後、<code>study_hours</code>自体を<code>8</code>に更新しなさい。</p>
-<details>
-<summary>
-解答例
-</summary>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>study_hours <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>study_hours <span class="sc">+</span> <span class="dv">2</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>study_hours <span class="ot">&lt;-</span> study_hours <span class="sc">+</span> <span class="dv">2</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>study_hours</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>単に加算した段階では元の値は変わらず、再代入によって更新される。</p>
-</details>
 </section>
 <section id="関数と引数" class="level3">
 <h3 class="anchored" data-anchor-id="関数と引数">3. 関数と引数</h3>
 <p><strong>関数</strong>は、値を受け取り、決められた処理を行って結果を返す仕組みである。関数名の後ろに括弧を書き、処理対象や設定を指定する。関数に渡す情報を<strong>引数</strong>という。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="dv">16</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="dv">16</span>)  <span class="co"># sqrt() は平方根を求める。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(<span class="sc">-</span><span class="dv">8</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(<span class="sc">-</span><span class="dv">8</span>)  <span class="co"># abs() は絶対値を求める。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fl">3.1415926</span>, <span class="at">digits =</span> <span class="dv">3</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fl">3.1415926</span>, <span class="at">digits =</span> <span class="dv">3</span>)  <span class="co"># round() は指定した桁数に丸める。digits は小数点以下の桁数。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.142</code></pre>
 </div>
@@ -505,11 +485,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </summary>
 <p><code>log()</code>は自然対数、<code>exp()</code>は自然対数の底を用いた指数関数である。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="dv">10</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="dv">10</span>)  <span class="co"># log() は自然対数を求める。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.302585</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="dv">2</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="dv">2</span>)  <span class="co"># exp() は自然対数の底eの累乗を求める。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 7.389056</code></pre>
 </div>
@@ -517,53 +497,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 <p>使い方を確認する場合は、Helpを利用する。次のいずれかを実行すると、<code>round()</code>の説明が開く。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>?round</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(round)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>?round  <span class="co"># ?関数名 は、その関数のヘルプを開く。</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(round)  <span class="co"># help() でも関数のヘルプを開ける。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Helpの<strong>Usage</strong>で書式、<strong>Arguments</strong>で引数、<strong>Value</strong>で返り値、<strong>Examples</strong>で使用例を確認する。引数の書式だけを表示するには<code>args(round)</code>、使用例を実行するには<code>example(round)</code>を使う。</p>
-<p><strong>練習4：</strong> <code>sqrt(50)</code>を計算し、その結果を小数第2位まで表示しなさい。</p>
-<details>
-<summary>
-解答例
-</summary>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>root_value <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">50</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(root_value, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>結果は<code>7.07</code>である。関数を自作する方法は第4回で扱う。</p>
-</details>
 </section>
 <section id="データ型の確認" class="level3">
 <h3 class="anchored" data-anchor-id="データ型の確認">4. データ型の確認</h3>
 <p><strong>データ型</strong>とは、値を数値、文字列、論理値などのどの種類として扱うかを示すものである。Rでは、データ型によって適用できる演算や関数の処理が異なる。見た目が同じ数字でも、文字列として保存されていると、そのままでは足し算や平均の計算に使えない。</p>
 <p>例えば、<code>82</code>は数値なので、次の足し算の結果は<code>87</code>となる。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="dv">82</span> <span class="sc">+</span> <span class="dv">5</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="dv">82</span> <span class="sc">+</span> <span class="dv">5</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 87</code></pre>
 </div>
 </div>
 <p>一方、引用符で囲んだ<code>"82"</code>は文字列である。次の式を実行すると、数値ではない値に算術演算を適用したことを示すエラーになり、<code>87</code>は得られない。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="st">"82"</span> <span class="sc">+</span> <span class="dv">5</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="st">"82"</span> <span class="sc">+</span> <span class="dv">5</span>  <span class="co"># 引用符で囲んだ値は文字列。この計算はエラーになる。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>このように、見た目だけでは計算に使えるかどうかを判断できない。計算やデータの加工に進む前に、値が意図した型になっているかを確認することが重要である。</p>
 <p>まず、基本となる数値、文字列、論理値を確認する。文字列は引用符で囲み、論理値は<code>TRUE</code>または<code>FALSE</code>で表す。<code>class()</code>を使うと型を確認できる。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>student_name <span class="ot">&lt;-</span> <span class="st">"Aiko"</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="dv">82</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>attendance <span class="ot">&lt;-</span> <span class="fl">0.94</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>passed <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(student_name)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>student_name <span class="ot">&lt;-</span> <span class="st">"Aiko"</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="dv">82</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>attendance <span class="ot">&lt;-</span> <span class="fl">0.94</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>passed <span class="ot">&lt;-</span> <span class="cn">TRUE</span>  <span class="co"># TRUE は真、FALSE は偽を表す論理値。</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(student_name)  <span class="co"># class() はオブジェクトのデータ型を調べる。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "character"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(score)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(score)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "numeric"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(passed)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(passed)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "logical"</code></pre>
 </div>
@@ -575,26 +544,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </summary>
 <p><code>as.numeric()</code>、<code>as.character()</code>、<code>as.logical()</code>などで型を変換できる。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="st">"12.5"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="st">"12.5"</span>)  <span class="co"># as.numeric() は数値型に変換する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 12.5</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.character</span>(<span class="dv">100</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.character</span>(<span class="dv">100</span>)  <span class="co"># as.character() は文字型に変換する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "100"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.logical</span>(<span class="dv">1</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.logical</span>(<span class="dv">1</span>)  <span class="co"># as.logical() は論理型に変換する。0はFALSE、0以外はTRUE。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="cn">FALSE</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="cn">FALSE</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
 </div>
 <p>数値として解釈できない文字列を変換すると、欠損値を表す<code>NA</code>になり、警告が表示される。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="st">"twelve"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="st">"twelve"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: NAs introduced by coercion</code></pre>
 </div>
@@ -609,15 +578,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="条件の判定">5. 条件の判定</h3>
 <p>比較演算子を使うと、条件を満たすかどうかが<code>TRUE</code>または<code>FALSE</code>で返される。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">&gt;=</span> <span class="dv">80</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">&gt;=</span> <span class="dv">80</span>  <span class="co"># &gt;= は「以上」を判定する。結果はTRUEまたはFALSE。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">==</span> <span class="dv">82</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">==</span> <span class="dv">82</span>  <span class="co"># == は左右の値が等しいかを判定する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">!=</span> <span class="dv">70</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">!=</span> <span class="dv">70</span>  <span class="co"># != は左右の値が異なるかを判定する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
@@ -658,30 +627,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>代入には<code>&lt;-</code>、値が等しいかの判定には<code>==</code>を用いる。複数の条件は、論理演算子で組み合わせる。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">&gt;=</span> <span class="dv">60</span> <span class="sc">&amp;</span> attendance <span class="sc">&gt;=</span> <span class="fl">0.80</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">&gt;=</span> <span class="dv">60</span> <span class="sc">&amp;</span> attendance <span class="sc">&gt;=</span> <span class="fl">0.80</span>  <span class="co"># &amp; は両方の条件が真かを判定する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">&gt;=</span> <span class="dv">90</span> <span class="sc">|</span> attendance <span class="sc">==</span> <span class="dv">1</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">&gt;=</span> <span class="dv">90</span> <span class="sc">|</span> attendance <span class="sc">==</span> <span class="dv">1</span>  <span class="co"># | は少なくとも一方の条件が真かを判定する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span>(score <span class="sc">&lt;</span> <span class="dv">60</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span>(score <span class="sc">&lt;</span> <span class="dv">60</span>)  <span class="co"># &lt; は「未満」、! は条件の真偽を反転する。</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
 <p>得点<code>82</code>、出席率<code>0.94</code>なので、結果は順に<code>TRUE</code>、<code>FALSE</code>、<code>TRUE</code>となる。</p>
-<p><strong>練習5：</strong> <code>score</code>が80以上、かつ<code>attendance</code>が0.90以上かどうかを判定しなさい。</p>
-<details>
-<summary>
-解答例
-</summary>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">&gt;=</span> <span class="dv">80</span> <span class="sc">&amp;</span> attendance <span class="sc">&gt;=</span> <span class="fl">0.90</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>結果は<code>TRUE</code>である。</p>
-</details>
 <details>
 <summary>
 補足：エラー・警告・メッセージ
@@ -709,35 +668,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>エラーが出た場合は、オブジェクト名の綴り、大文字と小文字、括弧、引用符、カンマを確認する。原因を確認できない場合は、実行したコードとメッセージを併せて教員に伝える。</p>
-</details>
-<p><strong>練習6：</strong> ある学生の小テストの得点は78点、期末テストの得点は92点、出席率は0.85である。総合点を「小テストの40%と期末テストの60%の合計」とし、総合点が80点以上、かつ出席率が0.80以上の場合を合格とする。</p>
-<p>次の処理を<code>script/lesson02.R</code>に記述しなさい。</p>
-<ol type="1">
-<li>得点を<code>quiz_score</code>と<code>exam_score</code>、出席率を<code>attendance_rate</code>に代入する。</li>
-<li>総合点を計算し、<code>final_score</code>に代入する。</li>
-<li>総合点を小数第1位まで表示する。</li>
-<li>合格条件を判定し、その結果を<code>is_passed</code>に代入する。</li>
-<li><code>class()</code>で<code>final_score</code>と<code>is_passed</code>の型を確認する。</li>
-</ol>
-<details>
-<summary>
-解答例
-</summary>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>quiz_score <span class="ot">&lt;-</span> <span class="dv">78</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>exam_score <span class="ot">&lt;-</span> <span class="dv">92</span></span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>attendance_rate <span class="ot">&lt;-</span> <span class="fl">0.85</span></span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>final_score <span class="ot">&lt;-</span> quiz_score <span class="sc">*</span> <span class="fl">0.40</span> <span class="sc">+</span> exam_score <span class="sc">*</span> <span class="fl">0.60</span></span>
-<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(final_score, <span class="at">digits =</span> <span class="dv">1</span>)</span>
-<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>is_passed <span class="ot">&lt;-</span> final_score <span class="sc">&gt;=</span> <span class="dv">80</span> <span class="sc">&amp;</span> attendance_rate <span class="sc">&gt;=</span> <span class="fl">0.80</span></span>
-<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>is_passed</span>
-<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(final_score)</span>
-<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(is_passed)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>総合点は86.4点であり、出席率も基準を満たすため、<code>is_passed</code>は<code>TRUE</code>となる。型はそれぞれ<code>"numeric"</code>、<code>"logical"</code>である。</p>
 </details>
 </section>
 </section>
@@ -776,14 +706,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Consoleで次のコードを実行し、現在の値を確認する。</li>
 <li><strong>File → Close Project</strong>でProjectを閉じる。</li>
 <li><code>zemi.Rproj</code>を開き直す。</li>
-<li>Rスクリプトを実行する前に、Environmentに<code>final_score</code>や<code>is_passed</code>が復元されていることを確認する。</li>
+<li>Rスクリプトを実行する前に、Environmentに<code>score</code>や<code>passed</code>が復元されていることを確認する。</li>
 <li>Consoleで同じコードを実行し、閉じる前と同じ値が表示されることを確認する。</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(final_score)</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(is_passed)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(score)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(passed)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>練習6まで実行した場合、総合点は86.4、合格判定は<code>TRUE</code>の状態で保存される。ここではRスクリプトを自動実行しているのではなく、終了時に保存したオブジェクトを復元している。</p>
+<p>ここまでのコードを実行すると、<code>score</code>は82、<code>passed</code>は<code>TRUE</code>の状態で保存される。Projectを開き直すと、終了時に保存したオブジェクトが復元される。</p>
 <p>次回以降も、同じProjectを開けば保存した状態から作業を再開できる。Rスクリプトを編集するときは、<code>script</code>フォルダの<code>lesson02.R</code>を開く。</p>
 
 
