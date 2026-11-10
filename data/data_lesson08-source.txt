@@ -19,12 +19,13 @@ Teaching columns:
   educ: education, years.
   exper: experience, actual previous labor market experience, years.
   age: age, years.
-  kidslt6: youngkids, number of children younger than 6.
+  young_child: 1 if youngkids > 0, otherwise 0 (147 / 606).
+               Precomputed from the original count of children under 6.
   nwifeinc: (fincome - hours * wage) / 1000, annual family income
             excluding the wife's labor earnings, thousands of 1975 USD.
 The derived nwifeinc includes a small negative value present in this
 calculation from rounded source measurements; it is preserved as-is.
-In the lesson, young_child = ifelse(kidslt6 > 0, 1, 0).
+The teaching CSV already contains young_child; students use it directly.
 
 This is a separate classroom example, not the data underlying the
 empirical tables in Chapter 7 of the user's textbook.

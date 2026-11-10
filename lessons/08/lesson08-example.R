@@ -14,8 +14,7 @@ summary(participation)
 table(participation$inlf)
 mean(participation$inlf)
 
-# 幼児ダミーの作成と就業割合の比較
-participation$young_child <- ifelse(participation$kidslt6 > 0, 1, 0)
+# 幼児の有無別の就業割合
 table(participation$young_child, participation$inlf)
 
 group_rate <- c(
@@ -24,7 +23,7 @@ group_rate <- c(
 )
 group_rate
 
-# 幼児ダミーの作成と就業割合の比較
+# 幼児の有無別の就業割合
 barplot(
   group_rate,
   ylim = c(0, 1),
@@ -54,14 +53,21 @@ marginal_effects <- mean(normal_density) *
 marginal_effects
 
 # ダミー変数の限界効果
+# 元データをコピーし、「幼児なし」の比較用データを用意する。
 data_no_child <- participation
+# 元データをコピーし、「幼児あり」の比較用データを用意する。
 data_with_child <- participation
+# 他の変数はそのままに、全員の幼児ダミーを0（幼児なし）にする。
 data_no_child$young_child <- 0
+# 他の変数はそのままに、全員の幼児ダミーを1（幼児あり）にする。
 data_with_child$young_child <- 1
 
-# type = "response" は、Φ(z)に変換した0～1の確率を返す。
+# 「幼児なし」とした各人の就業確率を計算する。type = "response" はΦ(z)に変換した確率を返す。
 prob_no_child <- predict(model_probit, newdata = data_no_child, type = "response")
+# 「幼児あり」とした各人の就業確率を計算する。
 prob_with_child <- predict(model_probit, newdata = data_with_child, type = "response")
 
+# 各人の「幼児あり－幼児なし」の確率差を求め、その平均を保存する。
 marginal_effect_child <- mean(prob_with_child - prob_no_child)
+# 求めた幼児ダミーの限界効果を表示する。
 marginal_effect_child

@@ -535,8 +535,7 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
 </section>
 <section id="データの選定" class="level3">
 <h3 class="anchored" data-anchor-id="データの選定">3. データの選定</h3>
-<p>RパッケージAERに収録された<strong><code>PSID1976</code>（Mrozデータ）</strong>を用いる。1976年の米国PSID調査に基づき、前年の<strong>1975年の就業状況</strong>などを記録した、有配偶女性753人の横断面データである。年齢は30～60歳であり、1行が1人を表す。PSIDはパネル調査だが、今回使うファイルでは同じ人を複数年追跡していない。</p>
-<p>元データの753行をすべて残し、必要な列の選択と変数の作成のみを行っている。</p>
+<p>RパッケージAERに収録された<strong><code>PSID1976</code>（Mrozデータ）</strong>を用いる。1976年の米国PSID調査に基づき、前年の<strong>1975年の就業状況</strong>などを記録した、有配偶女性753人の横断面データである。年齢は30～60歳であり、1行が1人を表す。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -572,9 +571,9 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
 <td>連続的な説明変数</td>
 </tr>
 <tr class="odd">
-<td><code>kidslt6</code></td>
-<td>世帯内の6歳未満の子どもの人数（人）</td>
-<td>幼児の有無の作成に使う</td>
+<td><code>young_child</code></td>
+<td>6歳未満の子どもがいれば1、いなければ0</td>
+<td>幼児ダミー <span class="math inline">\(D_i\)</span></td>
 </tr>
 <tr class="even">
 <td><code>nwifeinc</code></td>
@@ -583,9 +582,7 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
 </tr>
 </tbody>
 </table>
-<p><code>inlf</code> は原データの <code>participation</code> が <code>yes</code> なら1、<code>no</code> なら0に変換したものである。本講義では、原データで実質的に年間の労働時間が正かどうかを表す指標として、<strong>就業ダミー</strong>と呼ぶ。求職中かどうかなどを含む現在の統計の労働力人口区分を、そのまま表しているわけではない。</p>
-<p><code>exper</code> は第6回の潜在的な経験年数とは異なり、<strong>実際の過去の就業経験年数</strong>である。また、<code>nwifeinc</code> は、家族全体の所得から本人の年間労働所得を差し引き、1,000で割っている。1単位の差は年額1,000ドルの差である。元の金額の丸めなどを含む計算結果にはごく小さな負値もあるが、切り上げや観測の除外はしていない。</p>
-<p>出所：<a href="https://cran.r-universe.dev/AER/doc/manual.html#PSID1976">AERのPSID1976データ説明</a>。元データはGreene（2003）の教材に基づく。授業CSVの作成方法と出所は、<a href="../../data/data_lesson08-source.txt">データ出所メモ</a>に記録している。</p>
+<p>出所：<a href="https://cran.r-universe.dev/AER/doc/manual.html#PSID1976">AERのPSID1976データ説明</a>。元データはGreene（2003）の教材に基づく。</p>
 <section id="rの作業準備" class="level4">
 <h4 class="anchored" data-anchor-id="rの作業準備">Rの作業準備</h4>
 <ol type="1">
@@ -604,21 +601,24 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
 </section>
 <section id="予備的分析" class="level3">
 <h3 class="anchored" data-anchor-id="予備的分析">4. 予備的分析</h3>
+<p>推定の前に、データの内容と標本全体の就業状況を確認し、幼児の有無による就業割合の違いを調べる。</p>
 <section id="データの読み込みと確認" class="level4">
 <h4 class="anchored" data-anchor-id="データの読み込みと確認">データの読み込みと確認</h4>
+<p>まず、授業用CSVを読み込み、<code>participation</code> という名前のデータフレームに保存する。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>participation <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_lesson08.csv"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>次に、先頭の数行、観測数、欠損値、各変数の基本統計量を確認する。あわせて、就業ダミーの人数と平均を求め、標本全体の就業状況を把握する。</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(participation)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  inlf educ exper age kidslt6  nwifeinc
-1    1   12    14  32       1 10.910060
-2    1   12     5  30       0 19.499982
-3    1   12    15  35       1 12.039910
-4    1   12     6  34       0  6.799996
-5    1   14     7  31       1 20.100058
-6    1   12    33  54       0  9.859053</code></pre>
+<pre><code>  inlf educ exper age young_child  nwifeinc
+1    1   12    14  32           1 10.910060
+2    1   12     5  30           0 19.499982
+3    1   12    15  35           1 12.039910
+4    1   12     6  34           0  6.799996
+5    1   14     7  31           1 20.100058
+6    1   12    33  54           0  9.859053</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(participation)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -626,8 +626,8 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(participation))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    inlf     educ    exper      age  kidslt6 nwifeinc 
-       0        0        0        0        0        0 </code></pre>
+<pre><code>       inlf        educ       exper         age young_child    nwifeinc 
+          0           0           0           0           0           0 </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(participation)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -638,13 +638,13 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
  Mean   :0.5684   Mean   :12.29   Mean   :10.63   Mean   :42.54  
  3rd Qu.:1.0000   3rd Qu.:13.00   3rd Qu.:15.00   3rd Qu.:49.00  
  Max.   :1.0000   Max.   :17.00   Max.   :45.00   Max.   :60.00  
-    kidslt6          nwifeinc       
+  young_child        nwifeinc       
  Min.   :0.0000   Min.   :-0.02906  
  1st Qu.:0.0000   1st Qu.:13.02504  
  Median :0.0000   Median :17.70000  
- Mean   :0.2377   Mean   :20.12896  
+ Mean   :0.1952   Mean   :20.12896  
  3rd Qu.:0.0000   3rd Qu.:24.46600  
- Max.   :3.0000   Max.   :96.00000  </code></pre>
+ Max.   :1.0000   Max.   :96.00000  </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(participation<span class="sc">$</span>inlf)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -659,11 +659,11 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
 </div>
 <p>観測数は753で、使用する変数に欠損値はない。就業者は428人、それ以外は325人である。0・1変数の平均は1の割合に等しく、就業割合は約56.8%となる。<strong>二値の分析では、0の人も重要な観測なので、非就業者を除外しない。</strong></p>
 </section>
-<section id="幼児ダミーの作成と就業割合の比較" class="level4">
-<h4 class="anchored" data-anchor-id="幼児ダミーの作成と就業割合の比較">幼児ダミーの作成と就業割合の比較</h4>
+<section id="幼児の有無別の就業割合" class="level4">
+<h4 class="anchored" data-anchor-id="幼児の有無別の就業割合">幼児の有無別の就業割合</h4>
+<p>まず、幼児の有無を行、就業の有無を列としてクロス集計し、それぞれの人数を確認する。続いて、幼児なし・ありの2群に分け、就業ダミー <code>inlf</code> の平均から各群の就業割合を求める。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>participation<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(participation<span class="sc">$</span>kidslt6 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(participation<span class="sc">$</span>young_child, participation<span class="sc">$</span>inlf)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(participation<span class="sc">$</span>young_child, participation<span class="sc">$</span>inlf)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   
       0   1
@@ -680,7 +680,8 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
        0.6188119        0.3605442 </code></pre>
 </div>
 </div>
-<p>幼児がいない606人の就業割合は約61.9%、幼児がいる147人では約36.1%である。これを棒グラフで確認する。</p>
+<p>幼児がいない606人の就業割合は約61.9%、幼児がいる147人では約36.1%である。</p>
+<p>次に、求めた2群の就業割合を棒グラフにし、幼児の有無による違いを比較する。</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  group_rate,</span>
@@ -881,17 +882,24 @@ Number of Fisher Scoring iterations: 4</code></pre>
 \]</span></p>
 <p>コードでは、<code>prob_with_child - prob_no_child</code> で各人の <span class="math inline">\(\Delta\hat{p}_i\)</span> を求め、<code>mean()</code> でその平均 <span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}\Delta\hat{p}_i\)</span> を計算する。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>data_no_child <span class="ot">&lt;-</span> participation</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>data_with_child <span class="ot">&lt;-</span> participation</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>data_no_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data_with_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># type = "response" は、Φ(z)に変換した0～1の確率を返す。</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>prob_no_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_no_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>prob_with_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_with_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 元データをコピーし、「幼児なし」の比較用データを用意する。</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>data_no_child <span class="ot">&lt;-</span> participation</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 元データをコピーし、「幼児あり」の比較用データを用意する。</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data_with_child <span class="ot">&lt;-</span> participation</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 他の変数はそのままに、全員の幼児ダミーを0（幼児なし）にする。</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>data_no_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 他の変数はそのままに、全員の幼児ダミーを1（幼児あり）にする。</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>data_with_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>marginal_effect_child <span class="ot">&lt;-</span> <span class="fu">mean</span>(prob_with_child <span class="sc">-</span> prob_no_child)</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>marginal_effect_child</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 「幼児なし」とした各人の就業確率を計算する。type = "response" はΦ(z)に変換した確率を返す。</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>prob_no_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_no_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 「幼児あり」とした各人の就業確率を計算する。</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>prob_with_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_with_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 各人の「幼児あり－幼児なし」の確率差を求め、その平均を保存する。</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>marginal_effect_child <span class="ot">&lt;-</span> <span class="fu">mean</span>(prob_with_child <span class="sc">-</span> prob_no_child)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 求めた幼児ダミーの限界効果を表示する。</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>marginal_effect_child</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.3288792</code></pre>
 </div>
