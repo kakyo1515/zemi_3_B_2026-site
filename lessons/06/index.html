@@ -261,6 +261,14 @@ window.Quarto = {
   <li><a href="#予測" id="toc-予測" class="nav-link" data-scroll-target="#予測">6. 予測</a></li>
   <li><a href="#結果を説明するときのポイント" id="toc-結果を説明するときのポイント" class="nav-link" data-scroll-target="#結果を説明するときのポイント">結果を説明するときのポイント</a></li>
   </ul></li>
+  <li><a href="#演習問題" id="toc-演習問題" class="nav-link" data-scroll-target="#演習問題">演習問題</a>
+  <ul class="collapse">
+  <li><a href="#使用するデータと準備" id="toc-使用するデータと準備" class="nav-link" data-scroll-target="#使用するデータと準備">使用するデータと準備</a></li>
+  <li><a href="#課題6-1データを確認する" id="toc-課題6-1データを確認する" class="nav-link" data-scroll-target="#課題6-1データを確認する">課題6-1｜データを確認する</a></li>
+  <li><a href="#課題6-2条件抽出と散布図を作成する" id="toc-課題6-2条件抽出と散布図を作成する" class="nav-link" data-scroll-target="#課題6-2条件抽出と散布図を作成する">課題6-2｜条件抽出と散布図を作成する</a></li>
+  <li><a href="#課題6-3三つの回帰モデルを推定する" id="toc-課題6-3三つの回帰モデルを推定する" class="nav-link" data-scroll-target="#課題6-3三つの回帰モデルを推定する">課題6-3｜三つの回帰モデルを推定する</a></li>
+  <li><a href="#課題6-4燃費を予測する" id="toc-課題6-4燃費を予測する" class="nav-link" data-scroll-target="#課題6-4燃費を予測する">課題6-4｜燃費を予測する</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -927,6 +935,154 @@ F-statistic: 77.92 on 3 and 522 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li><strong>検定する仮説を明示する。</strong> 個々の係数はt検定、説明変数全体の有意性はF検定で調べる。</li>
 <li><strong>データの時代と範囲を確認する。</strong> 1976年の米国の個人データを用い、時給の単位は当時の米ドルである。</li>
 </ul>
+</section>
+</section>
+<section id="演習問題" class="level2 homework">
+<h2 class="homework anchored" data-anchor-id="演習問題">演習問題</h2>
+<p><strong>自動車データで重回帰分析を実行する</strong></p>
+<p>授業とは別のデータを使い、<strong>データの確認 → 条件抽出と作図 → 回帰分析 → 予測</strong>をRで一通り実行しよう。各問で指定したオブジェクトを作成し、結果をConsoleやPlotsに表示する。</p>
+<section id="使用するデータと準備" class="level3">
+<h3 class="anchored" data-anchor-id="使用するデータと準備">使用するデータと準備</h3>
+<p>Rに標準で収録されている<strong><code>mtcars</code></strong>を使う。1974年の米国誌『Motor Trend』に掲載された、1973〜74年モデルの自動車32台のデータである。今回は次の4列を使う。新しいパッケージのインストールやCSVのダウンロードは不要である。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>列名</th>
+<th>内容・単位</th>
+<th>分析での役割</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>mpg</code></td>
+<td>燃費（1米ガロン当たりの走行距離、マイル）。値が大きいほど燃費がよい</td>
+<td>被説明変数</td>
+</tr>
+<tr class="even">
+<td><code>wt</code></td>
+<td>車重（1,000ポンド単位）。例：<code>3</code>は3,000ポンド</td>
+<td>説明変数</td>
+</tr>
+<tr class="odd">
+<td><code>hp</code></td>
+<td>馬力（グロス馬力）</td>
+<td>説明変数</td>
+</tr>
+<tr class="even">
+<td><code>am</code></td>
+<td>変速機：オートマチック車0、マニュアル車1</td>
+<td>ダミー変数</td>
+</tr>
+</tbody>
+</table>
+<p>出典：<a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html">R公式マニュアル：mtcars</a>。元データの32行をすべて使用し、上の4列だけを取り出す。</p>
+<p><code>zemi.Rproj</code>を開き、新しいスクリプトを<code>script/lesson06-practice.R</code>として保存する。次のコードでR標準のデータを読み込み、演習に使う4列を取り出す。以降のコードは自分で書き加えよう。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data() は、Rに収録されたデータセットを読み込む。</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"mtcars"</span>, <span class="at">package =</span> <span class="st">"datasets"</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>cars_practice <span class="ot">&lt;-</span> mtcars[<span class="fu">c</span>(<span class="st">"mpg"</span>, <span class="st">"wt"</span>, <span class="st">"hp"</span>, <span class="st">"am"</span>)]</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="課題6-1データを確認する" class="level3">
+<h3 class="anchored" data-anchor-id="課題6-1データを確認する">課題6-1｜データを確認する</h3>
+<ol type="1">
+<li><code>head()</code>で先頭6行、<code>nrow()</code>で行数を表示する。</li>
+<li><code>colSums()</code>と<code>is.na()</code>を組み合わせ、各列の欠損値の数を表示する。</li>
+<li><code>mpg</code>・<code>wt</code>・<code>hp</code>の3列を取り出し、<code>summary()</code>で基本統計量を表示する。</li>
+<li><code>table()</code>を使い、<code>am</code>が0の車と1の車の台数を表示する。</li>
+</ol>
+</section>
+<section id="課題6-2条件抽出と散布図を作成する" class="level3">
+<h3 class="anchored" data-anchor-id="課題6-2条件抽出と散布図を作成する">課題6-2｜条件抽出と散布図を作成する</h3>
+<ol type="1">
+<li><code>am</code>が0の行を取り出して<code>cars_auto</code>、1の行を取り出して<code>cars_manual</code>に保存する。それぞれの行数を表示する。</li>
+<li>全32台の<code>wt</code>と<code>mpg</code>について、<code>range()</code>で範囲を求め、<code>wt_limits</code>と<code>mpg_limits</code>に保存する。</li>
+<li>オートマチック車について、横軸を<code>wt</code>、縦軸を<code>mpg</code>とする散布図を<code>plot()</code>で作成する。マニュアル車についても、別の散布図を作成する。次の指定を両方の図に加える。
+<ul>
+<li>軸ラベル：<code>xlab = "Weight (1000 lbs)"</code>、<code>ylab = "Fuel economy (mpg)"</code></li>
+<li>軸の範囲：<code>xlim = wt_limits</code>、<code>ylim = mpg_limits</code></li>
+<li>点の形：<code>pch = 19</code></li>
+<li>図のタイトル：オートマチック車は<code>main = "Automatic"</code>、マニュアル車は<code>main = "Manual"</code></li>
+</ul></li>
+<li>全32台の<code>mpg</code>・<code>wt</code>・<code>hp</code>の3列を使い、<code>cor()</code>で相関行列を表示する。</li>
+</ol>
+</section>
+<section id="課題6-3三つの回帰モデルを推定する" class="level3">
+<h3 class="anchored" data-anchor-id="課題6-3三つの回帰モデルを推定する">課題6-3｜三つの回帰モデルを推定する</h3>
+<p><code>cars_practice</code>を使い、次の三つのモデルを<code>lm()</code>で推定する。モデルごとに、指定した名前で結果を保存しよう。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>モデル</th>
+<th>被説明変数</th>
+<th>説明変数</th>
+<th>保存するオブジェクト名</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1：単回帰</td>
+<td><code>mpg</code></td>
+<td><code>wt</code></td>
+<td><code>car_model1</code></td>
+</tr>
+<tr class="even">
+<td>2：重回帰</td>
+<td><code>mpg</code></td>
+<td><code>wt</code>、<code>hp</code></td>
+<td><code>car_model2</code></td>
+</tr>
+<tr class="odd">
+<td>3：ダミー変数を追加</td>
+<td><code>mpg</code></td>
+<td><code>wt</code>、<code>hp</code>、<code>am</code></td>
+<td><code>car_model3</code></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>三つのモデルを推定するコードを書く。いずれも<code>data = cars_practice</code>を指定し、切片を含める。<code>am</code>は0・1の数値のまま使う。</li>
+<li><code>coef()</code>を使い、三つのモデルの係数をそれぞれ表示する。</li>
+<li><code>summary()</code>を使い、三つのモデルの推定結果をそれぞれ表示する。</li>
+<li><code>car_model3</code>の<code>summary()</code>出力から、次の値をスクリプトのコメント（<code>#</code>で始まる行）に転記する。<strong>数値の記録だけでよい。</strong>
+<ul>
+<li><code>am</code>の係数の推定値、t値、p値</li>
+<li>全体のF値と、そのp値</li>
+<li>決定係数と自由度調整済み決定係数</li>
+</ul></li>
+</ol>
+</section>
+<section id="課題6-4燃費を予測する" class="level3">
+<h3 class="anchored" data-anchor-id="課題6-4燃費を予測する">課題6-4｜燃費を予測する</h3>
+<p>課題6-3で推定した<code>car_model3</code>を使い、車重3,000ポンド（<code>wt = 3</code>）、馬力150（<code>hp = 150</code>）のオートマチック車（<code>am = 0</code>）の燃費（<code>mpg</code>）を予測しなさい。</p>
+<p>最後にスクリプトを保存し、先頭から最後まで順番に実行して、結果を確認する。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ヒント</span>操作に困ったときのヒント
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>条件抽出は<code>データ[データ$列名 == 値, ]</code>と書く。行の条件の後のカンマを忘れない。</li>
+<li>散布図は<code>plot(x = データ$wt, y = データ$mpg, ...)</code>の形にする。<code>...</code>の部分に問題で指定された引数を書く。</li>
+<li>回帰式は<code>被説明変数 ~ 説明変数1 + 説明変数2</code>のように書く。</li>
+<li><code>summary()</code>の係数表では<code>Estimate</code>、<code>t value</code>、<code>Pr(&gt;|t|)</code>を確認する。全体のF値とp値は出力の末尾にある。</li>
+<li>予測用データの列名は、推定に使った変数名とそろえる。予測は<code>predict(モデル, newdata = 予測用データ)</code>の形で実行する。</li>
+</ul>
+</div>
+</div>
+</div>
 
 
 </section>
