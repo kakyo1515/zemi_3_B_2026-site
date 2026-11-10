@@ -495,7 +495,7 @@ z_i=a+bX_i,\qquad p_i=\Phi(z_i)
 </section>
 <section id="rで一通り分析する" class="level2">
 <h2 class="anchored" data-anchor-id="rで一通り分析する">3　Rで一通り分析する</h2>
-<p>今回は、<strong>教育年数や幼児の有無が、女性の就業確率とどのように関係しているか</strong>を調べる。第5・6回と同じく、理論的背景から仮説を立て、実証モデルを設定してから、データの確認・推定・検定・限界効果の解釈へ進む。</p>
+<p>今回は、<strong>教育年数や幼児の有無が、女性の就業確率とどのように関係しているか</strong>を調べる。</p>
 <section id="理論的背景の確認と仮説の設定" class="level3">
 <h3 class="anchored" data-anchor-id="理論的背景の確認と仮説の設定">1. 理論的背景の確認と仮説の設定</h3>
 <p>教育や就業経験によって知識・技能が蓄積されると、就業によって得られる賃金が高くなると考えられる。働くことで得られる利益が大きければ、仕事に就くことを選びやすくなるため、教育年数と就業確率には正の関係が予想される。</p>
@@ -520,9 +520,11 @@ Y_i=\begin{cases}
 \]</span></p>
 <p>また、6歳未満の子どもがいる場合を <span class="math inline">\(D_i=1\)</span>、いない場合を <span class="math inline">\(D_i=0\)</span> とする。教育年数を <span class="math inline">\(educ_i\)</span>、経験年数を <span class="math inline">\(exper_i\)</span>、年齢を <span class="math inline">\(age_i\)</span>、本人以外の家族所得を <span class="math inline">\(nwifeinc_i\)</span> とし、次のプロビットモデルを設定する。</p>
 <p><span class="math display">\[
-\Pr(Y_i=1\mid\mathbf{X}_i)
-=\Phi\!\left(a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
-+\delta D_i+b_4\,nwifeinc_i\right)
+z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
++\delta D_i+b_4\,nwifeinc_i
+\]</span></p>
+<p><span class="math display">\[
+\Pr(Y_i=1\mid\mathbf{X}_i)=\Phi(z_i)
 \]</span></p>
 <p><span class="math inline">\(\mathbf{X}_i\)</span> は右辺の説明変数全体を表す。教育年数と幼児ダミーに注目し、それ以外の説明変数を一定とした関係を調べる。</p>
 <ul>
