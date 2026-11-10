@@ -1,0 +1,39 @@
+第8回 授業用データ：Mroz / PSID1976
+
+Source: AER R package, PSID1976 (locally installed version 1.2-14).
+Package authors: Christian Kleiber and Achim Zeileis.
+Documentation: https://cran.r-universe.dev/AER/doc/manual.html#PSID1976
+Package: https://CRAN.R-project.org/package=AER
+Original source identified by AER: Greene (2003), Econometric Analysis,
+5th edition, online complements, Table F4.1.
+https://pages.stern.nyu.edu/~wgreene/Text/tables/tablelist5.htm
+Related reference: Mroz, T. A. (1987), Econometrica 55, 765–799.
+
+1976 PSID interview, previous-year (1975) data; 753 married women.
+One observation per woman; this teaching file is cross-sectional.
+All 753 rows are retained in their original order, without imputation,
+trimming, row filtering, or changes to original measurements.
+
+Teaching columns:
+  inlf: 1 if participation == "yes", 0 if "no" (428 / 325).
+  educ: education, years.
+  exper: experience, actual previous labor market experience, years.
+  age: age, years.
+  kidslt6: youngkids, number of children younger than 6.
+  nwifeinc: (fincome - hours * wage) / 1000, annual family income
+            excluding the wife's labor earnings, thousands of 1975 USD.
+The derived nwifeinc includes a small negative value present in this
+calculation from rounded source measurements; it is preserved as-is.
+In the lesson, young_child = ifelse(kidslt6 > 0, 1, 0).
+
+This is a separate classroom example, not the data underlying the
+empirical tables in Chapter 7 of the user's textbook.
+
+Extraction: data("PSID1976", package = "AER"); write.csv(...).
+Original complete data and extraction session are saved under
+reference_2/lesson08-data/psid1976/ in the parent workspace.
+Rebuild teaching data offline from kejian/:
+  Rscript scripts/prepare-lesson08.R
+
+AER is distributed under GPL-2 | GPL-3. A GPL-3 license text is supplied
+alongside this teaching extract as psid1976-LICENSE.txt.

@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>第8回：プロビットモデル – 2026年度ゼミナールB（何研）</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../lessons/06/index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37294f0e61b532b0f7ebd5ccc0471b30.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c2e880a5cb14d7a116eba1e73095a7f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "一致なし",
+    "search-matching-documents-text": "一致した文書",
+    "search-copy-link-title": "検索へのリンクをコピー",
+    "search-hide-matches-text": "追加の検索結果を非表示",
+    "search-more-match-text": "追加の検索結果",
+    "search-more-matches-text": "追加の検索結果",
+    "search-clear-button-title": "消去",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "検索",
+    "search-label": "サーチ"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lessons/08/index.html">第8回：プロビットモデル</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="サーチ" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">2026年度ゼミナールB（何研）</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="サーチ"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ガイダンス</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/01/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第1回：Rの基本操作 I</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/02/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第2回：Rの基本操作 II</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/03/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第3回：Rの基本操作 III</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/04/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第4回：Rの基本操作 IV</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/05/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第5回：単回帰分析</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/06/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第6回：重回帰分析とダミー変数</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lessons/08/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">第8回：プロビットモデル</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">目次</h2>
+   
+  <ul>
+  <li><a href="#到達目標" id="toc-到達目標" class="nav-link active" data-scroll-target="#到達目標">到達目標</a></li>
+  <li><a href="#線形確率モデルの問題点とプロビットモデル" id="toc-線形確率モデルの問題点とプロビットモデル" class="nav-link" data-scroll-target="#線形確率モデルの問題点とプロビットモデル">1　線形確率モデルの問題点とプロビットモデル</a>
+  <ul class="collapse">
+  <li><a href="#ダミー変数を被説明変数とした推定モデル" id="toc-ダミー変数を被説明変数とした推定モデル" class="nav-link" data-scroll-target="#ダミー変数を被説明変数とした推定モデル">1.1　ダミー変数を被説明変数とした推定モデル</a></li>
+  <li><a href="#線形確率モデルの問題点" id="toc-線形確率モデルの問題点" class="nav-link" data-scroll-target="#線形確率モデルの問題点">1.2　線形確率モデルの問題点</a></li>
+  <li><a href="#プロビットモデルの考え方" id="toc-プロビットモデルの考え方" class="nav-link" data-scroll-target="#プロビットモデルの考え方">1.3　プロビットモデルの考え方</a></li>
+  </ul></li>
+  <li><a href="#プロビットモデルの推定結果の見方" id="toc-プロビットモデルの推定結果の見方" class="nav-link" data-scroll-target="#プロビットモデルの推定結果の見方">2　プロビットモデルの推定結果の見方</a>
+  <ul class="collapse">
+  <li><a href="#係数と限界効果" id="toc-係数と限界効果" class="nav-link" data-scroll-target="#係数と限界効果">係数と限界効果</a></li>
+  </ul></li>
+  <li><a href="#rで一通り分析する" id="toc-rで一通り分析する" class="nav-link" data-scroll-target="#rで一通り分析する">3　Rで一通り分析する</a>
+  <ul class="collapse">
+  <li><a href="#理論的背景の確認と仮説の設定" id="toc-理論的背景の確認と仮説の設定" class="nav-link" data-scroll-target="#理論的背景の確認と仮説の設定">1. 理論的背景の確認と仮説の設定</a></li>
+  <li><a href="#実証モデルの設定" id="toc-実証モデルの設定" class="nav-link" data-scroll-target="#実証モデルの設定">2. 実証モデルの設定</a></li>
+  <li><a href="#データの選定" id="toc-データの選定" class="nav-link" data-scroll-target="#データの選定">3. データの選定</a></li>
+  <li><a href="#予備的分析" id="toc-予備的分析" class="nav-link" data-scroll-target="#予備的分析">4. 予備的分析</a></li>
+  <li><a href="#パラメータの推定" id="toc-パラメータの推定" class="nav-link" data-scroll-target="#パラメータの推定">5. パラメータの推定</a></li>
+  <li><a href="#仮説検定と結果の解釈" id="toc-仮説検定と結果の解釈" class="nav-link" data-scroll-target="#仮説検定と結果の解釈">6. 仮説検定と結果の解釈</a></li>
+  <li><a href="#限界効果の計算" id="toc-限界効果の計算" class="nav-link" data-scroll-target="#限界効果の計算">7. 限界効果の計算</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">第8回：プロビットモデル</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>― 線形確率モデルの問題点と対処方法 ―</strong></p>
+<section id="到達目標" class="level2">
+<h2 class="anchored" data-anchor-id="到達目標">到達目標</h2>
+<ul>
+<li>被説明変数が0か1のときの線形確率モデルの問題点と、プロビットモデルの仕組みを説明できる。</li>
+<li>プロビットモデルを理解し、Rで分析を行い、結果を解釈できる。</li>
+</ul>
+<p>今回は、最小二乗法の適用条件を踏まえ、<strong>被説明変数そのものがダミー変数の場合</strong>へ進む。理論と推定結果の読み方を確認した後、Rで米国の有配偶女性の就業データを分析する。</p>
+</section>
+<section id="線形確率モデルの問題点とプロビットモデル" class="level2">
+<h2 class="anchored" data-anchor-id="線形確率モデルの問題点とプロビットモデル">1　線形確率モデルの問題点とプロビットモデル</h2>
+<section id="ダミー変数を被説明変数とした推定モデル" class="level3">
+<h3 class="anchored" data-anchor-id="ダミー変数を被説明変数とした推定モデル">1.1　ダミー変数を被説明変数とした推定モデル</h3>
+<p>これまでは、消費支出や時給など、量的な変数を被説明変数としてきた。一方、就業するか、商品を購入するか、海外に進出するか、ボランティアに参加するかという選択は、<strong>二つの値をとるダミー変数</strong>として表せる。</p>
+<p>例えば、正規雇用で就業しているかどうかを調べるなら、次のように定義する。</p>
+<p><span class="math display">\[
+Y_i=\begin{cases}
+1 &amp; \text{正規雇用で就業している}\\
+0 &amp; \text{それ以外}
+\end{cases}
+\]</span></p>
+<p>教育年数や年齢などの説明変数を用い、<strong>どのような条件の人が <span class="math inline">\(Y_i=1\)</span> になりやすいか</strong>を調べる。被説明変数が離散的な選択を表すモデルは、離散選択モデルや質的変数モデルと呼ばれる。今回は、そのうち二値の結果を扱う。</p>
+<p>第6回では説明変数にダミー変数を用いたが、今回は被説明変数が0か1をとる場合を扱う。</p>
+</section>
+<section id="線形確率モデルの問題点" class="level3">
+<h3 class="anchored" data-anchor-id="線形確率モデルの問題点">1.2　線形確率モデルの問題点</h3>
+<p><span class="math inline">\(Y_i\)</span> は、0か1のいずれかをとる被説明変数である。説明変数全体を <span class="math inline">\(\mathbf{X}_i\)</span> と書き、<strong>その説明変数の値が与えられたときに、<span class="math inline">\(Y_i\)</span> が1となる確率</strong>を、<span class="math inline">\(p_i\)</span> と定義する。</p>
+<p><span class="math display">\[
+p_i\equiv\Pr(Y_i=1\mid\mathbf{X}_i)
+\]</span></p>
+<p><span class="math inline">\(\Pr\)</span> は確率、縦線 <span class="math inline">\(\mid\)</span> は「右側の条件を与えた下で」という意味である。添字 <span class="math inline">\(i\)</span> は観測対象を表し、説明変数の値が異なれば、その条件の下での確率 <span class="math inline">\(p_i\)</span> も異なりうる。</p>
+<p>例えば、説明変数を教育年数 <span class="math inline">\(X_i\)</span> 一つとすると、</p>
+<p><span class="math display">\[
+\Pr(Y_i=1\mid X_i=16)
+\]</span></p>
+<p>は「<strong>教育年数が16年であるという条件の下で、正規雇用で就業している確率</strong>」を表す。縦線の右側の <span class="math inline">\(X_i=16\)</span> が条件、左側の <span class="math inline">\(Y_i=1\)</span> が確率を求めたい事象である。</p>
+<p><span class="math inline">\(Y_i\)</span> は0か1しかとらず、二つの確率の合計は1なので、</p>
+<p><span class="math display">\[
+\Pr(Y_i=0\mid\mathbf{X}_i)
+=1-\Pr(Y_i=1\mid\mathbf{X}_i)
+=1-p_i
+\]</span></p>
+<p>となる。</p>
+<p>離散変数の期待値は、<strong>取りうる各値に、その値をとる確率を掛け、すべて足し合わせたもの</strong>である。条件付き期待値でも同じように、説明変数を条件とした確率を使って計算する。</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(Y_i\mid\mathbf{X}_i)
+&amp;=\sum_{y\in\{0,1\}}y\,\Pr(Y_i=y\mid\mathbf{X}_i)\\
+&amp;=0\times\Pr(Y_i=0\mid\mathbf{X}_i)
++1\times\Pr(Y_i=1\mid\mathbf{X}_i)\\
+&amp;=0\times(1-p_i)+1\times p_i\\
+&amp;=p_i
+\end{aligned}
+\]</span></p>
+<p>0をとる場合の項は0になり、1をとる場合の項は <span class="math inline">\(p_i\)</span> になる。そのため、<strong>0・1変数の条件付き期待値は、1となる条件付き確率に等しい。</strong> これは0・1変数の性質から導かれる関係であり、線形確率モデルやプロビットモデルを仮定しなくても成り立つ。</p>
+<section id="線形確率モデルへのつながり" class="level4">
+<h4 class="anchored" data-anchor-id="線形確率モデルへのつながり">線形確率モデルへのつながり</h4>
+<p>この関係を使い、確率を説明変数の線形の式で表すのが<strong>線形確率モデル（LPM）</strong>である。ここからは説明変数を一つとして、<span class="math inline">\(X_i\)</span> と書く。</p>
+<p><span class="math display">\[
+Y_i=a+bX_i+u_i,\qquad E(u_i\mid X_i)=0
+\]</span></p>
+<p>この式の両辺について、<span class="math inline">\(X_i\)</span> を条件とした期待値をとる。<span class="math inline">\(X_i\)</span> が与えられていれば <span class="math inline">\(a+bX_i\)</span> は決まった値なので、そのまま外に出せる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(Y_i\mid X_i)
+&amp;=E(a+bX_i+u_i\mid X_i)\\
+&amp;=a+bX_i+E(u_i\mid X_i)\\
+&amp;=a+bX_i
+\end{aligned}
+\]</span></p>
+<p>先ほどの <span class="math inline">\(E(Y_i\mid X_i)=p_i\)</span> と合わせると、次の式が得られる。</p>
+<p><span class="math display">\[
+p_i=\Pr(Y_i=1\mid X_i)=a+bX_i
+\]</span></p>
+<p>この式は、<strong><span class="math inline">\(Y_i=1\)</span> となる確率を、説明変数 <span class="math inline">\(X_i\)</span> の一次式で表す</strong>ことを意味する。横軸に <span class="math inline">\(X_i\)</span>、縦軸に確率 <span class="math inline">\(p_i\)</span> をとると、切片が <span class="math inline">\(a\)</span>、傾きが <span class="math inline">\(b\)</span> の直線になる。</p>
+<p><span class="math inline">\(a\)</span> は <span class="math inline">\(X_i=0\)</span> のときのモデル上の確率、<span class="math inline">\(b\)</span> は <span class="math inline">\(X_i\)</span> が1単位大きくなったときの確率の変化量（<span class="math inline">\(100b\)</span> パーセントポイント）を表す。線形確率モデルでは、この変化量は <span class="math inline">\(X_i\)</span> の値によらず一定である。</p>
+<p>しかし、第7回でも確認したように、次の問題がある。</p>
+<ol type="1">
+<li><strong>不均一分散</strong>：<span class="math inline">\(\operatorname{Var}(u_i\mid X_i)=p_i(1-p_i)\)</span> となり、一般に誤差の分散は一定でない。</li>
+<li><strong>予測値の範囲</strong>：直線を用いるため、予測確率が0未満や1超になることがある。</li>
+</ol>
+<p>第1の不均一分散の問題には、第7回で学んだ<strong>不均一分散頑健標準誤差</strong>を用い、標準誤差や検定を修正する方法がある。また、誤差の分散構造を適切に扱える場合には、<strong>加重最小二乗法（WLS）や一般化最小二乗法（GLS）</strong>を用いる方法もある。</p>
+<p>一方、第2の予測値の範囲の問題は、これらの方法では解消できない。例えば、<span class="math inline">\(\hat{p}=-0.4+0.08X\)</span> なら、<span class="math inline">\(X=3\)</span> で <span class="math inline">\(\hat{p}=-0.16\)</span>、<span class="math inline">\(X=20\)</span> で <span class="math inline">\(\hat{p}=1.20\)</span> となる。いずれも確率として解釈できず、予測値を0～1の範囲に収める仕組みが必要となる。</p>
+</section>
+</section>
+<section id="プロビットモデルの考え方" class="level3">
+<h3 class="anchored" data-anchor-id="プロビットモデルの考え方">1.3　プロビットモデルの考え方</h3>
+<p>そこで、<strong>第2の問題に対処し、予測確率を常に0～1の範囲に収めるために、プロビットモデルを導入する。</strong></p>
+<p>プロビットモデルでは、<span class="math inline">\(a+bX_i\)</span> をそのまま確率にせず、標準正規分布の累積分布関数 <span class="math inline">\(\Phi\)</span> を通して確率に変換する。教科書の <span class="math inline">\(F\)</span> に対応する関数を、ここでは <span class="math inline">\(\Phi\)</span> と表す。</p>
+<p><span class="math display">\[
+z_i=a+bX_i,\qquad
+p_i=\Pr(Y_i=1\mid X_i)=\Phi(z_i)
+\]</span></p>
+<p>まず、説明変数の値を <span class="math inline">\(a+bX_i\)</span> に代入して、<span class="math inline">\(z_i\)</span> を計算する。この <span class="math inline">\(z_i\)</span> は、確率に変換する前の値である。次に、標準正規分布のグラフで、横軸の <span class="math inline">\(z_i\)</span> より左側の面積を求める。</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-l08-normal-cdf-area" class="quarto-float quarto-figure quarto-figure-center anchored" alt="標準正規分布の釣鐘型の密度曲線。横軸のz_iの位置に縦の破線を引き、それより左側の曲線の下を緑色で塗っている。この面積がΦ(z_i)であり、確率p_iを表す。">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l08-normal-cdf-area-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l08-normal-cdf-area-1.png" class="img-fluid figure-img" alt="標準正規分布の釣鐘型の密度曲線。横軸のz_iの位置に縦の破線を引き、それより左側の曲線の下を緑色で塗っている。この面積がΦ(z_i)であり、確率p_iを表す。" width="1280">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l08-normal-cdf-area-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;1: 標準正規分布の密度曲線と、z_iより左側の面積Φ(z_i)。図では説明のためz_i＝1としている。
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>この面積が <span class="math inline">\(\Phi(z_i)\)</span> であり、モデルではこれを <span class="math inline">\(Y_i=1\)</span> となる確率 <span class="math inline">\(p_i\)</span> として用いる。分布全体の面積が1なので、こうして求める確率は必ず0～1の範囲に収まる。</p>
+<p><span class="math display">\[
+\Phi(z)=\int_{-\infty}^{z}\phi(t)\,dt,
+\qquad
+\phi(t)=\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{t^2}{2}\right)
+\]</span></p>
+<p><span class="math inline">\(\phi\)</span> は標準正規分布の<strong>密度関数</strong>、<span class="math inline">\(\Phi\)</span> はその面積を左から累積した<strong>分布関数</strong>である。</p>
+<div id="fig-l08-probability-curves" class="quarto-float quarto-figure quarto-figure-center anchored" alt="線形の予測は0未満や1超になる。標準正規累積分布関数を用いたプロビットの予測はS字の曲線になり、常に0から1の間にある。">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l08-probability-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/probability-curves.svg" class="img-fluid figure-img" alt="線形の予測は0未満や1超になる。標準正規累積分布関数を用いたプロビットの予測はS字の曲線になり、常に0から1の間にある。" width="800">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l08-probability-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;2: 線形確率モデルとプロビットモデルの比較。
+</figcaption>
+</figure>
+</div>
+<p>指数 <span class="math inline">\(z\)</span> がどれだけ大きくても小さくても、<span class="math inline">\(\Phi(z)\)</span> は0～1の範囲に収まる。</p>
+<section id="ロジットモデルとの関係" class="level4">
+<h4 class="anchored" data-anchor-id="ロジットモデルとの関係">ロジットモデルとの関係</h4>
+<p>正規分布の累積分布関数の代わりに、ロジスティック分布の累積分布関数を用いるのが<strong>ロジットモデル</strong>である。</p>
+<p><span class="math display">\[
+p_i=\Lambda(z_i)=\frac{\exp(z_i)}{1+\exp(z_i)}
+\]</span></p>
+<p>いずれも確率を0～1に収めるS字のモデルであり、符号や予測確率が似ることも多い。ただし尺度が異なるため、プロビットとロジットの係数の数値をそのまま比較しない。</p>
+<p>プロビットモデルは<strong>最尤法</strong>で推定する。</p>
+</section>
+</section>
+</section>
+<section id="プロビットモデルの推定結果の見方" class="level2">
+<h2 class="anchored" data-anchor-id="プロビットモデルの推定結果の見方">2　プロビットモデルの推定結果の見方</h2>
+<section id="係数と限界効果" class="level3">
+<h3 class="anchored" data-anchor-id="係数と限界効果">係数と限界効果</h3>
+<p><strong>限界効果とは、他の条件を一定としたとき、説明変数の変化に対して被説明変数の期待値（今回の場合は <span class="math inline">\(Y_i=1\)</span> となる確率）がどの程度変化するかを示すものである。</strong></p>
+<p><strong>連続変数の場合</strong> 連続変数 <span class="math inline">\(X_i\)</span> について考える。線形確率モデルでは、確率をそのまま一次式で表すため、係数と限界効果は一致する。</p>
+<p><span class="math display">\[
+p_i=a+bX_i
+\quad\Rightarrow\quad
+\underbrace{\frac{\partial p_i}{\partial X_i}}_{\text{限界効果}}=b
+\]</span></p>
+<p>一方、プロビットモデルでは、まず指数 <span class="math inline">\(z_i\)</span> を求め、それを確率に変換する。</p>
+<p><span class="math display">\[
+z_i=a+bX_i,\qquad p_i=\Phi(z_i)
+\]</span></p>
+<p>このとき、係数と限界効果は次のように区別される。</p>
+<p><span class="math display">\[
+\underbrace{b}_{\text{係数}}
+=\frac{\partial z_i}{\partial X_i},
+\qquad
+\underbrace{\frac{\partial p_i}{\partial X_i}}_{\text{限界効果}}
+=\phi(z_i)b
+\]</span></p>
+<p><strong>係数 <span class="math inline">\(b\)</span> は指数 <span class="math inline">\(z_i\)</span> の変化を、限界効果は確率 <span class="math inline">\(p_i\)</span> の変化を表す。</strong> <span class="math inline">\(\phi(z_i)\)</span> は標準正規分布の密度関数の値である。連続変数の場合は、係数にこの値を掛けたものが限界効果となる。</p>
+<p><strong>ダミー変数の場合</strong></p>
+<p>ダミー変数 <span class="math inline">\(D_i\)</span> は0か1をとるため、<strong>微分ではなく、0から1に変えたときの確率の差</strong>を求める。他の説明変数は同じ値に固定し、<span class="math inline">\(D_i=1\)</span> のときの確率を <span class="math inline">\(p_i(1)\)</span>、<span class="math inline">\(D_i=0\)</span> のときの確率を <span class="math inline">\(p_i(0)\)</span> とすると、</p>
+<p><span class="math display">\[
+\underbrace{p_i(1)-p_i(0)}_{\text{ダミー変数の限界効果}}
+=\Phi(z_{i,0}+\delta)-\Phi(z_{i,0})
+\]</span></p>
+<p>となる。ここで、<span class="math inline">\(z_{i,0}\)</span> は <span class="math inline">\(D_i=0\)</span> としたときの指数、<span class="math inline">\(\delta\)</span> はダミー変数の係数である。連続変数の <span class="math inline">\(\phi(z_i)b\)</span> と、ダミー変数の確率差を区別して読む。</p>
+<p>推定結果を読むときは、掲載されている数値が<strong>係数なのか、限界効果なのか</strong>を確認する。係数だけが掲載されている場合は、符号と統計的な有意性を読み、限界効果が掲載されている場合は、確率がどのくらい変化するかも読む。</p>
+<p>教科書では、日本家計パネル調査（JHPS/KHPS）のデータを使い、ホワイトカラー正規雇用者のうち、<strong>どのような属性の人が労働時間規制の適用除外になりやすいか</strong>を分析している。被説明変数は、適用除外なら1、それ以外なら0のダミー変数であり、性別・年齢・学歴などを説明変数としている。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>説明変数</th>
+<th style="text-align: right;">係数</th>
+<th style="text-align: right;">限界効果</th>
+<th style="text-align: right;">t値</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>男性ダミー</td>
+<td style="text-align: right;">0.052</td>
+<td style="text-align: right;">0.014</td>
+<td style="text-align: right;">0.61</td>
+</tr>
+<tr class="even">
+<td>年齢</td>
+<td style="text-align: right;">0.128</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">4.14</td>
+</tr>
+<tr class="odd">
+<td>大学ダミー</td>
+<td style="text-align: right;">0.191</td>
+<td style="text-align: right;">0.053</td>
+<td style="text-align: right;">3.74</td>
+</tr>
+</tbody>
+</table>
+<section id="係数は何を表すか" class="level4">
+<h4 class="anchored" data-anchor-id="係数は何を表すか">係数は何を表すか</h4>
+<p>年齢の係数0.128は、他の条件を一定としたとき、年齢が1歳高くなると、<strong>確率に変換する前の指数 <span class="math inline">\(z_i\)</span> が0.128大きくなる</strong>ことを表す。係数は正で有意なので、年齢が高い人ほど適用除外となる確率が高い方向の関係があると読める。</p>
+</section>
+<section id="確率への影響の大きさは限界効果で読む" class="level4">
+<h4 class="anchored" data-anchor-id="確率への影響の大きさは限界効果で読む">確率への影響の大きさは限界効果で読む</h4>
+<p>ただし、係数0.128を「確率が12.8パーセントポイント高くなる」と読むことはできない。確率は <span class="math inline">\(p_i=\Phi(z_i)\)</span> と変換して求めるため、<strong>確率がどのくらい変化するかを知るには、係数ではなく限界効果を見る。</strong></p>
+<p>年齢は連続変数なので、限界効果0.004は、他の条件を一定としたとき、年齢が1歳高いことに対応する確率の局所的な変化が約<strong>0.4パーセントポイント</strong>であることを表す。</p>
+<p>一方、大学ダミーでは、大学卒以外の0から大学卒の1への確率差を読む。教科書では、掲載された限界効果0.053を、大学卒の人の確率が他の労働者より<strong>5.3パーセントポイント</strong>高いと説明している。</p>
+<p>男性ダミーは有意ではないため、この結果から男女の確率に差があるとは判断しない。</p>
+</section>
+</section>
+</section>
+<section id="rで一通り分析する" class="level2">
+<h2 class="anchored" data-anchor-id="rで一通り分析する">3　Rで一通り分析する</h2>
+<p>今回は、<strong>教育年数や幼児の有無が、女性の就業確率とどのように関係しているか</strong>を調べる。第5・6回と同じく、理論的背景から仮説を立て、実証モデルを設定してから、データの確認・推定・検定・限界効果の解釈へ進む。</p>
+<section id="理論的背景の確認と仮説の設定" class="level3">
+<h3 class="anchored" data-anchor-id="理論的背景の確認と仮説の設定">1. 理論的背景の確認と仮説の設定</h3>
+<p>教育や就業経験によって知識・技能が蓄積されると、就業によって得られる賃金が高くなると考えられる。働くことで得られる利益が大きければ、仕事に就くことを選びやすくなるため、教育年数と就業確率には正の関係が予想される。</p>
+<p>一方、幼児がいる場合は、育児に必要な時間や保育の費用が就業の負担となり、仕事に就くことを選びにくくなる可能性がある。この考え方から、今回は次の二つの仮説を立てる。</p>
+<div class="chapter-summary">
+<p><strong>今回の仮説</strong></p>
+<ol type="1">
+<li>他の条件を一定としたとき、教育年数が長い人ほど就業確率は高い。</li>
+<li>他の条件を一定としたとき、6歳未満の子どもがいる人の就業確率は、いない人より低い。</li>
+</ol>
+</div>
+<p>教育年数や幼児の有無のほかにも、就業経験・年齢・本人以外の家族所得が就業の選択と関係すると考えられる。これらも説明変数に含め、条件をそろえて二つの仮説を検証する。</p>
+</section>
+<section id="実証モデルの設定" class="level3">
+<h3 class="anchored" data-anchor-id="実証モデルの設定">2. 実証モデルの設定</h3>
+<p>女性 <span class="math inline">\(i\)</span> の就業の有無を、次のダミー変数で表す。</p>
+<p><span class="math display">\[
+Y_i=\begin{cases}
+1 &amp; \text{就業している}\\
+0 &amp; \text{就業していない}
+\end{cases}
+\]</span></p>
+<p>また、6歳未満の子どもがいる場合を <span class="math inline">\(D_i=1\)</span>、いない場合を <span class="math inline">\(D_i=0\)</span> とする。教育年数を <span class="math inline">\(educ_i\)</span>、経験年数を <span class="math inline">\(exper_i\)</span>、年齢を <span class="math inline">\(age_i\)</span>、本人以外の家族所得を <span class="math inline">\(nwifeinc_i\)</span> とし、次のプロビットモデルを設定する。</p>
+<p><span class="math display">\[
+\Pr(Y_i=1\mid\mathbf{X}_i)
+=\Phi\!\left(a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
++\delta D_i+b_4\,nwifeinc_i\right)
+\]</span></p>
+<p><span class="math inline">\(\mathbf{X}_i\)</span> は右辺の説明変数全体を表す。教育年数と幼児ダミーに注目し、それ以外の説明変数を一定とした関係を調べる。</p>
+<ul>
+<li><strong>仮説1に対応する係数</strong>：教育年数の <span class="math inline">\(b_1\)</span>。予想する符号は <span class="math inline">\(b_1&gt;0\)</span>。</li>
+<li><strong>仮説2に対応する係数</strong>：幼児ダミーの <span class="math inline">\(\delta\)</span>。予想する符号は <span class="math inline">\(\delta&lt;0\)</span>。</li>
+</ul>
+<p>今回は交差項や2乗項を含めない基本形を用い、係数と確率の変化の違いを確認する。</p>
+</section>
+<section id="データの選定" class="level3">
+<h3 class="anchored" data-anchor-id="データの選定">3. データの選定</h3>
+<p>RパッケージAERに収録された<strong><code>PSID1976</code>（Mrozデータ）</strong>を用いる。1976年の米国PSID調査に基づき、前年の<strong>1975年の就業状況</strong>などを記録した、有配偶女性753人の横断面データである。年齢は30～60歳であり、1行が1人を表す。PSIDはパネル調査だが、今回使うファイルでは同じ人を複数年追跡していない。</p>
+<p>元データの753行をすべて残し、必要な列の選択と変数の作成のみを行っている。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>列名</th>
+<th>内容・単位</th>
+<th>分析での役割</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>inlf</code></td>
+<td>1975年に就業していれば1、それ以外0</td>
+<td>被説明変数</td>
+</tr>
+<tr class="even">
+<td><code>educ</code></td>
+<td>本人の教育年数（年）</td>
+<td>連続的な説明変数</td>
+</tr>
+<tr class="odd">
+<td><code>exper</code></td>
+<td>本人の過去の実際の就業経験年数（年）</td>
+<td>連続的な説明変数</td>
+</tr>
+<tr class="even">
+<td><code>age</code></td>
+<td>本人の年齢（歳）</td>
+<td>連続的な説明変数</td>
+</tr>
+<tr class="odd">
+<td><code>kidslt6</code></td>
+<td>世帯内の6歳未満の子どもの人数（人）</td>
+<td>幼児の有無の作成に使う</td>
+</tr>
+<tr class="even">
+<td><code>nwifeinc</code></td>
+<td>本人の労働所得を除く年間の家族所得（1975年の千米ドル）</td>
+<td>連続的な説明変数</td>
+</tr>
+</tbody>
+</table>
+<p><code>inlf</code> は原データの <code>participation</code> が <code>yes</code> なら1、<code>no</code> なら0に変換したものである。本講義では、原データで実質的に年間の労働時間が正かどうかを表す指標として、<strong>就業ダミー</strong>と呼ぶ。求職中かどうかなどを含む現在の統計の労働力人口区分を、そのまま表しているわけではない。</p>
+<p><code>exper</code> は第6回の潜在的な経験年数とは異なり、<strong>実際の過去の就業経験年数</strong>である。また、<code>nwifeinc</code> は、家族全体の所得から本人の年間労働所得を差し引き、1,000で割っている。1単位の差は年額1,000ドルの差である。元の金額の丸めなどを含む計算結果にはごく小さな負値もあるが、切り上げや観測の除外はしていない。</p>
+<p>出所：<a href="https://cran.r-universe.dev/AER/doc/manual.html#PSID1976">AERのPSID1976データ説明</a>。元データはGreene（2003）の教材に基づく。授業CSVの作成方法と出所は、<a href="../../data/data_lesson08-source.txt">データ出所メモ</a>に記録している。</p>
+<section id="rの作業準備" class="level4">
+<h4 class="anchored" data-anchor-id="rの作業準備">Rの作業準備</h4>
+<ol type="1">
+<li><code>zemi.Rproj</code>を開く。</li>
+<li><strong>File → New File → R Script</strong>から<code>script/lesson08.R</code>を新規作成する。</li>
+<li><a href="../../data/data_lesson08.csv" download="data_lesson08.csv">data_lesson08.csv をダウンロード</a>し、Project内の<code>data</code>フォルダに保存する。</li>
+</ol>
+<pre class="text"><code>zemi/
+├── zemi.Rproj
+├── data/
+│   └── data_lesson08.csv
+└── script/
+    └── lesson08.R</code></pre>
+<p>今回はRの標準機能だけを使う。データはCSVとして配布するので、AERなどの追加パッケージを学生がインストールする必要はない。以下のコードを上から順に実行する。<a href="lesson08-example.R" download="lesson08-example.R">授業のRスクリプト</a>も利用できる。</p>
+</section>
+</section>
+<section id="予備的分析" class="level3">
+<h3 class="anchored" data-anchor-id="予備的分析">4. 予備的分析</h3>
+<section id="データの読み込みと確認" class="level4">
+<h4 class="anchored" data-anchor-id="データの読み込みと確認">データの読み込みと確認</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>participation <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_lesson08.csv"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(participation)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  inlf educ exper age kidslt6  nwifeinc
+1    1   12    14  32       1 10.910060
+2    1   12     5  30       0 19.499982
+3    1   12    15  35       1 12.039910
+4    1   12     6  34       0  6.799996
+5    1   14     7  31       1 20.100058
+6    1   12    33  54       0  9.859053</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(participation)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 753</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(participation))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    inlf     educ    exper      age  kidslt6 nwifeinc 
+       0        0        0        0        0        0 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(participation)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      inlf             educ           exper            age       
+ Min.   :0.0000   Min.   : 5.00   Min.   : 0.00   Min.   :30.00  
+ 1st Qu.:0.0000   1st Qu.:12.00   1st Qu.: 4.00   1st Qu.:36.00  
+ Median :1.0000   Median :12.00   Median : 9.00   Median :43.00  
+ Mean   :0.5684   Mean   :12.29   Mean   :10.63   Mean   :42.54  
+ 3rd Qu.:1.0000   3rd Qu.:13.00   3rd Qu.:15.00   3rd Qu.:49.00  
+ Max.   :1.0000   Max.   :17.00   Max.   :45.00   Max.   :60.00  
+    kidslt6          nwifeinc       
+ Min.   :0.0000   Min.   :-0.02906  
+ 1st Qu.:0.0000   1st Qu.:13.02504  
+ Median :0.0000   Median :17.70000  
+ Mean   :0.2377   Mean   :20.12896  
+ 3rd Qu.:0.0000   3rd Qu.:24.46600  
+ Max.   :3.0000   Max.   :96.00000  </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(participation<span class="sc">$</span>inlf)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  0   1 
+325 428 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(participation<span class="sc">$</span>inlf)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5683931</code></pre>
+</div>
+</div>
+<p>観測数は753で、使用する変数に欠損値はない。就業者は428人、それ以外は325人である。0・1変数の平均は1の割合に等しく、就業割合は約56.8%となる。<strong>二値の分析では、0の人も重要な観測なので、非就業者を除外しない。</strong></p>
+</section>
+<section id="幼児ダミーの作成と就業割合の比較" class="level4">
+<h4 class="anchored" data-anchor-id="幼児ダミーの作成と就業割合の比較">幼児ダミーの作成と就業割合の比較</h4>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>participation<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(participation<span class="sc">$</span>kidslt6 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(participation<span class="sc">$</span>young_child, participation<span class="sc">$</span>inlf)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+      0   1
+  0 231 375
+  1  94  53</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>group_rate <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"No child under 6"</span> <span class="ot">=</span> <span class="fu">mean</span>(participation<span class="sc">$</span>inlf[participation<span class="sc">$</span>young_child <span class="sc">==</span> <span class="dv">0</span>]),</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Child under 6"</span> <span class="ot">=</span> <span class="fu">mean</span>(participation<span class="sc">$</span>inlf[participation<span class="sc">$</span>young_child <span class="sc">==</span> <span class="dv">1</span>])</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>group_rate</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No child under 6    Child under 6 
+       0.6188119        0.3605442 </code></pre>
+</div>
+</div>
+<p>幼児がいない606人の就業割合は約61.9%、幼児がいる147人では約36.1%である。これを棒グラフで確認する。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  group_rate,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Share employed"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#007c73"</span>, <span class="st">"#b24c3d"</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-l08-participation-groups" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l08-participation-groups-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l08-participation-groups-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1120">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l08-participation-groups-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;3: 幼児の有無別の就業割合（米国、1975年）。他の条件をそろえる前の比較。
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>この差には、年齢・教育年数・就業経験などの違いも含まれている。次に、複数の説明変数を同じモデルに入れて、他の条件をそろえた関係を調べる。</p>
+</section>
+</section>
+<section id="パラメータの推定" class="level3">
+<h3 class="anchored" data-anchor-id="パラメータの推定">5. パラメータの推定</h3>
+<p>プロビットには<code>glm()</code>を使う。回帰式の書き方は<code>lm()</code>と同じで、追加の<code>family</code>引数により、二値データとプロビットの確率変換を指定する。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glm() は一般化線形モデルを推定する。</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># binomial() は二項分布、link = "probit" は標準正規分布による確率変換を指定する。</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>model_probit <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  inlf <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> age <span class="sc">+</span> young_child <span class="sc">+</span> nwifeinc,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> participation,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"probit"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_probit)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = inlf ~ educ + exper + age + young_child + nwifeinc, 
+    family = binomial(link = "probit"), data = participation)
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  0.779467   0.441542   1.765   0.0775 .  
+educ         0.124795   0.024744   5.043 4.57e-07 ***
+exper        0.067793   0.007512   9.025  &lt; 2e-16 ***
+age         -0.056257   0.007770  -7.240 4.49e-13 ***
+young_child -1.042397   0.144730  -7.202 5.92e-13 ***
+nwifeinc    -0.011004   0.004774  -2.305   0.0212 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1029.75  on 752  degrees of freedom
+Residual deviance:  822.58  on 747  degrees of freedom
+AIC: 834.58
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model_probit<span class="sc">$</span>converged</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p><code>converged</code>が<code>TRUE</code>であることを確認する。</p>
+<p>係数を丸めると、推定した指数は次のようになる。</p>
+<p><span class="math display">\[
+\hat{z}_i=0.779+0.125\,educ_i+0.068\,exper_i
+-0.056\,age_i-1.042\,D_i-0.011\,nwifeinc_i
+\]</span></p>
+<p>就業確率は <span class="math inline">\(\hat{p}_i=\Phi(\hat{z}_i)\)</span> であり、この指数そのものではない。</p>
+</section>
+<section id="仮説検定と結果の解釈" class="level3">
+<h3 class="anchored" data-anchor-id="仮説検定と結果の解釈">6. 仮説検定と結果の解釈</h3>
+<p><code>summary()</code>の<code>Coefficients</code>表で、<code>Estimate</code>は係数、<code>Std. Error</code>は標準誤差、<code>z value</code>はz統計量、<code>Pr(&gt;|z|)</code>は両側検定のp値を表す。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>説明変数</th>
+<th style="text-align: right;">係数（概数）</th>
+<th style="text-align: right;">p値（概数）</th>
+<th>5%水準での判定</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>教育年数 <code>educ</code></td>
+<td style="text-align: right;">0.125</td>
+<td style="text-align: right;"><span class="math inline">\(4.57\times10^{-7}\)</span></td>
+<td>有意に正</td>
+</tr>
+<tr class="even">
+<td>経験年数 <code>exper</code></td>
+<td style="text-align: right;">0.068</td>
+<td style="text-align: right;"><span class="math inline">\(&lt;2\times10^{-16}\)</span></td>
+<td>有意に正</td>
+</tr>
+<tr class="odd">
+<td>年齢 <code>age</code></td>
+<td style="text-align: right;">−0.056</td>
+<td style="text-align: right;"><span class="math inline">\(4.49\times10^{-13}\)</span></td>
+<td>有意に負</td>
+</tr>
+<tr class="even">
+<td>幼児ダミー <code>young_child</code></td>
+<td style="text-align: right;">−1.042</td>
+<td style="text-align: right;"><span class="math inline">\(5.92\times10^{-13}\)</span></td>
+<td>有意に負</td>
+</tr>
+<tr class="odd">
+<td>本人以外の家族所得 <code>nwifeinc</code></td>
+<td style="text-align: right;">−0.011</td>
+<td style="text-align: right;">0.0212</td>
+<td>有意に負</td>
+</tr>
+</tbody>
+</table>
+<p>それぞれの帰無仮説は「他の説明変数を含めた上で、その係数が0」であり、有意水準5%の両側検定を行う。教育年数の係数0.125は、確率が12.5ポイント高いことを意味しない。また、幼児ダミーの係数が−1.042でも、確率が104.2ポイント下がるという意味にはならない。</p>
+<p><strong>今回の仮説との対応</strong></p>
+<ul>
+<li><strong>仮説1</strong>：教育年数の係数は約0.125で、有意に正である。他の条件を一定としたとき、教育年数が長い人ほど就業確率が高く、仮説1と整合的な結果である。</li>
+<li><strong>仮説2</strong>：幼児ダミーの係数は約−1.042で、有意に負である。他の条件を一定としたとき、幼児がいる人ほど就業確率が低く、仮説2と整合的な結果である。</li>
+</ul>
+<p>次に限界効果を求め、二つの関係が確率の何パーセントポイントの違いに対応するかを確認する。</p>
+</section>
+<section id="限界効果の計算" class="level3">
+<h3 class="anchored" data-anchor-id="限界効果の計算">7. 限界効果の計算</h3>
+<section id="連続変数の限界効果" class="level4">
+<h4 class="anchored" data-anchor-id="連続変数の限界効果">連続変数の限界効果</h4>
+<p>今回のプロビットモデルでは、各人の連続変数の限界効果は <span class="math inline">\(\phi(\hat{z}_i)\hat{b}_j\)</span> である。まず<code>predict()</code>で指数 <span class="math inline">\(\hat{z}_i\)</span> を取り出し、<code>dnorm()</code>で標準正規分布の密度を計算する。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># type = "link" は、確率に変換する前の指数zを返す。</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>index_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">type =</span> <span class="st">"link"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dnorm() は標準正規分布の密度関数φの値を返す（確率Φとは異なる）。</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>normal_density <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(index_hat)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>marginal_effects <span class="ot">&lt;-</span> <span class="fu">mean</span>(normal_density) <span class="sc">*</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coef</span>(model_probit)[<span class="fu">c</span>(<span class="st">"educ"</span>, <span class="st">"exper"</span>, <span class="st">"age"</span>, <span class="st">"nwifeinc"</span>)]</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>marginal_effects</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        educ        exper          age     nwifeinc 
+ 0.038631107  0.020985605 -0.017414589 -0.003406319 </code></pre>
+</div>
+</div>
+<p>ここでは、各人の限界効果を求め、その平均を結果として示している。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 40%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>変数</th>
+<th style="text-align: right;">限界効果（概数）</th>
+<th>単位を含めた読み方</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>教育年数</td>
+<td style="text-align: right;">0.0386</td>
+<td>教育年数が1年長いと、就業する確率は約3.86パーセントポイント高い。</td>
+</tr>
+<tr class="even">
+<td>経験年数</td>
+<td style="text-align: right;">0.0210</td>
+<td>就業経験が1年長いと、就業する確率は約2.10パーセントポイント高い。</td>
+</tr>
+<tr class="odd">
+<td>年齢</td>
+<td style="text-align: right;">−0.0174</td>
+<td>年齢が1歳高いと、就業する確率は約1.74パーセントポイント低い。</td>
+</tr>
+<tr class="even">
+<td>本人以外の家族所得</td>
+<td style="text-align: right;">−0.00341</td>
+<td>本人以外の家族所得が年額1,000ドル多いと、就業する確率は約0.34パーセントポイント低い。</td>
+</tr>
+</tbody>
+</table>
+<p>ここでは限界効果の点推定を計算している。限界効果そのもののp値や信頼区間を示すには、対応する標準誤差を別に求める必要がある。</p>
+</section>
+<section id="ダミー変数の限界効果" class="level4">
+<h4 class="anchored" data-anchor-id="ダミー変数の限界効果">ダミー変数の限界効果</h4>
+<p>幼児ダミーでは、微分値ではなく<strong>0から1への確率の差</strong>を計算する。全員について、教育・経験・年齢・家族所得はその人の実際の値に固定したまま、幼児ダミーだけを変えた二つのデータを用意する。</p>
+<p>幼児ダミーを0としたときの指数を <span class="math inline">\(\hat{z}_{i,0}\)</span>、幼児ダミーの推定係数を <span class="math inline">\(\hat{\delta}\)</span> とすると、各人の確率とその差は次のようになる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{p}_i(0)&amp;=\Phi(\hat{z}_{i,0})
+&amp;&amp;\text{（幼児なし）}\\
+\hat{p}_i(1)&amp;=\Phi(\hat{z}_{i,0}+\hat{\delta})
+&amp;&amp;\text{（幼児あり）}\\
+\Delta\hat{p}_i&amp;=\hat{p}_i(1)-\hat{p}_i(0)
+&amp;&amp;\text{（0から1への確率の差）}
+\end{aligned}
+\]</span></p>
+<p>コードでは、<code>prob_with_child - prob_no_child</code> で各人の <span class="math inline">\(\Delta\hat{p}_i\)</span> を求め、<code>mean()</code> でその平均 <span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}\Delta\hat{p}_i\)</span> を計算する。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>data_no_child <span class="ot">&lt;-</span> participation</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>data_with_child <span class="ot">&lt;-</span> participation</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>data_no_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data_with_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># type = "response" は、Φ(z)に変換した0～1の確率を返す。</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>prob_no_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_no_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>prob_with_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_with_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>marginal_effect_child <span class="ot">&lt;-</span> <span class="fu">mean</span>(prob_with_child <span class="sc">-</span> prob_no_child)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>marginal_effect_child</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.3288792</code></pre>
+</div>
+</div>
+<p>各人の確率差を平均した限界効果は約−0.329である。したがって、<strong>他の条件を一定としたとき、6歳未満の子どもがいる人の就業確率は、いない人より約32.9パーセントポイント低い</strong>と読む。</p>
+<p>最後に<code>script/lesson08.R</code>を保存する。</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "コピーしました");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "コピーしました");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../lessons/06/index.html" class="pagination-link" aria-label="第6回：重回帰分析とダミー変数">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">第6回：重回帰分析とダミー変数</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
