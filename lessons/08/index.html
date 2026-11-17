@@ -428,26 +428,43 @@ p_i=a+bX_i
 \quad\Rightarrow\quad
 \underbrace{\frac{\partial p_i}{\partial X_i}}_{\text{限界効果}}=b
 \]</span></p>
-<p>一方、プロビットモデルでは、まず指数 <span class="math inline">\(z_i\)</span> を求め、それを確率に変換する。</p>
+<p>一方、プロビットモデルでは、確率は次のように表される。</p>
 <p><span class="math display">\[
 z_i=a+bX_i,\qquad p_i=\Phi(z_i)
 \]</span></p>
-<p>このとき、係数と限界効果は次のように区別される。</p>
+<p>限界効果を求めるには、<strong>まず分布関数 <span class="math inline">\(\Phi(z_i)\)</span> を <span class="math inline">\(z_i\)</span> で微分し、次に <span class="math inline">\(z_i=a+bX_i\)</span> を <span class="math inline">\(X_i\)</span> で微分して、両者を掛け合わせる。</strong> これは、合成関数の微分（連鎖律）である。したがって、限界効果は次のようになる。</p>
 <p><span class="math display">\[
-\underbrace{b}_{\text{係数}}
-=\frac{\partial z_i}{\partial X_i},
-\qquad
 \underbrace{\frac{\partial p_i}{\partial X_i}}_{\text{限界効果}}
+=\underbrace{\frac{d\Phi(z_i)}{dz_i}}_{\phi(z_i)}
+\times
+\underbrace{\frac{\partial z_i}{\partial X_i}}_{b}
 =\phi(z_i)b
+=\phi(a+bX_i)b
 \]</span></p>
 <p><strong>係数 <span class="math inline">\(b\)</span> は指数 <span class="math inline">\(z_i\)</span> の変化を、限界効果は確率 <span class="math inline">\(p_i\)</span> の変化を表す。</strong> <span class="math inline">\(\phi(z_i)\)</span> は標準正規分布の密度関数の値である。連続変数の場合は、係数にこの値を掛けたものが限界効果となる。</p>
 <p><strong>ダミー変数の場合</strong></p>
-<p>ダミー変数 <span class="math inline">\(D_i\)</span> は0か1をとるため、<strong>微分ではなく、0から1に変えたときの確率の差</strong>を求める。他の説明変数は同じ値に固定し、<span class="math inline">\(D_i=1\)</span> のときの確率を <span class="math inline">\(p_i(1)\)</span>、<span class="math inline">\(D_i=0\)</span> のときの確率を <span class="math inline">\(p_i(0)\)</span> とすると、</p>
+<p>ダミー変数 <span class="math inline">\(D_i\)</span> を説明変数に含むプロビットモデルを考える。</p>
+<p><span class="math display">\[
+z_i=a+bX_i+\delta D_i,\qquad
+p_i=\Pr(Y_i=1\mid X_i,D_i)=\Phi(a+bX_i+\delta D_i)
+\]</span></p>
+<p>ここで、<span class="math inline">\(D_i\)</span> は0または1をとるダミー変数、<span class="math inline">\(\delta\)</span> はその係数である。他の説明変数 <span class="math inline">\(X_i\)</span> を同じ値に固定して、<span class="math inline">\(D_i\)</span> が1の場合と0の場合を比べる。</p>
+<p><strong><span class="math inline">\(D_i=1\)</span> のとき</strong>、モデルは次のようになる。</p>
+<p><span class="math display">\[
+p_i(1)=\Phi(a+bX_i+\delta\times1)
+=\Phi(a+bX_i+\delta)
+\]</span></p>
+<p><strong><span class="math inline">\(D_i=0\)</span> のとき</strong>、モデルは次のようになる。</p>
+<p><span class="math display">\[
+p_i(0)=\Phi(a+bX_i+\delta\times0)
+=\Phi(a+bX_i)
+\]</span></p>
+<p>したがって、ダミー変数の限界効果は、<strong><span class="math inline">\(D_i\)</span> を0から1に変えたときの確率の差</strong>として求める。</p>
 <p><span class="math display">\[
 \underbrace{p_i(1)-p_i(0)}_{\text{ダミー変数の限界効果}}
-=\Phi(z_{i,0}+\delta)-\Phi(z_{i,0})
+=\Phi(a+bX_i+\delta)-\Phi(a+bX_i)
 \]</span></p>
-<p>となる。ここで、<span class="math inline">\(z_{i,0}\)</span> は <span class="math inline">\(D_i=0\)</span> としたときの指数、<span class="math inline">\(\delta\)</span> はダミー変数の係数である。連続変数の <span class="math inline">\(\phi(z_i)b\)</span> と、ダミー変数の確率差を区別して読む。</p>
+<p><strong>係数 <span class="math inline">\(\delta\)</span> そのものは、限界効果ではない。</strong> <span class="math inline">\(\delta\)</span> は、<span class="math inline">\(D_i\)</span> を0から1に変えたときの、確率に変換する前の指数の差を表す。確率の差を求めるには、それぞれを分布関数 <span class="math inline">\(\Phi\)</span> で確率に変換してから、差をとる必要がある。</p>
 <p>推定結果を読むときは、掲載されている数値が<strong>係数なのか、限界効果なのか</strong>を確認する。係数だけが掲載されている場合は、符号と統計的な有意性を読み、限界効果が掲載されている場合は、確率がどのくらい変化するかも読む。</p>
 <p>教科書では、日本家計パネル調査（JHPS/KHPS）のデータを使い、ホワイトカラー正規雇用者のうち、<strong>どのような属性の人が労働時間規制の適用除外になりやすいか</strong>を分析している。被説明変数は、適用除外なら1、それ以外なら0のダミー変数であり、性別・年齢・学歴などを説明変数としている。</p>
 <table class="caption-top table">
@@ -486,7 +503,7 @@ z_i=a+bX_i,\qquad p_i=\Phi(z_i)
 </section>
 <section id="確率への影響の大きさは限界効果で読む" class="level4">
 <h4 class="anchored" data-anchor-id="確率への影響の大きさは限界効果で読む">確率への影響の大きさは限界効果で読む</h4>
-<p>ただし、係数0.128を「確率が12.8パーセントポイント高くなる」と読むことはできない。確率は <span class="math inline">\(p_i=\Phi(z_i)\)</span> と変換して求めるため、<strong>確率がどのくらい変化するかを知るには、係数ではなく限界効果を見る。</strong></p>
+<p>ただし、係数0.128を「確率が12.8パーセントポイント高くなる」と読むことはできない。<strong>年齢が1歳高くなると確率がどのくらい変化するかを知るには、限界効果を見る。</strong></p>
 <p>年齢は連続変数なので、限界効果0.004は、他の条件を一定としたとき、年齢が1歳高いことに対応する確率の局所的な変化が約<strong>0.4パーセントポイント</strong>であることを表す。</p>
 <p>一方、大学ダミーでは、大学卒以外の0から大学卒の1への確率差を読む。教科書では、掲載された限界効果0.053を、大学卒の人の確率が他の労働者より<strong>5.3パーセントポイント</strong>高いと説明している。</p>
 <p>男性ダミーは有意ではないため、この結果から男女の確率に差があるとは判断しない。</p>
@@ -531,7 +548,6 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
 <li><strong>仮説1に対応する係数</strong>：教育年数の <span class="math inline">\(b_1\)</span>。予想する符号は <span class="math inline">\(b_1&gt;0\)</span>。</li>
 <li><strong>仮説2に対応する係数</strong>：幼児ダミーの <span class="math inline">\(\delta\)</span>。予想する符号は <span class="math inline">\(\delta&lt;0\)</span>。</li>
 </ul>
-<p>今回は交差項や2乗項を含めない基本形を用い、係数と確率の変化の違いを確認する。</p>
 </section>
 <section id="データの選定" class="level3">
 <h3 class="anchored" data-anchor-id="データの選定">3. データの選定</h3>
@@ -661,7 +677,7 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
 </section>
 <section id="幼児の有無別の就業割合" class="level4">
 <h4 class="anchored" data-anchor-id="幼児の有無別の就業割合">幼児の有無別の就業割合</h4>
-<p>まず、幼児の有無を行、就業の有無を列としてクロス集計し、それぞれの人数を確認する。続いて、幼児なし・ありの2群に分け、就業ダミー <code>inlf</code> の平均から各群の就業割合を求める。</p>
+<p>まず、幼児の有無を行、就業の有無を列としてクロス集計し、それぞれの人数を確認する。</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(participation<span class="sc">$</span>young_child, participation<span class="sc">$</span>inlf)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -670,6 +686,11 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
   0 231 375
   1  94  53</code></pre>
 </div>
+</div>
+<p>この結果から、<strong>幼児がいない人は非就業者231人・就業者375人、幼児がいる人は非就業者94人・就業者53人</strong>であることが分かる。幼児がいないグループでは就業者の方が多く、幼児がいるグループでは非就業者の方が多い。ただし、グループ全体の人数はそれぞれ606人と147人で異なるため、次に人数を割合に直して比較する。</p>
+<p>次のコードでは、<strong>6歳未満の子どもがいない人と、いる人に分けて、それぞれの就業割合を計算する。</strong> <code>participation$inlf[participation$young_child == 0]</code>は、幼児がいない人の<code>inlf</code>だけを取り出す。<code>== 1</code>にすると、幼児がいる人の<code>inlf</code>を取り出せる。<code>inlf</code>は就業者が1、それ以外が0なので、<code>mean()</code>で平均を求めると、そのグループの就業割合になる。</p>
+<p>計算した二つの割合に名前を付け、<code>c()</code>で一つのベクトルにまとめて<code>group_rate</code>に保存する。最後の<code>group_rate</code>で、その内容を表示する。</p>
+<div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>group_rate <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"No child under 6"</span> <span class="ot">=</span> <span class="fu">mean</span>(participation<span class="sc">$</span>inlf[participation<span class="sc">$</span>young_child <span class="sc">==</span> <span class="dv">0</span>]),</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Child under 6"</span> <span class="ot">=</span> <span class="fu">mean</span>(participation<span class="sc">$</span>inlf[participation<span class="sc">$</span>young_child <span class="sc">==</span> <span class="dv">1</span>])</span>
@@ -680,7 +701,7 @@ z_i=a+b_1\,educ_i+b_2\,exper_i+b_3\,age_i
        0.6188119        0.3605442 </code></pre>
 </div>
 </div>
-<p>幼児がいない606人の就業割合は約61.9%、幼児がいる147人では約36.1%である。</p>
+<p>幼児がいない606人の就業割合は約61.9%、幼児がいる147人では約36.1%である。この比較から、幼児がいることは就業確率の低さと関連している可能性がうかがえる。</p>
 <p>次に、求めた2群の就業割合を棒グラフにし、幼児の有無による違いを比較する。</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
@@ -812,22 +833,41 @@ Number of Fisher Scoring iterations: 4</code></pre>
 <h3 class="anchored" data-anchor-id="限界効果の計算">7. 限界効果の計算</h3>
 <section id="連続変数の限界効果" class="level4">
 <h4 class="anchored" data-anchor-id="連続変数の限界効果">連続変数の限界効果</h4>
-<p>今回のプロビットモデルでは、各人の連続変数の限界効果は <span class="math inline">\(\phi(\hat{z}_i)\hat{b}_j\)</span> である。まず<code>predict()</code>で指数 <span class="math inline">\(\hat{z}_i\)</span> を取り出し、<code>dnorm()</code>で標準正規分布の密度を計算する。</p>
+<p>連続変数の限界効果は、次の手順で計算する。</p>
+<ol type="1">
+<li><strong>各人の指数を求める。</strong> 推定した回帰式に、各人の教育年数・経験年数・年齢・幼児ダミー・家族所得の値を代入し、指数 <span class="math inline">\(\hat{z}_i\)</span> を求める。Rでは<code>predict(model_probit, type = "link")</code>で計算できる。</li>
+<li><strong>密度関数の値に係数を掛ける。</strong> <code>dnorm()</code>で各人の <span class="math inline">\(\phi(\hat{z}_i)\)</span> を計算し、注目する連続変数の推定係数 <span class="math inline">\(\hat{b}_j\)</span> を掛ける。例えば、教育年数なら、<span class="math inline">\(\phi(\hat{z}_i)\)</span> に<code>educ</code>の係数を掛けた値が、その人の限界効果となる。</li>
+<li><strong>全員の限界効果を平均する。</strong> 各人について求めた限界効果を平均し、標本全体の<strong>平均限界効果</strong>として示す。係数 <span class="math inline">\(\hat{b}_j\)</span> は全員に共通なので、密度関数の値を先に平均してから係数を掛けても、同じ結果になる。</li>
+</ol>
+<p><span class="math display">\[
+\text{平均限界効果}
+=\frac{1}{n}\sum_{i=1}^{n}\phi(\hat{z}_i)\hat{b}_j
+=\left\{\frac{1}{n}\sum_{i=1}^{n}\phi(\hat{z}_i)\right\}\hat{b}_j
+\]</span></p>
+<p>次のコードでは、<code>mean(normal_density)</code>で密度関数の値を平均し、<code>coef()</code>で取り出した四つの連続変数の係数にそれぞれ掛ける。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># type = "link" は、確率に変換する前の指数zを返す。</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>index_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">type =</span> <span class="st">"link"</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dnorm() は標準正規分布の密度関数φの値を返す（確率Φとは異なる）。</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>normal_density <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(index_hat)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>marginal_effects <span class="ot">&lt;-</span> <span class="fu">mean</span>(normal_density) <span class="sc">*</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coef</span>(model_probit)[<span class="fu">c</span>(<span class="st">"educ"</span>, <span class="st">"exper"</span>, <span class="st">"age"</span>, <span class="st">"nwifeinc"</span>)]</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>marginal_effects</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 各人の指数を求める。</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># type = "link" は、確率に変換する前の指数zを返す。</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>index_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">type =</span> <span class="st">"link"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 各人の限界効果に使う密度関数の値を求める。</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># dnorm() は標準正規分布の密度関数φの値を返す（確率Φとは異なる）。</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># この値に注目する変数の係数を掛けると、各人の限界効果になる。</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>normal_density <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(index_hat)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 全員の限界効果を平均する。</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 係数は全員に共通なので、密度関数の値を先に平均し、各変数の係数を掛ける。</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co"># coef()から教育年数・経験年数・年齢・家族所得の係数を取り出す。</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>marginal_effects <span class="ot">&lt;-</span> <span class="fu">mean</span>(normal_density) <span class="sc">*</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coef</span>(model_probit)[<span class="fu">c</span>(<span class="st">"educ"</span>, <span class="st">"exper"</span>, <span class="st">"age"</span>, <span class="st">"nwifeinc"</span>)]</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 四つの変数の平均限界効果を表示する。</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>marginal_effects</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        educ        exper          age     nwifeinc 
  0.038631107  0.020985605 -0.017414589 -0.003406319 </code></pre>
 </div>
 </div>
-<p>ここでは、各人の限界効果を求め、その平均を結果として示している。</p>
+<p>計算した平均限界効果は、次のように読める。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 30%">
@@ -868,7 +908,12 @@ Number of Fisher Scoring iterations: 4</code></pre>
 </section>
 <section id="ダミー変数の限界効果" class="level4">
 <h4 class="anchored" data-anchor-id="ダミー変数の限界効果">ダミー変数の限界効果</h4>
-<p>幼児ダミーでは、微分値ではなく<strong>0から1への確率の差</strong>を計算する。全員について、教育・経験・年齢・家族所得はその人の実際の値に固定したまま、幼児ダミーだけを変えた二つのデータを用意する。</p>
+<p>幼児ダミーの限界効果は、次の手順で計算する。</p>
+<ol type="1">
+<li><strong>幼児あり・なしの二つのデータを用意する。</strong> 元データを二つコピーし、一方は全員の<code>young_child</code>を1、もう一方は0にする。教育年数・経験年数・年齢・家族所得は、各人の実際の値のままにする。</li>
+<li><strong>各人の確率の差を求める。</strong> 二つのデータに<code>predict(model_probit, newdata = ..., type = "response")</code>を適用し、幼児あり・なしの場合の就業確率をそれぞれ計算する。同じ人について「幼児ありの確率 − 幼児なしの確率」を求めると、その人の幼児ダミーの限界効果になる。</li>
+<li><strong>全員の限界効果を平均する。</strong> 各人の確率差を<code>mean()</code>で平均し、幼児ダミーの<strong>平均限界効果</strong>として示す。</li>
+</ol>
 <p>幼児ダミーを0としたときの指数を <span class="math inline">\(\hat{z}_{i,0}\)</span>、幼児ダミーの推定係数を <span class="math inline">\(\hat{\delta}\)</span> とすると、各人の確率とその差は次のようになる。</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -880,31 +925,42 @@ Number of Fisher Scoring iterations: 4</code></pre>
 &amp;&amp;\text{（0から1への確率の差）}
 \end{aligned}
 \]</span></p>
-<p>コードでは、<code>prob_with_child - prob_no_child</code> で各人の <span class="math inline">\(\Delta\hat{p}_i\)</span> を求め、<code>mean()</code> でその平均 <span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}\Delta\hat{p}_i\)</span> を計算する。</p>
+<p>平均限界効果は、この確率差を全員について平均したものである。</p>
+<p><span class="math display">\[
+\text{平均限界効果}
+=\frac{1}{n}\sum_{i=1}^{n}\Delta\hat{p}_i
+=\frac{1}{n}\sum_{i=1}^{n}\left\{\hat{p}_i(1)-\hat{p}_i(0)\right\}
+\]</span></p>
+<p>次のコードでは、各人の確率差を<code>individual_effect_child</code>に保存し、その平均を<code>marginal_effect_child</code>として求める。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 元データをコピーし、「幼児なし」の比較用データを用意する。</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>data_no_child <span class="ot">&lt;-</span> participation</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 元データをコピーし、「幼児あり」の比較用データを用意する。</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data_with_child <span class="ot">&lt;-</span> participation</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 他の変数はそのままに、全員の幼児ダミーを0（幼児なし）にする。</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>data_no_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 他の変数はそのままに、全員の幼児ダミーを1（幼児あり）にする。</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>data_with_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 幼児あり・なしの二つのデータを用意する。</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 元データをコピーし、全員の幼児ダミーを1（幼児あり）にする。</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>data_with_child <span class="ot">&lt;-</span> participation</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data_with_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># もう一つコピーし、全員の幼児ダミーを0（幼児なし）にする。</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># どちらも、他の説明変数は各人の実際の値のままにする。</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>data_no_child <span class="ot">&lt;-</span> participation</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>data_no_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 「幼児なし」とした各人の就業確率を計算する。type = "response" はΦ(z)に変換した確率を返す。</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>prob_no_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_no_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 「幼児あり」とした各人の就業確率を計算する。</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 各人の確率の差を求める。</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># type = "response" は、指数をΦ(z)で変換した就業確率を返す。</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 「幼児あり」とした場合の各人の就業確率を計算する。</span></span>
 <span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>prob_with_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_with_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 各人の「幼児あり－幼児なし」の確率差を求め、その平均を保存する。</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>marginal_effect_child <span class="ot">&lt;-</span> <span class="fu">mean</span>(prob_with_child <span class="sc">-</span> prob_no_child)</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 求めた幼児ダミーの限界効果を表示する。</span></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>marginal_effect_child</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 「幼児なし」とした場合の各人の就業確率を計算する。</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>prob_no_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_no_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 同じ人の「幼児あり－幼児なし」の確率差が、その人の限界効果になる。</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>individual_effect_child <span class="ot">&lt;-</span> prob_with_child <span class="sc">-</span> prob_no_child</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 全員の限界効果を平均する。</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 各人の確率差の平均を求める。</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>marginal_effect_child <span class="ot">&lt;-</span> <span class="fu">mean</span>(individual_effect_child)</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 幼児ダミーの平均限界効果を表示する。</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>marginal_effect_child</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.3288792</code></pre>
 </div>
 </div>
-<p>各人の確率差を平均した限界効果は約−0.329である。したがって、<strong>他の条件を一定としたとき、6歳未満の子どもがいる人の就業確率は、いない人より約32.9パーセントポイント低い</strong>と読む。</p>
+<p>幼児ダミーの平均限界効果は約−0.329である。この結果から、<strong>教育年数や年齢などの条件が同じであれば、6歳未満の子どもがいる人は、いない人に比べて、就業する確率が平均で約32.9パーセントポイント低い</strong>ことが分かる。</p>
 <p>最後に<code>script/lesson08.R</code>を保存する。</p>
 
 
