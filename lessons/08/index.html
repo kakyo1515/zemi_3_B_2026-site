@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>第8回：プロビットモデル – 2026年度ゼミナールB（何研）</title>
+<title>第8回：プロビットモデル・ロジットモデル – 2026年度ゼミナールB（何研）</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -81,7 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37294f0e61b532b0f7ebd5ccc0471b30.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c2e880a5cb14d7a116eba1e73095a7f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-3d267d0c02e25bc1992225f3c2089ba0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -151,7 +151,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lessons/08/index.html">第8回：プロビットモデル</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lessons/08/index.html">第8回：プロビットモデル・ロジットモデル</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="サーチ" onclick="window.quartoOpenSearch();">
@@ -221,7 +221,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../lessons/08/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">第8回：プロビットモデル</span></a>
+ <span class="menu-text">第8回：プロビットモデル・ロジットモデル</span></a>
   </div>
 </li>
     </ul>
@@ -255,6 +255,20 @@ window.Quarto = {
   <li><a href="#仮説検定と結果の解釈" id="toc-仮説検定と結果の解釈" class="nav-link" data-scroll-target="#仮説検定と結果の解釈">6. 仮説検定と結果の解釈</a></li>
   <li><a href="#限界効果の計算" id="toc-限界効果の計算" class="nav-link" data-scroll-target="#限界効果の計算">7. 限界効果の計算</a></li>
   </ul></li>
+  <li><a href="#補足-ロジットモデル" id="toc-補足-ロジットモデル" class="nav-link" data-scroll-target="#補足-ロジットモデル">補足　ロジットモデル</a>
+  <ul class="collapse">
+  <li><a href="#ロジスティック分布による確率への変換" id="toc-ロジスティック分布による確率への変換" class="nav-link" data-scroll-target="#ロジスティック分布による確率への変換">ロジスティック分布による確率への変換</a></li>
+  <li><a href="#オッズと係数" id="toc-オッズと係数" class="nav-link" data-scroll-target="#オッズと係数">オッズと係数</a></li>
+  <li><a href="#限界効果" id="toc-限界効果" class="nav-link" data-scroll-target="#限界効果">限界効果</a></li>
+  <li><a href="#プロビットモデルとの違い" id="toc-プロビットモデルとの違い" class="nav-link" data-scroll-target="#プロビットモデルとの違い">プロビットモデルとの違い</a></li>
+  </ul></li>
+  <li><a href="#演習問題" id="toc-演習問題" class="nav-link" data-scroll-target="#演習問題">演習問題</a>
+  <ul class="collapse">
+  <li><a href="#使用するデータと準備" id="toc-使用するデータと準備" class="nav-link" data-scroll-target="#使用するデータと準備">使用するデータと準備</a></li>
+  <li><a href="#課題8-1ロジットモデルを推定する" id="toc-課題8-1ロジットモデルを推定する" class="nav-link" data-scroll-target="#課題8-1ロジットモデルを推定する">課題8-1｜ロジットモデルを推定する</a></li>
+  <li><a href="#課題8-2プロビットモデルと係数を比較する" id="toc-課題8-2プロビットモデルと係数を比較する" class="nav-link" data-scroll-target="#課題8-2プロビットモデルと係数を比較する">課題8-2｜プロビットモデルと係数を比較する</a></li>
+  <li><a href="#課題8-3限界効果を計算する" id="toc-課題8-3限界効果を計算する" class="nav-link" data-scroll-target="#課題8-3限界効果を計算する">課題8-3｜限界効果を計算する</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -263,7 +277,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">第8回：プロビットモデル</h1>
+<h1 class="title">第8回：プロビットモデル・ロジットモデル</h1>
 </div>
 
 
@@ -286,8 +300,9 @@ window.Quarto = {
 <ul>
 <li>被説明変数が0か1のときの線形確率モデルの問題点と、プロビットモデルの仕組みを説明できる。</li>
 <li>プロビットモデルを理解し、Rで分析を行い、結果を解釈できる。</li>
+<li>ロジットモデルの仕組みと、プロビットモデルとの違いを説明できる。</li>
 </ul>
-<p>今回は、最小二乗法の適用条件を踏まえ、<strong>被説明変数そのものがダミー変数の場合</strong>へ進む。理論と推定結果の読み方を確認した後、Rで米国の有配偶女性の就業データを分析する。</p>
+<p>今回は、最小二乗法の適用条件を踏まえ、<strong>被説明変数そのものがダミー変数の場合</strong>へ進む。理論と推定結果の読み方を確認した後、Rで米国の有配偶女性の就業データを分析する。最後に、補足としてロジットモデルを紹介し、演習問題で同じデータをロジットモデルでも推定する。</p>
 </section>
 <section id="線形確率モデルの問題点とプロビットモデル" class="level2">
 <h2 class="anchored" data-anchor-id="線形確率モデルの問題点とプロビットモデル">1　線形確率モデルの問題点とプロビットモデル</h2>
@@ -406,15 +421,8 @@ p_i=\Pr(Y_i=1\mid X_i)=\Phi(z_i)
 </figure>
 </div>
 <p>指数 <span class="math inline">\(z\)</span> がどれだけ大きくても小さくても、<span class="math inline">\(\Phi(z)\)</span> は0～1の範囲に収まる。</p>
-<section id="ロジットモデルとの関係" class="level4">
-<h4 class="anchored" data-anchor-id="ロジットモデルとの関係">ロジットモデルとの関係</h4>
-<p>正規分布の累積分布関数の代わりに、ロジスティック分布の累積分布関数を用いるのが<strong>ロジットモデル</strong>である。</p>
-<p><span class="math display">\[
-p_i=\Lambda(z_i)=\frac{\exp(z_i)}{1+\exp(z_i)}
-\]</span></p>
-<p>いずれも確率を0～1に収めるS字のモデルであり、符号や予測確率が似ることも多い。ただし尺度が異なるため、プロビットとロジットの係数の数値をそのまま比較しない。</p>
+<p>標準正規分布の代わりにロジスティック分布を用いる<strong>ロジットモデル</strong>も、よく使われる。ロジットモデルについては、最後の「補足」でまとめて扱う。</p>
 <p>プロビットモデルは<strong>最尤法</strong>で推定する。</p>
-</section>
 </section>
 </section>
 <section id="プロビットモデルの推定結果の見方" class="level2">
@@ -763,12 +771,7 @@ AIC: 834.58
 
 Number of Fisher Scoring iterations: 4</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model_probit<span class="sc">$</span>converged</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] TRUE</code></pre>
 </div>
-</div>
-<p><code>converged</code>が<code>TRUE</code>であることを確認する。</p>
 <p>係数を丸めると、推定した指数は次のようになる。</p>
 <p><span class="math display">\[
 \hat{z}_i=0.779+0.125\,educ_i+0.068\,exper_i
@@ -846,22 +849,22 @@ Number of Fisher Scoring iterations: 4</code></pre>
 \]</span></p>
 <p>次のコードでは、<code>mean(normal_density)</code>で密度関数の値を平均し、<code>coef()</code>で取り出した四つの連続変数の係数にそれぞれ掛ける。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 各人の指数を求める。</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># type = "link" は、確率に変換する前の指数zを返す。</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>index_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">type =</span> <span class="st">"link"</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 各人の限界効果に使う密度関数の値を求める。</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># dnorm() は標準正規分布の密度関数φの値を返す（確率Φとは異なる）。</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># この値に注目する変数の係数を掛けると、各人の限界効果になる。</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>normal_density <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(index_hat)</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 全員の限界効果を平均する。</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 係数は全員に共通なので、密度関数の値を先に平均し、各変数の係数を掛ける。</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co"># coef()から教育年数・経験年数・年齢・家族所得の係数を取り出す。</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>marginal_effects <span class="ot">&lt;-</span> <span class="fu">mean</span>(normal_density) <span class="sc">*</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coef</span>(model_probit)[<span class="fu">c</span>(<span class="st">"educ"</span>, <span class="st">"exper"</span>, <span class="st">"age"</span>, <span class="st">"nwifeinc"</span>)]</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 四つの変数の平均限界効果を表示する。</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>marginal_effects</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 各人の指数を求める。</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># type = "link" は、確率に変換する前の指数zを返す。</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>index_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">type =</span> <span class="st">"link"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 各人の限界効果に使う密度関数の値を求める。</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># dnorm() は標準正規分布の密度関数φの値を返す（確率Φとは異なる）。</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># この値に注目する変数の係数を掛けると、各人の限界効果になる。</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>normal_density <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(index_hat)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 全員の限界効果を平均する。</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 係数は全員に共通なので、密度関数の値を先に平均し、各変数の係数を掛ける。</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co"># coef()から教育年数・経験年数・年齢・家族所得の係数を取り出す。</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>marginal_effects <span class="ot">&lt;-</span> <span class="fu">mean</span>(normal_density) <span class="sc">*</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coef</span>(model_probit)[<span class="fu">c</span>(<span class="st">"educ"</span>, <span class="st">"exper"</span>, <span class="st">"age"</span>, <span class="st">"nwifeinc"</span>)]</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 四つの変数の平均限界効果を表示する。</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>marginal_effects</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        educ        exper          age     nwifeinc 
  0.038631107  0.020985605 -0.017414589 -0.003406319 </code></pre>
@@ -933,38 +936,279 @@ Number of Fisher Scoring iterations: 4</code></pre>
 \]</span></p>
 <p>次のコードでは、各人の確率差を<code>individual_effect_child</code>に保存し、その平均を<code>marginal_effect_child</code>として求める。</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 幼児あり・なしの二つのデータを用意する。</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 元データをコピーし、全員の幼児ダミーを1（幼児あり）にする。</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>data_with_child <span class="ot">&lt;-</span> participation</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data_with_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># もう一つコピーし、全員の幼児ダミーを0（幼児なし）にする。</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># どちらも、他の説明変数は各人の実際の値のままにする。</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>data_no_child <span class="ot">&lt;-</span> participation</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>data_no_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 各人の確率の差を求める。</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># type = "response" は、指数をΦ(z)で変換した就業確率を返す。</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 「幼児あり」とした場合の各人の就業確率を計算する。</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>prob_with_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_with_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 「幼児なし」とした場合の各人の就業確率を計算する。</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>prob_no_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_no_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 同じ人の「幼児あり－幼児なし」の確率差が、その人の限界効果になる。</span></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>individual_effect_child <span class="ot">&lt;-</span> prob_with_child <span class="sc">-</span> prob_no_child</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 全員の限界効果を平均する。</span></span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 各人の確率差の平均を求める。</span></span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>marginal_effect_child <span class="ot">&lt;-</span> <span class="fu">mean</span>(individual_effect_child)</span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 幼児ダミーの平均限界効果を表示する。</span></span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>marginal_effect_child</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 幼児あり・なしの二つのデータを用意する。</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 元データをコピーし、全員の幼児ダミーを1（幼児あり）にする。</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>data_with_child <span class="ot">&lt;-</span> participation</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>data_with_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># もう一つコピーし、全員の幼児ダミーを0（幼児なし）にする。</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># どちらも、他の説明変数は各人の実際の値のままにする。</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>data_no_child <span class="ot">&lt;-</span> participation</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>data_no_child<span class="sc">$</span>young_child <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 各人の確率の差を求める。</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"># type = "response" は、指数をΦ(z)で変換した就業確率を返す。</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 「幼児あり」とした場合の各人の就業確率を計算する。</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>prob_with_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_with_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 「幼児なし」とした場合の各人の就業確率を計算する。</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>prob_no_child <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_probit, <span class="at">newdata =</span> data_no_child, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 同じ人の「幼児あり－幼児なし」の確率差が、その人の限界効果になる。</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>individual_effect_child <span class="ot">&lt;-</span> prob_with_child <span class="sc">-</span> prob_no_child</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 全員の限界効果を平均する。</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 各人の確率差の平均を求める。</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>marginal_effect_child <span class="ot">&lt;-</span> <span class="fu">mean</span>(individual_effect_child)</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 幼児ダミーの平均限界効果を表示する。</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>marginal_effect_child</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.3288792</code></pre>
 </div>
 </div>
 <p>幼児ダミーの平均限界効果は約−0.329である。この結果から、<strong>教育年数や年齢などの条件が同じであれば、6歳未満の子どもがいる人は、いない人に比べて、就業する確率が平均で約32.9パーセントポイント低い</strong>ことが分かる。</p>
 <p>最後に<code>script/lesson08.R</code>を保存する。</p>
-
-
 </section>
+</section>
+</section>
+<section id="補足-ロジットモデル" class="level2">
+<h2 class="anchored" data-anchor-id="補足-ロジットモデル">補足　ロジットモデル</h2>
+<section id="ロジスティック分布による確率への変換" class="level3">
+<h3 class="anchored" data-anchor-id="ロジスティック分布による確率への変換">ロジスティック分布による確率への変換</h3>
+<p>プロビットモデルでは、指数 <span class="math inline">\(z_i\)</span> を標準正規分布の分布関数 <span class="math inline">\(\Phi\)</span> で確率に変換した。<strong>ロジットモデル</strong>では、<span class="math inline">\(\Phi\)</span> の代わりに、<strong>標準ロジスティック分布</strong>の分布関数 <span class="math inline">\(\Lambda\)</span> を用いる。</p>
+<p><span class="math display">\[
+z_i=a+bX_i,\qquad
+p_i=\Pr(Y_i=1\mid X_i)=\Lambda(z_i)=\frac{\exp(z_i)}{1+\exp(z_i)}=\frac{1}{1+\exp(-z_i)}
+\]</span></p>
+<p>計算の手順はプロビットモデルと同じである。まず、説明変数の値を代入して指数 <span class="math inline">\(z_i\)</span> を求め、次に <span class="math inline">\(\Lambda\)</span> で確率に変換する。<span class="math inline">\(\exp(z_i)\)</span> は常に正なので、分子は分母より小さく、<strong>確率は必ず0～1の範囲に収まる。</strong></p>
+<p><span class="math inline">\(\Lambda\)</span> を <span class="math inline">\(z\)</span> で微分すると、標準ロジスティック分布の<strong>密度関数</strong> <span class="math inline">\(\lambda\)</span> が得られる。</p>
+<p><span class="math display">\[
+\lambda(z)=\frac{d\Lambda(z)}{dz}
+=\frac{\exp(-z)}{\{1+\exp(-z)\}^2}
+=\underbrace{\frac{1}{1+\exp(-z)}}_{\Lambda(z)}\times\underbrace{\frac{\exp(-z)}{1+\exp(-z)}}_{1-\Lambda(z)}
+=\Lambda(z)\{1-\Lambda(z)\}
+\]</span></p>
+<p><span class="math inline">\(\Phi\)</span> と <span class="math inline">\(\phi\)</span> の関係と同じく、<span class="math inline">\(\lambda\)</span> が密度関数、<span class="math inline">\(\Lambda\)</span> がその面積を左から累積した分布関数である。</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-l08-logistic-normal" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="左は標準正規分布と標準ロジスティック分布の密度関数。どちらも0を中心とした釣鐘型だが、ロジスティック分布の方が山が低く裾が厚い。右は二つの分布関数で、どちらも0から1へ増えるS字の曲線になる。">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l08-logistic-normal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-l08-logistic-normal-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="左は標準正規分布と標準ロジスティック分布の密度関数。どちらも0を中心とした釣鐘型だが、ロジスティック分布の方が山が低く裾が厚い。右は二つの分布関数で、どちらも0から1へ増えるS字の曲線になる。" width="1280">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l08-logistic-normal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;4: 標準正規分布（プロビット）と標準ロジスティック分布（ロジット）。左は密度関数、右は分布関数。
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>ロジスティック分布も、標準正規分布と同じく<strong>0を中心に左右対称な釣鐘型</strong>である。ただし、山が低く裾が厚い。標準正規分布の標準偏差が1であるのに対し、標準ロジスティック分布の標準偏差は約1.81である。そのため、分布関数 <span class="math inline">\(\Lambda\)</span> は <span class="math inline">\(\Phi\)</span> よりも緩やかに0から1へ増える。</p>
+</section>
+<section id="オッズと係数" class="level3">
+<h3 class="anchored" data-anchor-id="オッズと係数">オッズと係数</h3>
+<p>ロジットモデルには、係数を<strong>オッズ</strong>で読めるという特徴がある。<span class="math inline">\(Y_i=1\)</span> となる確率と、<span class="math inline">\(Y_i=0\)</span> となる確率の比をオッズという。<span class="math inline">\(p_i=\Lambda(z_i)\)</span> を代入すると、</p>
+<p><span class="math display">\[
+\frac{p_i}{1-p_i}
+=\frac{\exp(z_i)/\{1+\exp(z_i)\}}{1/\{1+\exp(z_i)\}}
+=\exp(z_i)
+\]</span></p>
+<p>となる。両辺の対数をとると、次の式が得られる。</p>
+<p><span class="math display">\[
+\ln\left(\frac{p_i}{1-p_i}\right)=z_i=a+bX_i
+\]</span></p>
+<p>オッズの対数を<strong>対数オッズ</strong>（ロジット）という。ロジットモデルでは、<strong>対数オッズが説明変数の一次式で表される。</strong> したがって、係数 <span class="math inline">\(b\)</span> は、<span class="math inline">\(X_i\)</span> が1単位大きいときの対数オッズの変化を表す。ただし、確率そのものの変化ではないので、確率への影響の大きさは、プロビットモデルと同じく限界効果で読む。この対数オッズの考え方は、第10回の多項ロジットモデルで再び使う。</p>
+</section>
+<section id="限界効果" class="level3">
+<h3 class="anchored" data-anchor-id="限界効果">限界効果</h3>
+<p>限界効果の求め方も、プロビットモデルと同じである。<span class="math inline">\(\phi\)</span> を <span class="math inline">\(\lambda\)</span> に、<span class="math inline">\(\Phi\)</span> を <span class="math inline">\(\Lambda\)</span> に置き換えればよい。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>プロビットモデル</th>
+<th>ロジットモデル</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>確率</td>
+<td><span class="math inline">\(\Phi(z_i)\)</span></td>
+<td><span class="math inline">\(\Lambda(z_i)\)</span></td>
+</tr>
+<tr class="even">
+<td>連続変数の限界効果</td>
+<td><span class="math inline">\(\phi(z_i)\,b\)</span></td>
+<td><span class="math inline">\(\lambda(z_i)\,b=\Lambda(z_i)\{1-\Lambda(z_i)\}\,b\)</span></td>
+</tr>
+<tr class="odd">
+<td>ダミー変数の限界効果</td>
+<td><span class="math inline">\(\Phi(a+bX_i+\delta)-\Phi(a+bX_i)\)</span></td>
+<td><span class="math inline">\(\Lambda(a+bX_i+\delta)-\Lambda(a+bX_i)\)</span></td>
+</tr>
+<tr class="even">
+<td><code>glm()</code>の指定</td>
+<td><code>binomial(link = "probit")</code></td>
+<td><code>binomial(link = "logit")</code></td>
+</tr>
+<tr class="odd">
+<td>密度関数・分布関数の値</td>
+<td><code>dnorm()</code>・<code>pnorm()</code></td>
+<td><code>dlogis()</code>・<code>plogis()</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="プロビットモデルとの違い" class="level3">
+<h3 class="anchored" data-anchor-id="プロビットモデルとの違い">プロビットモデルとの違い</h3>
+<p>二つのモデルの違いは、確率への変換に用いる分布だけである。どちらもS字の曲線で確率を表すため、<strong>予測確率や限界効果は、ほとんど同じになることが多い。</strong></p>
+<p>一方、係数の大きさは異なる。ロジスティック分布の方がばらつきが大きいので、同じ確率の変化を表すのに、ロジットモデルでは指数をより大きく動かす必要がある。そのため、<strong>ロジットモデルの係数は、プロビットモデルの係数のおよそ1.6～1.8倍になることが多い。</strong> プロビットモデルとロジットモデルの係数の数値を、そのまま比較してはいけない。二つのモデルの結果を比べるときは、係数の符号と有意性、そして限界効果を比べる。</p>
+<p>第9回の順序ロジットモデルと第10回の多項ロジットモデルは、このロジットモデルを、三つ以上の選択肢に広げたものである。</p>
+</section>
+</section>
+<section id="演習問題" class="level2 homework">
+<h2 class="homework anchored" data-anchor-id="演習問題">演習問題</h2>
+<p><strong>就業データをロジットモデルで推定する</strong></p>
+<p>授業で用いた有配偶女性の就業データを、今度は<strong>ロジットモデル</strong>で推定しよう。<strong>推定 → 係数の比較 → 限界効果</strong>をRで一通り実行する。各問で指定したオブジェクトを作成し、結果をConsoleやPlotsに表示する。</p>
+<section id="使用するデータと準備" class="level3">
+<h3 class="anchored" data-anchor-id="使用するデータと準備">使用するデータと準備</h3>
+<p>授業と同じ<strong><code>data_lesson08.csv</code></strong>を使う。授業でProject内の<code>data</code>フォルダに保存したものをそのまま利用し、新しいパッケージのインストールは不要である。今回も次の6列を使う。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>列名</th>
+<th>内容・単位</th>
+<th>分析での役割</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>inlf</code></td>
+<td>1975年に就業していれば1、それ以外0</td>
+<td>被説明変数</td>
+</tr>
+<tr class="even">
+<td><code>educ</code></td>
+<td>本人の教育年数（年）</td>
+<td>説明変数</td>
+</tr>
+<tr class="odd">
+<td><code>exper</code></td>
+<td>本人の過去の就業経験年数（年）</td>
+<td>説明変数</td>
+</tr>
+<tr class="even">
+<td><code>age</code></td>
+<td>本人の年齢（歳）</td>
+<td>説明変数</td>
+</tr>
+<tr class="odd">
+<td><code>young_child</code></td>
+<td>6歳未満の子どもがいれば1、いなければ0</td>
+<td>ダミー変数</td>
+</tr>
+<tr class="even">
+<td><code>nwifeinc</code></td>
+<td>本人の労働所得を除く年間の家族所得（千米ドル）</td>
+<td>説明変数</td>
+</tr>
+</tbody>
+</table>
+<p><code>zemi.Rproj</code>を開き、新しいスクリプトを<code>script/lesson08-practice.R</code>として保存する。次のコードでデータを読み込む。以降のコードは自分で書き加えよう。</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>participation <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_lesson08.csv"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="課題8-1ロジットモデルを推定する" class="level3">
+<h3 class="anchored" data-anchor-id="課題8-1ロジットモデルを推定する">課題8-1｜ロジットモデルを推定する</h3>
+<ol type="1">
+<li><code>glm()</code>を使い、授業と同じ被説明変数（<code>inlf</code>）と説明変数（<code>educ</code>・<code>exper</code>・<code>age</code>・<code>young_child</code>・<code>nwifeinc</code>）で、ロジットモデルを推定する。<code>family = binomial(link = "logit")</code>を指定し、結果を<code>model_logit</code>に保存する。</li>
+<li><code>summary()</code>で推定結果を表示する。</li>
+<li><code>summary()</code>の出力から、次の値をスクリプトのコメント（<code>#</code>で始まる行）に転記する。<strong>数値の記録だけでよい。</strong>
+<ul>
+<li><code>educ</code>の係数の推定値、z値、p値</li>
+<li><code>young_child</code>の係数の推定値、z値、p値</li>
+</ul></li>
+</ol>
+</section>
+<section id="課題8-2プロビットモデルと係数を比較する" class="level3">
+<h3 class="anchored" data-anchor-id="課題8-2プロビットモデルと係数を比較する">課題8-2｜プロビットモデルと係数を比較する</h3>
+<ol type="1">
+<li>授業と同じプロビットモデルを推定し、<code>model_probit</code>に保存する。</li>
+<li><code>cbind()</code>を使い、二つのモデルの係数を横に並べて表示する。列名は、プロビットモデルを<code>probit</code>、ロジットモデルを<code>logit</code>とする。</li>
+<li>ロジットモデルの係数を、プロビットモデルの係数で割った比を<code>coef_ratio</code>に保存し、表示する。</li>
+<li>各説明変数について、係数の符号が二つのモデルで同じかどうかを、コメントに「同じ」「異なる」で記録する。</li>
+</ol>
+</section>
+<section id="課題8-3限界効果を計算する" class="level3">
+<h3 class="anchored" data-anchor-id="課題8-3限界効果を計算する">課題8-3｜限界効果を計算する</h3>
+<ol type="1">
+<li>授業のプロビットモデルと同じ手順で、ロジットモデルの連続変数（<code>educ</code>・<code>exper</code>・<code>age</code>・<code>nwifeinc</code>）の平均限界効果を求め、<code>marginal_effects_logit</code>に保存して表示する。ただし、密度関数の値は<code>dnorm()</code>ではなく<code>dlogis()</code>で求める。</li>
+<li>授業と同じ手順で、ロジットモデルの幼児ダミー<code>young_child</code>の平均限界効果を求め、<code>marginal_effect_child_logit</code>に保存して表示する。</li>
+<li>求めた五つの平均限界効果を、授業で求めたプロビットモデルの値（下表）と並べて、コメントに記録する。<strong>数値の記録だけでよい。</strong></li>
+</ol>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>変数</th>
+<th style="text-align: right;">プロビットモデルの平均限界効果（授業の結果）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>educ</code></td>
+<td style="text-align: right;">0.0386</td>
+</tr>
+<tr class="even">
+<td><code>exper</code></td>
+<td style="text-align: right;">0.0210</td>
+</tr>
+<tr class="odd">
+<td><code>age</code></td>
+<td style="text-align: right;">−0.0174</td>
+</tr>
+<tr class="even">
+<td><code>nwifeinc</code></td>
+<td style="text-align: right;">−0.00341</td>
+</tr>
+<tr class="odd">
+<td><code>young_child</code></td>
+<td style="text-align: right;">−0.329</td>
+</tr>
+</tbody>
+</table>
+<p>最後にスクリプトを保存し、先頭から最後まで順番に実行して、結果を確認する。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ヒント</span>操作に困ったときのヒント
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>ロジットモデルは、授業のプロビットモデルのコードで<code>link = "probit"</code>を<code>link = "logit"</code>に変えるだけで推定できる。</li>
+<li>二つのベクトルを列として並べるには、<code>cbind(probit = ..., logit = ...)</code>のように書く。</li>
+<li><code>coef(model_logit) / coef(model_probit)</code>と書くと、同じ変数の係数どうしで割り算される。</li>
+<li>連続変数の限界効果は、<code>predict(モデル, type = "link")</code>で指数を求め、<code>mean(dlogis(指数)) * coef(モデル)[c("educ", "exper", "age", "nwifeinc")]</code>の形で計算する。</li>
+<li>幼児ダミーの限界効果は、全員の<code>young_child</code>を1にしたデータと0にしたデータを作り、<code>type = "response"</code>で求めた確率の差を平均する。授業のコードの<code>model_probit</code>を<code>model_logit</code>に変えればよい。</li>
+</ul>
+</div>
+</div>
+</div>
+
+
 </section>
 </section>
 

@@ -1,4 +1,4 @@
-# 第8回：プロビットモデル
+# 第8回：プロビットモデル・ロジットモデル
 # 実行場所：zemi.Rprojを開いたProjectのルート
 # data/data_lesson08.csvを保存し、上から順に実行する。
 # 今回の仮説：他の条件を一定とすると、教育年数は就業確率と正、幼児の存在は負の関係。
@@ -43,7 +43,6 @@ model_probit <- glm(
   family = binomial(link = "probit")
 )
 summary(model_probit)
-model_probit$converged
 
 # 連続変数の限界効果
 # 1. 各人の指数を求める。
